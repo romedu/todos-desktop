@@ -1,0 +1,16 @@
+.Toolbar {
+   position: fixed;
+   top: 0;
+   left: 0;
+   display: flex;
+   width: 100vw;
+   height: 12vh;
+   z-index: 2;
+   background-color: rgb(224, 193, 255);
+}
+
+@media(min-width: 600px){
+   .Toolbar {
+      display: none;
+   }
+}

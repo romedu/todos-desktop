@@ -1,0 +1,33 @@
+.Folder {
+   position: fixed;
+   left: 20vw;
+   top: 20vh;
+   /* background-color: lightgoldenrodyellow; */
+   background-color: rgb(255, 219, 234);
+   border-radius: 8px;
+}
+
+.Folder h2 {
+   font-size: 1.8em;
+}
+
+.Folder h4 {
+   font-size: 1.3em;
+   margin-top: 15vh;
+   text-align: center;
+}
+
+.FolderInside {
+   width: 58vw;
+   height: 60vh;
+   padding: 0 1vw 0 3vw;
+   overflow-y: auto;
+   z-index: 4;
+}
+
+.FolderBorder {
+   top: 16vh;
+   width: 15vw;
+   height: 64vh;
+   z-index: 4;
+}

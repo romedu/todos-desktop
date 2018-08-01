@@ -1,0 +1,10 @@
+Button:hover {
+   cursor: pointer;
+}
+
+.settingsBtn {
+   float: right;
+   border-radius: 50%;
+   background-color: rgb(234, 214, 255);
+   outline: none;
+}

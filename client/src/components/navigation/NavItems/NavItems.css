@@ -1,0 +1,8 @@
+.SideDrawer {
+   display: flex;
+   flex-direction: column;
+}
+
+.NavItems {
+   display: flex;
+}

@@ -1,0 +1,18 @@
+.NavBar {
+   position: fixed;
+   top: 0;
+   left: 0;
+   display: flex;
+   justify-content: space-between;
+   width: 98.8vw;
+   height: 10vh;
+   padding-left: 1.2vw;
+   z-index: 2;
+   background-color: rgb(224, 193, 255);
+}
+
+@media(max-width: 599px){
+   .NavBar {
+      display: none;
+   }
+}

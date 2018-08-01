@@ -1,0 +1,10 @@
+.Authentication {
+   margin-top: 18vh;
+   width: 100vw;
+}
+
+@media(max-width: 599px){
+   .Authentication {
+      margin-top: 15vh;
+   }
+}

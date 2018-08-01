@@ -1,0 +1,48 @@
+.ButtonGroup {
+   float: right;
+   margin-right: 2vw;
+}
+
+.SettingsGroup {
+   float: right;
+}
+
+.SettingsGroup button {
+   border-radius: 50%;
+   width: 1vw;
+   height: 1vw;
+}
+
+.ButtonGroup button {
+   margin-left: 0.5vw;
+   border: none;
+   padding: 1vh 2vw;
+   font-size: 0.95em;
+   box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
+   background-color: rgb(234, 214, 255);
+   outline: none;
+}
+
+.ButtonGroup button:hover {
+   transform: scale(1.01);
+}
+
+.ButtonGroup button:active {
+   box-shadow: 0.05vw 0.1vh black, -0.05vw -0.05vh black;
+}
+
+.Small button {
+   margin-left: 0.45vw;
+   padding: 0.75vh 1.4vw;
+   font-size: 0.8em;
+}
+
+.ButtonGroup button:first-child {
+   border-top-left-radius: 8px;
+   border-bottom-left-radius: 8px;
+}
+
+.ButtonGroup button:last-child {
+   border-top-right-radius: 8px;
+   border-bottom-right-radius: 8px;
+}

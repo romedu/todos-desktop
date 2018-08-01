@@ -1,0 +1,10 @@
+.TodoApp {
+   margin-top: 13vh;
+   padding: 0 10vw;
+}
+
+@media(max-width: 599px){
+   .TodoApp {
+      margin-top: 10vh;
+   }
+}

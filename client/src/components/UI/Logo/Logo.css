@@ -1,0 +1,12 @@
+.Logo {
+   height: 8vh;
+   width: 3.8vw;
+   margin: 1vh 0;
+}
+
+@media(max-width: 599px){
+   .Logo {
+      height: 5vh;
+      width: 3vw;
+   }
+}

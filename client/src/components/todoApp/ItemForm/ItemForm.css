@@ -1,0 +1,10 @@
+.itemForm {
+   position: fixed;
+   left: 27vw;
+   top: 20vh;
+   width: 46vw;
+   height: 60vh;
+   z-index: 6;
+   background-color: lightsalmon;
+   border: 1px solid blue;
+}
