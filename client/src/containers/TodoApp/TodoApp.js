@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Switch, Route, Redirect} from "react-router-dom";
-import TodoDesktop from "../TodoDesktop/TodoDesktop";
+import Desktop from "../Desktop/Desktop";
 import TodoFile from "../TodoFile/TodoFile";
 import "./TodoApp.css";
 
@@ -9,7 +9,7 @@ class TodoApp extends Component {
       return (
          <div className="TodoApp">
             <Switch>
-               <Route exact path="/" component={TodoDesktop} />
+               <Route exact path="/" component={Desktop} />
                <Route path="/todos/:id" component={TodoFile} />
                <Redirect from="/todos" to="/" />
             </Switch>

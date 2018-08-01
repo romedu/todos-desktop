@@ -12,7 +12,7 @@ import Loader from "../../components/UI/Loader/Loader";
 import Confirmation from "../../components/UI/Confirmation/Confirmation";
 import actionTypes from "../../store/actions/actionTypes";
 
-class TodoDesktop extends Component{
+class Desktop extends Component{
    state = {
       itemsType: "folder",
       openFolder: null,
@@ -147,4 +147,4 @@ const mapDispatchToProps = dispatch => ({
    onMessageCreate: (type, message) => dispatch(createMessage(type, message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoDesktop);
+export default connect(mapStateToProps, mapDispatchToProps)(Desktop);
