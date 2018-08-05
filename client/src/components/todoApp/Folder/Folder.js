@@ -17,7 +17,7 @@ class Folder extends Component {
    }
 
    componentDidUpdate(prevProps){
-      if(prevProps.folder !== this.props.folder) this.setState(prevState => ({...prevState, isLoading: false}));
+      if(prevProps.folder !== this.props.folder) this.setState({isLoading: false});
    }
 
    clearFolderHandler = () => {
@@ -27,14 +27,17 @@ class Folder extends Component {
    }
 
    render(){
-      const {isLoading} = this.state;
-      const {folder, newFormToggle, settingsHandler, deleteHandler} = this.props;
+      const {isLoading} = this.state,
+            {folder, newFormToggle, settingsHandler, deleteHandler} = this.props,
+            content = isLoading ? <Loader /> 
+                                : <FolderContent files={folder.files} folderName={folder.name} newFormToggle={newFormToggle} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
+
       return (
          <Fragment>
-            <Backdrop action={this.clearFolderHandler} coverNav />
+            <Backdrop closeHandler={this.clearFolderHandler} coverNav />
             <div className="Folder FolderBorder"></div>
             <div className="Folder FolderInside">
-               {isLoading ? <Loader /> : <FolderContent files={folder.files} newFormToggle={newFormToggle} settingsHandler={settingsHandler} deleteHandler={deleteHandler}> {folder.name} </FolderContent>}
+               {content}
             </div>
          </Fragment>
       )

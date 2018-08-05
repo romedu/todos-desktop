@@ -1,23 +1,20 @@
 import React from "react";
 import IconList from "../IconList/IconList";
-import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
+import Button from "../../UI/Button/Button";
 
 const FolderContent = props => {
-   const {files, children, newFormToggle, settingsHandler, deleteHandler} = props;
-   const content = files && files.length ? <IconList todos={files} settingsHandler={settingsHandler} deleteHandler={deleteHandler} insideFolder /> : <h4> The folder is empty </h4>;
-   const buttons = [
-      {
-         text: "New List",
-         action: newFormToggle
-      },
-      {
-         text: "Edit Mode"
-      }
-   ];
+   const {files, folderName, newFormToggle, settingsHandler, deleteHandler} = props,
+         content = files && files.length ? <IconList todos={files} settingsHandler={settingsHandler} deleteHandler={deleteHandler} insideFolder /> 
+                                         : <h4> The folder is empty </h4>;
+
    return (
       <div>
-         <ButtonGroup buttons={buttons} small />
-         <h2> {children} </h2>
+         <Button action={newFormToggle}>
+            New List
+         </Button>
+         <h2>
+            {folderName}
+         </h2>
          {content}
       </div>
    )

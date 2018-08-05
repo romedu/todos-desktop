@@ -2,23 +2,24 @@ import React from "react";
 import Button from "../../UI/Button/Button";
 import InputField from "../../UI/InputField/InputField";
 import Options from "../../UI/Options/Options";
+import {capitalizeWord} from "../../../helpers";
 
 const ItemEditForm = props => {
-   const {updateInput, submitHandler, itemType, name, image, folderDesc, folders, todoFolder} = props;
-   let itemDescription = (itemType === "todo") ? <Options label="Belonging Folder" pickOption={e => updateInput("folderName", e.target.value)} optionList={folders} emptyOption="-- No Folder --" selected={todoFolder} /> 
+   const {itemType, folderNames, updateInput, submitHandler, ...itemData} = props;
+   let itemDescription = (itemType === "todo") ? <Options name="folderName" label="Belonging Folder" pickOption={updateInput} optionList={folderNames} emptyOption="-- No Folder --" selected={itemData.folderName} /> 
                                                : (
                                                    <span>
                                                       <label> Description: </label>
-                                                      <textarea onChange={e => updateInput("description", e.target.value)} value={folderDesc} />
+                                                      <textarea name="description" value={itemData.description} onChange={updateInput} />
                                                    </span>
-                                               ) ;
+                                               );
    return (
       <form onSubmit={submitHandler}>
-         <h3> Edit {name} form </h3> 
-         <InputField type="text" updateHandler={updateInput} value={name}>
+         <h3> Edit {capitalizeWord(itemType)} </h3> 
+         <InputField type="text" updateHandler={updateInput} value={itemData.name}>
             Name
          </InputField>
-         <InputField type="text" updateHandler={updateInput} value={image}>
+         <InputField type="text" updateHandler={updateInput} value={itemData.image}>
             Image
          </InputField>
          {itemDescription}

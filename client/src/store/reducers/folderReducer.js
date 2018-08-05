@@ -19,7 +19,8 @@ const reducer = (prevState = initialState, action) => {
          namesList: prevState.namesList.concat(action.newFolder.name)
       };
       case actionTypes.ADD_NEW_FILE: return {
-         ...prevState, 
+         ...prevState,
+         list: prevState.list.map(folder => folder._id === prevState.current._id ? {...folder, files: folder.files.concat(action.newFile)} : folder),
          current: {
             ...prevState.current,
             files: prevState.current.files.concat(action.newFile)

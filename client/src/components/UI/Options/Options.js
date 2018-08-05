@@ -1,9 +1,10 @@
 import React from "react";
 
-const Options = ({label, optionList, emptyOption, selected, pickOption}) => {
+const Options = ({name, label, optionList, emptyOption, selected, pickOption}) => {
    if(!optionList) optionList = [emptyOption];
    else if(!optionList.includes(emptyOption)) optionList.unshift(emptyOption);
-   const items = optionList.map((optionName, index) => (
+
+   const options = optionList.map((optionName, index) => (
       <option key={`${optionName}${index}`} value={optionName}> 
          {optionName}
       </option>)
@@ -12,8 +13,8 @@ const Options = ({label, optionList, emptyOption, selected, pickOption}) => {
    return (
       <label>
          {label}
-         <select value={selected || emptyOption} onChange={pickOption}>
-            {items}
+         <select name={name} value={selected || emptyOption} onChange={pickOption}>
+            {options}
          </select>
       </label>
    );

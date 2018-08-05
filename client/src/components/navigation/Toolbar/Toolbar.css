@@ -3,7 +3,9 @@
    top: 0;
    left: 0;
    display: flex;
-   width: 100vw;
+   justify-content: space-between;
+   padding: 0 2vw;
+   width: 96vw;
    height: 12vh;
    z-index: 2;
    background-color: rgb(224, 193, 255);

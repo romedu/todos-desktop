@@ -8,8 +8,8 @@ const Authentication = props => {
    return (
       <div className="Authentication">
          <Switch>
-            <Route path={`${match.path}/login`} render={() => <AuthForm type={"login"} />} />
-            <Route path={`${match.path}/register`} render={() => <AuthForm type={"register"} />} />
+            <Route path={`${match.path}/login`} render={() => <AuthForm authType={"login"} />} />
+            <Route path={`${match.path}/register`} render={() => <AuthForm authType={"register"} />} />
             <Redirect from={"/"} to={`${match.path}/login`} />
          </Switch>
       </div>

@@ -40,7 +40,7 @@ const setList = (type, lists, list) => ({
    list
 });
 
-export const createList = newList => {
+export const createList = (newList, insideFolder) => {
    return dispatch => {
       const token = localStorage.getItem("token");
       qwest.post(`/todos?token=${token}`, newList)
@@ -48,7 +48,10 @@ export const createList = newList => {
          .then(response => {
             const {status, message, folderName} = response;
             if(status && status !== 201) throw new Error(message);
-            if(folderName) return dispatch(addNewFile(response));
+            if(folderName){
+               if(insideFolder) return dispatch(addNewFile(response));
+               return dispatch(createMessage("Notification", `New list was added to the "${folderName}" Folder`));
+            }
             return dispatch(addList(response));
          })
          .catch(error => createMessage("Error", error.message));
@@ -68,8 +71,10 @@ export const updateList = (listId, listFolder, payload) => {
          .then(response => {
             const {status, message, folderName} = response;
             if(status && status !== 200) throw new Error(message);
-            if(folderName === listFolder) return dispatch(updateFile(response));
-            else if(listFolder) return dispatch(removeFile(listId));
+            if(listFolder){
+               if(folderName === listFolder) return dispatch(updateFile(response));
+               return dispatch(removeFile(listId));
+            } 
             return dispatch(editList(listId, response));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));

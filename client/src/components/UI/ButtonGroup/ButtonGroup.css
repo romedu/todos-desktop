@@ -3,16 +3,6 @@
    margin-right: 2vw;
 }
 
-.SettingsGroup {
-   float: right;
-}
-
-.SettingsGroup button {
-   border-radius: 50%;
-   width: 1vw;
-   height: 1vw;
-}
-
 .ButtonGroup button {
    margin-left: 0.5vw;
    border: none;
@@ -31,12 +21,6 @@
    box-shadow: 0.05vw 0.1vh black, -0.05vw -0.05vh black;
 }
 
-.Small button {
-   margin-left: 0.45vw;
-   padding: 0.75vh 1.4vw;
-   font-size: 0.8em;
-}
-
 .ButtonGroup button:first-child {
    border-top-left-radius: 8px;
    border-bottom-left-radius: 8px;
@@ -45,4 +29,9 @@
 .ButtonGroup button:last-child {
    border-top-right-radius: 8px;
    border-bottom-right-radius: 8px;
+}
+
+.settingsGroup {
+   float: right;
+   padding-bottom: 0.5vh;
 }

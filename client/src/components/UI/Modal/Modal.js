@@ -2,9 +2,9 @@ import React, {Fragment} from "react";
 import Backdrop from "../Backdrop/Backdrop";
 import "./Modal.css";
 
-const Modal = ({label, children, backDropped, closeHandler}) => (
+const Modal = ({label, children, slightDrop, closeHandler}) => (
    <Fragment>
-      {<Backdrop action={closeHandler} coverNav backDropped={backDropped}/>}
+      <Backdrop closeHandler={closeHandler} slightDrop={slightDrop} coverNav/>
       <div className={`Modal ${(label === "Confirmation") && label}`}>
          <h3> {label} </h3>
          {children}

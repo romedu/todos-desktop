@@ -6,6 +6,7 @@ import {createMessage} from "../../../store/actions/message";
 import InputField from "../../UI/InputField/InputField";
 import Button from "../../UI/Button/Button";
 import Loader from "../../UI/Loader/Loader";
+import {capitalizeWord} from "../../../helpers";
 
 class AuthForm extends Component {
    state = {
@@ -43,27 +44,30 @@ class AuthForm extends Component {
       else if(prevProps.message !== message) this.setState(prevState => ({...prevState, isLoading: false}));
    }
 
-   updateInputHandler = (property, newValue) => (
-      this.setState((prevState, props) => ({
-         ...prevState,
-         [props.type]: {
-            ...prevState[props.type],
+   updateInputHandler = e => {
+      const {authType} = this.props,
+            property = e.target.name,
+            newValue = e.target.value;
+            
+      this.setState(prevState => ({
+         [authType]: {
+            ...prevState[authType],
             [property]: {
-               ...prevState[props.type][property],
+               ...prevState[authType][property],
                value: newValue
             }
          }
       }))
-   );
+   };
 
    passwordToggleHandler = inputName => {
-      this.setState((prevState, props) => ({
-         ...prevState,
-         [props.type]: {
-            ...prevState[props.type],
+      const {authType} = this.props;
+      this.setState(prevState => ({
+         [authType]: {
+            ...prevState[authType],
             [inputName]: {
-               ...prevState[props.type][inputName],
-               type: prevState[props.type][inputName].type === "text" ? "password" : "text"
+               ...prevState[authType][inputName],
+               type: prevState[authType][inputName].type === "text" ? "password" : "text"
             }
          }
       }));
@@ -71,37 +75,36 @@ class AuthForm extends Component {
 
    authHandler = e => {
       e.preventDefault();
-      const {type, onErrorCreate} = this.props,
+      const {authType, onErrorCreate, onAuthenticate} = this.props,
             {password, confirmPassword} = this.state.register;
-      if(type === "register" && (password.value !== confirmPassword.value)) return onErrorCreate("Password Confirmation doesn't match the password");
-      this.props.authenticate(type, this.state[type].username.value, this.state[type].password.value);
-      this.setState(prevState => ({...prevState, isLoading: true}));
+      if(authType === "register" && (password.value !== confirmPassword.value)) return onErrorCreate("Password Confirmation doesn't match the password");
+      this.setState(prevState => ({...prevState, isLoading: true}), () => onAuthenticate(authType, this.state[authType].username.value, this.state[authType].password.value));
    };
 
    render(){
-      const {type} = this.props;
-      const title = type.split("").map((char, index) => !index ? char.toUpperCase() : char).join("");
-      const confirmPassword = type === "register" 
-                  ? <InputField value={this.state[type].confirmPassword.value} type={this.state[type].confirmPassword.type} toggler toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
+      const {authType} = this.props,
+            {register} = this.state;
+      const title = capitalizeWord(authType);
+      const confirmPassword = authType === "register" &&
+                   <InputField value={register.confirmPassword.value} inputType={register.confirmPassword.type} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
                       Confirm Password
-                    </InputField>
-                   : null;
+                    </InputField>;
       const changeAuthType = {
-         text: type === "register" ? "Already an user?" : "New user?",
-         linkTo: type === "register" ? `login` : `register`
+         text: authType === "register" ? "Already an user?" : "New user?",
+         linkTo: authType === "register" ? `login` : `register`
       };
       const content = this.state.isLoading ? <Loader />
                                            : (
                                              <form onSubmit={this.authHandler}>
-                                                <InputField value={this.state[type].username.value} type={"text"} updateHandler={this.updateInputHandler}>
+                                                <InputField value={this.state[authType].username.value} inputType={"text"} updateHandler={this.updateInputHandler}>
                                                    Username
                                                 </InputField>
-                                                <InputField value={this.state[type].password.value} type={this.state[type].password.type} toggler toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
+                                                <InputField value={this.state[authType].password.value} inputType={this.state[authType].password.type} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
                                                    Password
                                                 </InputField>
                                                 {confirmPassword}
                                                 <Link to={changeAuthType.linkTo}> {changeAuthType.text} </Link>
-                                                <Button color="Submit" type="submit"> Submit </Button>
+                                                <Button type="submit"> Submit </Button>
                                              </form>
                                            )
 
@@ -120,7 +123,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   authenticate: (type, username, password) => dispatch(authenticateUser(type, username, password)),
+   onAuthenticate: (type, username, password) => dispatch(authenticateUser(type, username, password)),
    onTokenVerify: () => dispatch(verifyToken()),
    onErrorCreate: message => dispatch(createMessage("Error", message))
 });

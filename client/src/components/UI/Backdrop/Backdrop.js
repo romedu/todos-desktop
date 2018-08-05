@@ -1,9 +1,9 @@
 import React from "react";
 import "./Backdrop.css";
 
-const Backdrop = ({action, coverNav, backDropped}) => {
-   const mobileOnly = coverNav ? "" : "mobileOnly";
-   return (<div onClick={action} className={`Backdrop ${mobileOnly} ${backDropped ? "backDropped" : ""}`}></div>);
+const Backdrop = ({closeHandler, coverNav, slightDrop}) => {
+   const mobileOnly = !coverNav && "mobileOnly";
+   return (<div onClick={closeHandler} className={`Backdrop ${mobileOnly} ${slightDrop && "slightDrop"}`}></div>);
 }
 
 export default Backdrop;

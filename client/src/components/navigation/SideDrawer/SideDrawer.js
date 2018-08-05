@@ -7,7 +7,7 @@ import "./SideDrawer.css";
 const SideDrawer = ({hideHandler}) => {
    return (
       <Fragment>
-         <Backdrop action={hideHandler}/>
+         <Backdrop closeHandler={hideHandler}/>
          <div className="SideDrawer">
             <Logo />
             <NavItems sideDrawer /> 

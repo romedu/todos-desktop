@@ -3,14 +3,14 @@ import Modal from "../Modal/Modal";
 import ButtonGroup from "../ButtonGroup/ButtonGroup";
 import Loader from "../Loader/Loader";
 
-const Confirmation = ({isLoading, backDropped, children, deleteHandler, negationHandler, closeHandler}) => {
+const Confirmation = ({isLoading, slightDrop, children, deleteHandler, negationHandler, closeHandler}) => {
    const buttons = [
       {
-         text: "Yes",
+         description: "Yes",
          action: deleteHandler
       },
       {
-         text: "No",
+         description: "No",
          action: negationHandler || closeHandler
       }
    ];
@@ -21,7 +21,7 @@ const Confirmation = ({isLoading, backDropped, children, deleteHandler, negation
                                </Fragment>);
 
    return (
-      <Modal label={"Confirmation"} closeHandler={closeHandler} backDropped={backDropped}>
+      <Modal label={"Confirmation"} closeHandler={closeHandler} slightDrop={slightDrop}>
          {content}
       </Modal>
    )

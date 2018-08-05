@@ -2,17 +2,17 @@ import React from "react";
 import Button from "../Button/Button";
 import "./ButtonGroup.css";
 
-const ButtonGroup = ({buttons, small, setting}) => {
+const ButtonGroup = ({buttons, groupType}) => {
    const btnGroup = buttons.map((button, index) => (
-      <Button key={`${index}${button.text}`} action={button.action} color={`group ${button.color}`} type={button.type}>
-         {button.text}
+      <Button key={`${index}${button.description}`} {...button}>
+         {button.description}
       </Button>
    ));
 
    return (
-      <div className={`${!setting ? "ButtonGroup" : "SettingsGroup"} ${small ? "Small" : null}`}>
+      <span className={`${groupType || "ButtonGroup"}`}>
          {btnGroup}
-      </div>
+      </span>
    );
 };
 

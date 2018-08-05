@@ -1,38 +1,45 @@
 import React, {Fragment} from "react";
 import {Link} from "react-router-dom";
+import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
 import "./DisplayIcon.css";
-import Button from "../../UI/Button/Button";
 
 const DisplayIcon = props => {
-   const {type, name, image, id, url, description, folderName, openHandler, settingsHandler, deleteHandler} = props;
-   const action = openHandler ? () => openHandler(id) : null;
-   const iconProps = {name, id, type, image: image ? image : "", description: description ? description : "", folderName: folderName ? folderName : null};
-   const content = (
-      <Fragment>
-         <div className={`${type}Display`}>
-            <img src={image} alt="" />
-         </div>
-         {name}
-      </Fragment>
-   );
-   // const buttons = [
-   //    {
-   //       text: "E",
-   //       color: "settings",
-   //       action: () => settingsHandler({...iconProps, settingType: "edit"})
-   //    },
-   //    {
-   //       text: "D",
-   //       color: "settings",
-   //       action: () => settingsHandler({...iconProps, settingType: "delete"})
-   //    }
-   // ];
+   const {openHandler, settingsHandler, deleteHandler, ...iconData} = props,
+         content = (
+            <Fragment>
+               <div className={`${iconData.type}Display`}>
+                  <img src={iconData.image} alt="" />
+               </div>
+               {iconData.name}
+            </Fragment>
+         ),
+          buttons = [
+            {
+               description: "D",
+               design: "settings",
+               action: e => {
+                  e.stopPropagation(); 
+                  deleteHandler(iconData)
+               }
+            },
+            {
+               description: "E",
+               design: "settings",
+               action: e => {
+                  e.stopPropagation(); 
+                  settingsHandler(iconData)
+               }
+            }
+         ];
 
    return (
-      <li className="displayIcon" onClick={action}>
-         <Button action={e => {e.stopPropagation(); deleteHandler(iconProps)}} color="settings"> D </Button>
-         <Button action={e => {e.stopPropagation(); settingsHandler(iconProps)}} color="settings"> E </Button>
-         {url ? <Link to={url}> {content} </Link> : content}
+      <li className="displayIcon" onClick={openHandler}>
+         <ButtonGroup buttons={buttons} groupType="settingsGroup"/>
+         {iconData.url 
+          ? <Link to={iconData.url}>
+             {content} 
+          </Link>
+          : content}
       </li>
    )
 };

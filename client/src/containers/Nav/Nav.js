@@ -8,12 +8,12 @@ class Nav extends Component {
       showSideDrawer: false
    };
 
-   toggleSideDrawer = () => this.setState(prevState => ({...prevState, showSideDrawer: !prevState.showSideDrawer}));
-   hideSideDrawer = () => this.setState(prevState => ({...prevState, showSideDrawer: false}));
+   hideSideDrawer = () => this.setState({showSideDrawer: false});
+   toggleSideDrawer = () => this.setState(prevState => ({showSideDrawer: !prevState.showSideDrawer}));
 
    render(){
-      let sideDrawer = this.state.showSideDrawer ? <SideDrawer hideHandler={this.hideSideDrawer} /> : null;
-
+      let sideDrawer = this.state.showSideDrawer && <SideDrawer hideHandler={this.hideSideDrawer} />;
+      
       return (
          <div>
             <NavBar />
