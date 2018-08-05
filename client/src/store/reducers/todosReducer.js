@@ -1,4 +1,5 @@
 import actionTypes from "../actions/actionTypes";
+import {updateItem, removeById} from "../../helpers";
 
 const initialState = {
    lists: null,
@@ -11,15 +12,14 @@ const reducer = (prevState = initialState, action) => {
       case actionTypes.CLEAR_LIST: return {...prevState, lists: null};
       case actionTypes.OPEN_LIST: return {...prevState, current: action.list};
       case actionTypes.CLOSE_LIST: return {...prevState, current: null};
-      
       case actionTypes.CREATE_LIST: return {...prevState, lists: prevState.lists.concat(action.newList)};
       case actionTypes.UPDATE_LIST: return {
          ...prevState,
-         lists: prevState.lists.map(list => (list._id === action.listId ? action.editedList : list))
+         lists: updateItem(action.editedList, prevState.lists)
       };
       case actionTypes.DELETE_LIST: return {
          ...prevState,
-         lists: prevState.lists.filter((todos => todos._id !== action.listId))
+         lists: removeById(action.todoId, prevState.list)
       };
       case actionTypes.CREATE_TODO: return {
          ...prevState,
@@ -32,18 +32,14 @@ const reducer = (prevState = initialState, action) => {
          ...prevState,
          current: {
             ...prevState.current,
-            todos: prevState.current.todos.reduce((acc, nextVal) => {
-               if(nextVal._id === action.todoId) nextVal[action.prop] = action.newValue;
-               acc.push(nextVal);
-               return acc;
-            }, [])
+            todos: updateItem(action.editedTodo, prevState.current.todos)
          }
       };
       case actionTypes.DELETE_TODO: return {
          ...prevState,
          current: {
             ...prevState.current,
-            todos: prevState.current.todos.filter(todo => todo._id !== action.id)
+            todos: removeById(action.todoId, prevState.current.todos)
          }
       }
       default: return prevState;

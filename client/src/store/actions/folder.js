@@ -4,8 +4,8 @@ import {createMessage} from "./message";
 qwest.limit(2);
 
 export const getFolders = () => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.get(`/folder?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
@@ -27,14 +27,14 @@ export const clearFolders = () => ({
 });
 
 export const openFolder = folderId => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.get(`/folder/${folderId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, ...folder} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setCurrent(response));
+            return dispatch(setCurrent(folder));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
@@ -49,15 +49,15 @@ export const closeFolder = () => ({
    type: actionTypes.CLOSE_FOLDER
 });
 
-export const createFolder = newFolder => {
+export const createFolder = newFolderData => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
-      qwest.post(`/folder?token=${token}`, newFolder)
+      qwest.post(`/folder?token=${token}`, newFolderData)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, ...newFolder} = response;
             if(status && status !== 201) throw new Error(message);
-            return dispatch(addFolder(response));
+            return dispatch(addFolder(newFolder));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
@@ -68,44 +68,34 @@ const addFolder = newFolder => ({
    newFolder
 });
 
-export const addNewFile = newFile => ({
-   type: actionTypes.ADD_NEW_FILE,
-   newFile
-});
-
 export const updateFolder = (folderId, payload) => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.map("PATCH", `/folder/${folderId}?token=${token}`, payload)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, ...editedFolder} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(editFolder(folderId, response));
+            return dispatch(editFolder(editedFolder));
          })
          .catch(error => createMessage("Error", error.message));
    }
 };
 
-const editFolder = (folderId, editedFolder) => ({
+const editFolder = editedFolder => ({
    type: actionTypes.UPDATE_FOLDER,
-   folderId,
    editedFolder
 });
 
-export const updateFile = fileData => ({
-   type: actionTypes.UPDATE_FILE,
-   fileData
-});
-
 export const deleteFolder = (folderId, keep) => {
+   const token = localStorage.getItem("token"),
+         keepParam = keep ? "&keep=true" : "";
+
    return dispatch => {
-      const token = localStorage.getItem("token"),
-            keepParam = keep ? "&keep=true" : "";
       qwest["delete"](`/folder/${folderId}?token=${token}${keepParam}`)
          .then(data => JSON.parse(data.response))
-         .then(resolve => {
-            const {status, message} = resolve;
+         .then(response => {
+            const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
             return dispatch(removeFolder(folderId));
          })
@@ -116,6 +106,16 @@ export const deleteFolder = (folderId, keep) => {
 const removeFolder = folderId => ({
    type: actionTypes.DELETE_FOLDER,
    folderId
+});
+
+export const addNewFile = newFile => ({
+   type: actionTypes.ADD_NEW_FILE,
+   newFile
+});
+
+export const updateFile = editedFile => ({
+   type: actionTypes.UPDATE_FILE,
+   editedFile
 });
 
 export const removeFile = fileId => ({

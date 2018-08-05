@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getFolders, deleteFolder} from "../../store/actions/folder";
+import {getFolders, clearFolders, deleteFolder} from "../../store/actions/folder";
 import {getLists, deleteList} from "../../store/actions/todoList";
 import {logoutUser} from "../../store/actions/auth";
 import {createMessage} from "../../store/actions/message";
@@ -155,7 +155,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    onFoldersGet: () => dispatch(getFolders()),
-   onFoldersClear: () => dispatch({type: actionTypes.CLEAR_FOLDERS}),
+   onFoldersClear: () => dispatch(clearFolders()),
    onFolderDelete: (folderId, keep) => dispatch(deleteFolder(folderId, keep)),
    onTodosGet: () => dispatch(getLists()),
    onTodosClear: () => dispatch({type: actionTypes.CLEAR_LIST}),

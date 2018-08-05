@@ -56,11 +56,16 @@ exports.findOne = (req, res, next) => {
 exports.update = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
    let{todoId} = req.params;
-   if(req.body.container) req.body.container = undefined;
-   Todo.findByIdAndUpdate(todoId, req.body, {runValidators: true})
+   if(req.body.container) req.body.container = undefined;//make a validator to make it unchangeable or read only...
+   const options = {
+      runValidators: true,
+      new: true
+   };
+
+   Todo.findByIdAndUpdate(todoId, req.body, options)
       .then(todo => {
          if(!todo) throw new Error("Not Found");
-         res.status(200).json({message: "Todo Updated Successfully"})
+         res.status(200).json(todo)
       })
       .catch(error => {
          error.status = 404;

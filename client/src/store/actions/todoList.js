@@ -5,54 +5,60 @@ import {addNewFile, updateFile, removeFile} from "./folder";
 qwest.limit(2);
 
 export const getLists = () => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.get(`/todos?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setList(actionTypes.GET_LISTS, response));
+            return dispatch(setLists(response));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
+const setLists = lists => ({
+   type: actionTypes.GET_LISTS,
+   lists
+});
+
 export const openList = listId => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.get(`/todos/${listId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, ...list} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setList(actionTypes.OPEN_LIST, null, response));
+            return dispatch(setCurrent(list));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-export const closeList = () => setList(actionTypes.CLOSE_LIST);
-
-const setList = (type, lists, list) => ({
-   type,
-   lists,
+const setCurrent = list => ({
+   type: actionTypes.OPEN_LIST,
    list
 });
 
-export const createList = (newList, insideFolder) => {
+export const closeList = ({
+   type: actionTypes.CLOSE_LIST
+});
+
+export const createList = (newListData, insideFolder) => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
-      qwest.post(`/todos?token=${token}`, newList)
+      qwest.post(`/todos?token=${token}`, newListData)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message, folderName} = response;
+            const {status, message, ...newList} = response;
             if(status && status !== 201) throw new Error(message);
-            if(folderName){
-               if(insideFolder) return dispatch(addNewFile(response));
-               return dispatch(createMessage("Notification", `New list was added to the "${folderName}" Folder`));
+            if(newList.folderName){
+               if(insideFolder) return dispatch(addNewFile(newList));
+               return dispatch(createMessage("Notification", `New list was added to the "${newList.folderName}" Folder`));
             }
-            return dispatch(addList(response));
+            return dispatch(addList(newList));
          })
          .catch(error => createMessage("Error", error.message));
    }
@@ -64,18 +70,18 @@ const addList = newList => ({
 });
 
 export const updateList = (listId, listFolder, payload) => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest.map("PATCH", `/todos/${listId}?token=${token}`, payload)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message, folderName} = response;
+            const {status, message, ...editedList} = response;
             if(status && status !== 200) throw new Error(message);
             if(listFolder){
-               if(folderName === listFolder) return dispatch(updateFile(response));
+               if(editedList.folderName === listFolder) return dispatch(updateFile(editedList));
                return dispatch(removeFile(listId));
             } 
-            return dispatch(editList(listId, response));
+            return dispatch(editList(listId, editedList));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
@@ -87,15 +93,15 @@ const editList = (listId, editedList) => ({
    editedList
 });
 
-export const deleteList = (listId, inFolder) => {
+export const deleteList = (listId, insideFolder) => {
+   const token = localStorage.getItem("token");
    return dispatch => {
-      const token = localStorage.getItem("token");
       qwest["delete"](`/todos/${listId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
-            if(inFolder) return dispatch(removeFile(listId));
+            if(insideFolder) return dispatch(removeFile(listId));
             return dispatch(removeList(listId));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
