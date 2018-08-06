@@ -4,7 +4,6 @@ const {Todo, TodoList} = require("../models");
 exports.findAll = (req, res, next) => {
    Todo.find({container: req.params.id})
       .then(todos => {
-         console.log(todos);
          if(!todos) throw new Error("Not Found");
          res.status(200).json(todos)
       })
@@ -55,12 +54,13 @@ exports.findOne = (req, res, next) => {
 //Owner && Admins Only for non admin creators
 exports.update = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
-   let{todoId} = req.params;
+   const {todoId} = req.params,
+         options = {
+            runValidators: true,
+            new: true
+         };
+
    if(req.body.container) req.body.container = undefined;//make a validator to make it unchangeable or read only...
-   const options = {
-      runValidators: true,
-      new: true
-   };
 
    Todo.findByIdAndUpdate(todoId, req.body, options)
       .then(todo => {
@@ -75,7 +75,7 @@ exports.update = (req, res, next) => {
 
 //Owner && Admins Only for non admin creators
 exports.delete = (req, res, next) => {
-   let {todoId} = req.params;
+   const {todoId} = req.params;
 
    TodoList.findById(req.params.id)
       .then(list => {

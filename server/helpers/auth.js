@@ -14,7 +14,7 @@ exports.register = (req, res, next) => {
 
 exports.login = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
-   let {username, password} = req.body;
+   const {username, password} = req.body;
    User.findOne({username})
       .then(user => {
          if(!user) throw errorHandler(404, "Incorrect Username/Password");
@@ -35,14 +35,14 @@ exports.login = (req, res, next) => {
 
 // MiddleWare should check if token
 exports.verifyToken = (req, res) => {
-   let {user} = req;
+   const {user} = req;
    return res.status(200).json(user);
 };
 
 const signUser = user => {
-   let {username, isAdmin, id} = user,
-       {SECRET, ALGORITHM} = process.env;
-
-   let token = jwt.sign({username, isAdmin, id}, SECRET, {expiresIn: "1h", algorithm: ALGORITHM});
+   const {username, isAdmin, id} = user,
+         {SECRET, ALGORITHM} = process.env,
+         token = jwt.sign({username, isAdmin, id}, SECRET, {expiresIn: "1h", algorithm: ALGORITHM});
+         
    return {username, isAdmin, token, id, tokenExp: Date.now() + (3600 * 1000)};
 };

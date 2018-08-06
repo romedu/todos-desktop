@@ -1,9 +1,10 @@
 const {TodoList, Todo, Folder} = require("../models");
 
 exports.findAll = (req, res, next) => {
-   let {isAdmin} = req.user;
-   let {getAll} = req.query;
-   let searchParam = isAdmin && getAll ? {} : {creator: req.user.id};
+   const {isAdmin} = req.user,
+         {getAll} = req.query,
+         searchParam = isAdmin && getAll ? {} : {creator: req.user.id};
+
    TodoList.find(searchParam)
       .then(lists => {
          if(!lists) throw new Error("Not Found");
@@ -17,12 +18,13 @@ exports.findAll = (req, res, next) => {
 
 exports.create = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+
    Folder.findOne({name: req.body.folderName}).populate("creator").exec()
       .then(folder => {
          if(!folder || folder.creator.id !== req.user.id) req.body.folderName = undefined;
          return TodoList.create(req.body)
                   .then(newList => {
-                     let addons = [];
+                     const addons = [];
                      newList.creator = req.user.id;
                      addons.push(newList.save());
                      if(folder){
@@ -52,7 +54,7 @@ exports.findOne = (req, res, next) => {
       });
 };
 
-// IT SHOULD BE PROMISES INSTEAD OF CALLBACKS. MAKE SURE BEFORE CALLING NEXT, TO SET THE ERROR'S STATUS TO 404
+// IT SHOULD BE PROMISES INSTEAD OF CALLBACKS
 exports.update = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
 
@@ -71,21 +73,33 @@ exports.update = (req, res, next) => {
                //CHECK IF THE NEW LIST IS DIFFERENT THAN THE ONE CURRENTLY IN THE FOLDER, CHECK IF THE LIST'S FOLDERNAME IS NOT UNDEFINED WHILE REQUESTING "NO FOLDER"
                if(((folderName && (folderName !== "-- No Folder --")) && (newList.folderName !== folderName)) || (!newList.folderName && (folderName !== "-- No Folder --") || (newList.folderName && (folderName === "-- No Folder --")))){
                   if(newList.folderName) return Folder.findOne({name: newList.folderName}, (error, oldFolder) => {
-                     if(error || !oldFolder) return next(error);
+                     if(error || !oldFolder){
+                        error.status = 404;
+                        return next(error);
+                     }
                      oldFolder.files.pull(newList.id);
                      oldFolder.save(error => {
-                        if(error) return next(error);
+                        if(error){
+                           error.status = 404;
+                           return next(error);
+                        }
                         if(folderName === "-- No Folder --"){
                            newList.set({folderName: null});
                            return newList.save((error, updatedList) => {
-                                    if(error) return next(error);
+                                    if(error){
+                                       error.status = 404;
+                                       return next(error);
+                                    }
                                     return res.status(200).json(updatedList); 
                                  });
                         }
                         else if(folderName){
                            newFolder.files.push(newList.id);
                            newFolder.save(error => {
-                              if(error) return next(error)
+                              if(error){
+                                 error.status = 404;
+                                 return next(error);
+                              }
                               newList.set({folderName});
                               return newList.save((error, updatedList) => {
                                        if(error) return next(error);
@@ -101,7 +115,10 @@ exports.update = (req, res, next) => {
                               if(error) return next(error)
                               newList.set({folderName});
                               return newList.save((error, updatedList) => {
-                                       if(error) return next(error);
+                                       if(error){
+                                          error.status = 404;
+                                          return next(error);
+                                       }
                                        return res.status(200).json(updatedList); 
                                     });
                            });

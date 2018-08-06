@@ -1,9 +1,9 @@
 const {Folder, TodoList} = require("../models");
 
 exports.findAll = (req, res, next) => {
-   const {isAdmin} = req.user;
-   const {getAll} = req.query;
-   const seachArg = isAdmin && getAll ? {} : {creator: req.user.id};
+   const {isAdmin} = req.user,
+         {getAll} = req.query,
+         seachArg = isAdmin && getAll ? {} : {creator: req.user.id};
 
    Folder.find(seachArg)
       .then(foundFolders => res.status(200).json(foundFolders))
@@ -54,7 +54,7 @@ exports.update = (req, res, next) => {
                {name} = req.body;
 
          if(name && files.length){
-            let addons = [];
+            const addons = [];
             files.forEach(file => {
                file.folderName = name;
                addons.push(file.save());
@@ -76,8 +76,8 @@ exports.delete = (req, res, next) => {
    Folder.findByIdAndRemove(req.params.id).populate("files").exec()
       .then(folder => {
          if(!folder) throw new Error("Not Found");
-         let {files, name} = folder,
-             {keep} = req.query;
+         const {files, name} = folder,
+               {keep} = req.query;
 
          if(files.length){
             if(keep) return TodoList.updateMany({folderName: name}, {folderName: null});
