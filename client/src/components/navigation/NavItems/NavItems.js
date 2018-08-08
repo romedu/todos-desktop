@@ -7,16 +7,16 @@ import "./NavItems.css";
 
 const NavItems = props => {
    let {user, onLogoutHandler, sideDrawer} = props;
-   let userNav = user ? <NavItem action={onLogoutHandler} url={"/authentication/login"}> Logout </NavItem>
+   let userNav = user ? <NavItem action={onLogoutHandler} url={"/authentication/login"} inNav> Logout </NavItem>
                       : (<Fragment>
-                           <NavItem url={"/authentication/login"}> Login </NavItem>
-                           <NavItem url={"/authentication/register"}> Register </NavItem>  
+                           <NavItem url={"/authentication/login"} inNav> Login </NavItem>
+                           <NavItem url={"/authentication/register"} inNav> Register </NavItem>  
                         </Fragment>);
 
    return (
       <div className={sideDrawer ? "SideDrawer" : "NavItems"}>
-         <NavItem url={"/"}> Home </NavItem>
-         <NavItem url={"/help"}> Help </NavItem>
+         <NavItem url={"/"} inNav> Home </NavItem>
+         <NavItem url={"/help"} inNav> Help </NavItem>
          {userNav}
       </div>
    );

@@ -3,32 +3,24 @@
    margin-right: 2vw;
 }
 
-.ButtonGroup button {
+.ButtonGroup button, .ButtonGroup a button {
    margin-left: 0.5vw;
-   border: none;
    padding: 1vh 2vw;
    font-size: 0.95em;
    box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
    background-color: rgb(234, 214, 255);
+   border-top-left-radius: 8px;
+   border-bottom-left-radius: 8px;
+   border-top-right-radius: 8px;
    outline: none;
 }
 
-.ButtonGroup button:hover {
+.ButtonGroup button:hover, .ButtonGroup a button:hover {
    transform: scale(1.01);
 }
 
-.ButtonGroup button:active {
+.ButtonGroup button:active, .ButtonGroup a button:active {
    box-shadow: 0.05vw 0.1vh black, -0.05vw -0.05vh black;
-}
-
-.ButtonGroup button:first-child {
-   border-top-left-radius: 8px;
-   border-bottom-left-radius: 8px;
-}
-
-.ButtonGroup button:last-child {
-   border-top-right-radius: 8px;
-   border-bottom-right-radius: 8px;
 }
 
 .settingsGroup {

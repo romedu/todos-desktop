@@ -10,3 +10,24 @@ Button:hover {
    background-color: rgb(234, 214, 255);
    outline: none;
 }
+
+.navItemBtn {
+   height: 10vh;
+   padding: 0 3vw;
+   background-color: inherit;
+   border: none;
+   text-decoration: none;
+   color: black;
+   font-size: 1.05em;
+   outline: none;
+}
+
+.navItemBtn:hover {
+   transform: scale(1.1);
+}
+
+@media(max-width: 599px){
+   .navItemBtn {
+      display: none;
+   }
+}

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import {getFolders, clearFolders, deleteFolder} from "../../store/actions/folder";
 import {getLists, deleteList} from "../../store/actions/todoList";
 import {logoutUser} from "../../store/actions/auth";
@@ -15,7 +16,6 @@ import {findById} from "../../helpers";
 
 class Desktop extends Component{
    state = {
-      itemsType: "folder",
       openFolderId: null,
       isLoading: false,
       itemToEdit: null,
@@ -32,14 +32,14 @@ class Desktop extends Component{
       this.getItems();
    }
 
-   componentDidUpdate(prevProps, prevState){
-      const {folders, todos, message} = this.props,
-            {openFolderId, showItemForm, itemsType, isLoading, confirmation} = this.state;
-
+   componentDidUpdate(prevProps){
+      const {itemsType, folders, todos, message} = this.props,
+            {openFolderId, showItemForm, isLoading, confirmation} = this.state;
+            
       this.checkToken();
-      if(prevState.itemsType !== itemsType) return this.getItems();
+      if(prevProps.itemsType !== itemsType) return this.getItems();
 
-      //Close itemForm or openFolder if an error ocurred
+      //Close itemForm || openFolder, if an error ocurred
       if(prevProps.message !== message){
          if(showItemForm) return this.setState({showItemForm: false, itemToEdit: null});
          else if(openFolderId) return this.setState({openFolder: null});
@@ -57,6 +57,13 @@ class Desktop extends Component{
       else if(isLoading && ((!prevProps.folders && folders) || (!prevProps.todos && todos))) return this.setState({isLoading: false});
    }
 
+   componentWillUnmount(){
+      const {itemsType, onFoldersClear, onTodosClear} = this.props;
+
+      if(itemsType === "folder") return onFoldersClear(); 
+      return onTodosClear(); 
+   }
+
    checkToken = () => {
       const tokenExp = localStorage.getItem("tokenExp"),
             currentTime = Date.now(),
@@ -69,19 +76,18 @@ class Desktop extends Component{
    }
 
    getItems = () => {
-      const {itemsType} = this.state,
-            {onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
+      const {folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
             action = (itemsType === "folder") 
-                   ? () => {onTodosClear(); onFoldersGet();} 
-                   : () => {onFoldersClear(); onTodosGet();};
+                   ? () => {
+                      if(todos) onTodosClear();
+                      onFoldersGet();} 
+                   : () => {
+                      if(folders) onFoldersClear();
+                      onTodosGet();};
 
       this.setState({isLoading: true}, action);
    };
 
-   itemsTypeHandler = itemsType => this.setState(prevState => {
-      if(prevState.itemsType === itemsType) return null;
-      return {itemsType};
-   });
    openFolderHandler = folderId => this.setState({openFolderId: folderId || null}); 
    itemFormHandler = () => this.setState(prevState => ({showItemForm: !prevState.showItemForm, itemToEdit: null}));
    settingsHandler = payload => {this.setState(prevState => ({itemToEdit: prevState.itemToEdit ? null : payload, showItemForm: true}))};
@@ -91,7 +97,7 @@ class Desktop extends Component{
       const {itemToEdit} = this.state,
             {folders} = this.props;
 
-      //Check if the keep content message is needed
+      //Check if the keep files message is needed
       if(itemToEdit.type === "folder" && (findById(itemToEdit._id, folders).files.length)) return this.setState(prevState => ({confirmation: {...prevState.confirmation, deleteConfirm: false, keepItemsConfirm: true}}));
       return this.setState(prevState => ({confirmation: {...prevState.confirmation, isLoading: true}}), this.removeItemHandler);
    }
@@ -105,8 +111,8 @@ class Desktop extends Component{
    }
 
    render(){
-      const {itemsType, isLoading, openFolderId, showItemForm, itemToEdit, confirmation} = this.state,
-            {folders, todos, currentFolder, message} = this.props,
+      const {isLoading, openFolderId, showItemForm, itemToEdit, confirmation} = this.state,
+            {itemsType, folders, todos, currentFolder, message} = this.props,
             buttons = [
                {
                   description: "Create Item",
@@ -114,11 +120,11 @@ class Desktop extends Component{
                },
                {
                   description: "Folders",
-                  action: () => this.itemsTypeHandler("folder")
+                  url: "/folders"
                },
                {
                   description: "TodoLists",
-                  action: () => this.itemsTypeHandler("todo")
+                  url: "/todos"
                }
             ];
       const itemList = ((folders && folders.length) || (todos && todos.length))
@@ -164,4 +170,4 @@ const mapDispatchToProps = dispatch => ({
    onMessageCreate: (type, message) => dispatch(createMessage(type, message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Desktop);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Desktop));

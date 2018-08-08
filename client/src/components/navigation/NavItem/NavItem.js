@@ -1,13 +1,20 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
+import Button from "../../UI/Button/Button";
 import "./NavItem.css";
 
-const NavItem = ({action, url, children}) => (
-   <NavLink exact to={url} activeClassName="ActiveNav">
-      <button onClick={action} className="NavItem">
-            {children}
-      </button>
-   </NavLink>
-);
+const NavItem = props => {
+   const {action, url, style, children, inNav, location} = props,
+         {pathname} = location,
+         activeHomeClass = url === "/" && (pathname === "/folders" || pathname === "/todos") ? "ActiveNav" : "";
 
-export default NavItem;
+   return (
+      <NavLink exact to={url} className={activeHomeClass} activeClassName={inNav ? "ActiveNav" : "ActiveNavLess"}>
+         <Button action={action} design={inNav ? "navItem" : style}>
+               {children}
+         </Button>
+      </NavLink>
+   );
+};
+
+export default withRouter(NavItem);
