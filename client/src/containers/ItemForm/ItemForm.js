@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import NewItemForm from "../../components/todoApp/NewItemForm/NewItemForm";
-import ItemEditForm from "../../components/todoApp/ItemEditForm/ItemEditForm";
+import NewItemForm from "../../components/todoDesktop/NewItemForm/NewItemForm";
+import ItemEditForm from "../../components/todoDesktop/ItemEditForm/ItemEditForm";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Loader from "../../components/UI/Loader/Loader";
 import {createList, updateList} from "../../store/actions/todoList";

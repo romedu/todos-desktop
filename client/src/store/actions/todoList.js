@@ -2,6 +2,7 @@ import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
 import {addNewFile, updateFile, removeFile} from "./folder";
+import {sortByProp} from "../../helpers";
 qwest.limit(2);
 
 export const getLists = () => {
@@ -12,6 +13,7 @@ export const getLists = () => {
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
+            response = sortByProp("__v", response);
             return dispatch(setLists(response));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
@@ -42,7 +44,7 @@ const setCurrent = list => ({
    list
 });
 
-export const closeList = ({
+export const closeList = () => ({
    type: actionTypes.CLOSE_LIST
 });
 

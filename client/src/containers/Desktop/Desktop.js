@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {getFolders, clearFolders, deleteFolder} from "../../store/actions/folder";
+import {getFolders, clearFolders, clearFoldersList, deleteFolder} from "../../store/actions/folder";
 import {getLists, deleteList} from "../../store/actions/todoList";
 import {logoutUser} from "../../store/actions/auth";
 import {createMessage} from "../../store/actions/message";
 import ButtonGroup from "../../components/UI/ButtonGroup/ButtonGroup";
-import IconList from "../../components/todoApp/IconList/IconList";
-import Folder from "../../components/todoApp/Folder/Folder";
+import IconList from "../../components/todoDesktop/IconList/IconList";
+import Folder from "../../components/todoDesktop/Folder/Folder";
 import ItemForm from "../ItemForm/ItemForm";
 import Loader from "../../components/UI/Loader/Loader";
 import Confirmation from "../../components/UI/Confirmation/Confirmation";
 import actionTypes from "../../store/actions/actionTypes";
-import {findById} from "../../helpers";
+import {findByProp} from "../../helpers";
 
 class Desktop extends Component{
    state = {
@@ -58,9 +58,9 @@ class Desktop extends Component{
    }
 
    componentWillUnmount(){
-      const {itemsType, onFoldersClear, onTodosClear} = this.props;
+      const {itemsType, onFolderListClear, onTodosClear} = this.props;
 
-      if(itemsType === "folder") return onFoldersClear(); 
+      if(itemsType === "folder") return onFolderListClear(); 
       return onTodosClear(); 
    }
 
@@ -98,7 +98,7 @@ class Desktop extends Component{
             {folders} = this.props;
 
       //Check if the keep files message is needed
-      if(itemToEdit.type === "folder" && (findById(itemToEdit._id, folders).files.length)) return this.setState(prevState => ({confirmation: {...prevState.confirmation, deleteConfirm: false, keepItemsConfirm: true}}));
+      if((itemToEdit.type === "folder") && findByProp("_id", itemToEdit._id, folders).files.length) return this.setState(prevState => ({confirmation: {...prevState.confirmation, deleteConfirm: false, keepItemsConfirm: true}}));
       return this.setState(prevState => ({confirmation: {...prevState.confirmation, isLoading: true}}), this.removeItemHandler);
    }
 
@@ -162,6 +162,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
    onFoldersGet: () => dispatch(getFolders()),
    onFoldersClear: () => dispatch(clearFolders()),
+   onFolderListClear: () => dispatch(clearFoldersList()),
    onFolderDelete: (folderId, keep) => dispatch(deleteFolder(folderId, keep)),
    onTodosGet: () => dispatch(getLists()),
    onTodosClear: () => dispatch({type: actionTypes.CLEAR_LIST}),

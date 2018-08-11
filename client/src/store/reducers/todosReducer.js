@@ -19,7 +19,7 @@ const reducer = (prevState = initialState, action) => {
       };
       case actionTypes.DELETE_LIST: return {
          ...prevState,
-         lists: removeById(action.todoId, prevState.list)
+         lists: removeById(action.listId, prevState.lists)
       };
       case actionTypes.CREATE_TODO: return {
          ...prevState,

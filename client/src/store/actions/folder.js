@@ -1,6 +1,7 @@
 import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
+import {sortByProp} from "../../helpers";
 qwest.limit(2);
 
 export const getFolders = () => {
@@ -11,6 +12,7 @@ export const getFolders = () => {
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
+            response = sortByProp("__v", response);
             return dispatch(setFolders(response));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
@@ -20,6 +22,10 @@ export const getFolders = () => {
 const setFolders = folders => ({
    type: actionTypes.GET_FOLDERS,
    folders
+});
+
+export const clearFoldersList = () => ({
+   type: actionTypes.CLEAR_FOLDER_LIST
 });
 
 export const clearFolders = () => ({

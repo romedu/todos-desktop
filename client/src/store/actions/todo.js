@@ -1,7 +1,7 @@
 import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
-qwest.limit(1);
+qwest.limit(2);
 
 export const createTodo = (listId, newTodoData) => {
    const token = localStorage.getItem("token");
@@ -22,12 +22,12 @@ const addTodo = newTodo => ({
    newTodo
 });
 
-export const updateTodo = (listId, todoId, prop, newValue) => {
+export const updateTodo = (listId, todoId, todoData) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.map("PATCH", `/todos/${listId}/todo/${todoId}?token=${token}`, {[prop]: newValue})
+      qwest.map("PATCH", `/todos/${listId}/todo/${todoId}?token=${token}`, todoData)
          .then(data => JSON.parse(data.response))
-         .then(editedTodo => {
+         .then(response => {
             let {status, message, ...editedTodo} = response;
             if(status && status !== 200) throw new Error(message);
             return dispatch(editTodo(editedTodo));

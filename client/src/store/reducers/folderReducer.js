@@ -10,7 +10,8 @@ const initialState = {
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
       case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, namesList: helpers.extractProperty("name", action.folders)};
-      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null};
+      case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null};
+      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, current: null};
       case actionTypes.OPEN_FOLDER: return {...prevState, current: action.folder};
       case actionTypes.CLOSE_FOLDER: return {...prevState, current: null};
       case actionTypes.CREATE_FOLDER: return {
@@ -21,12 +22,12 @@ const reducer = (prevState = initialState, action) => {
       case actionTypes.UPDATE_FOLDER: return {
          ...prevState,
          list: helpers.updateItem(action.editedFolder, prevState.list),
-         namesList: prevState.namesList.map(name => (name === helpers.findById(action.editedFolder._id, prevState.list).name) ? action.editedFolder.name : name)
+         namesList: prevState.namesList.map(name => (name === helpers.findByProp("_id", action.editedFolder._id, prevState.list).name) ? action.editedFolder.name : name)
       };
       case actionTypes.DELETE_FOLDER: return {
          ...prevState,
          list: helpers.removeById(action.folderId, prevState.list),
-         namesList: prevState.namesList.filter(name => (name !== helpers.findById(action.folderId, prevState.list).name))
+         namesList: prevState.namesList.filter(name => (name !== helpers.findByProp("_id", action.folderId, prevState.list).name))
       };
       case actionTypes.ADD_NEW_FILE: return {
          ...prevState,
