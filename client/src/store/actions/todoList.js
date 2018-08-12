@@ -2,27 +2,26 @@ import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
 import {addNewFile, updateFile, removeFile} from "./folder";
-import {sortByProp} from "../../helpers";
 qwest.limit(2);
 
-export const getLists = () => {
+export const getLists = (sortProp, sortOrder) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/todos?token=${token}`)
+      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
-            response = sortByProp("__v", response);
-            return dispatch(setLists(response));
+            return dispatch(setLists(response.docs, response.total));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-const setLists = lists => ({
+const setLists = (lists, total) => ({
    type: actionTypes.GET_LISTS,
-   lists
+   lists,
+   total
 });
 
 export const openList = listId => {

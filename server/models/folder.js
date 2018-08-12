@@ -1,4 +1,5 @@
-const validator = require("../helpers/validator");
+const mongoosePaginate = require("mongoose-paginate"),
+      validator = require("../helpers/validator");
 
 const mongoose = require("mongoose"),
       folderSchema = new mongoose.Schema({
@@ -31,5 +32,7 @@ const mongoose = require("mongoose"),
          }
       },
       {timestamps: true});
+
+folderSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Folder", folderSchema);

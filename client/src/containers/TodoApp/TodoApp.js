@@ -11,7 +11,7 @@ class TodoApp extends Component {
       return (
          <div className="TodoApp">
             <Switch>
-               <Redirect exact from="/" to="/folders" />
+               <Redirect exact from="/" to="/folders?sort=popularity" />
                <Route exact path="/todos" render={() => <Desktop itemsType="todo" />} />
                <Route exact path="/folders" render={() => <Desktop itemsType="folder" />} />
                <Route path="/help" component={Help} />

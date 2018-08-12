@@ -1,3 +1,6 @@
+const mongoosePaginate = require("mongoose-paginate"),
+      validator = require("../helpers/validator");
+
 const mongoose = require("mongoose"),
       todoListSchema = new mongoose.Schema({
          name: {
@@ -6,6 +9,10 @@ const mongoose = require("mongoose"),
             unique: true,
             minlength: 3,
             maxlength: 14,
+            validate: {
+               validator: validator.alphanumOnly,
+               message: "Only alphanumeric and space characters are allowed"
+            }
          }, 
          image: String,
          folderName: {
@@ -23,5 +30,7 @@ const mongoose = require("mongoose"),
          }
       },
       {timestamps: true});
+
+todoListSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("TodoList", todoListSchema);

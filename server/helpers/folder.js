@@ -2,11 +2,19 @@ const {Folder, TodoList} = require("../models");
 
 exports.findAll = (req, res, next) => {
    const {isAdmin} = req.user,
-         {getAll} = req.query,
-         seachArg = isAdmin && getAll ? {} : {creator: req.user.id};
+         {getAll, page, sortProp, sortOrder} = req.query,
+         searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
+         options = {
+            sort: {[sortProp]: sortOrder},
+            page,
+            limit: 50
+         };
 
-   Folder.find(seachArg)
-      .then(foundFolders => res.status(200).json(foundFolders))
+   Folder.paginate(searchArg, options)
+      .then(foundFolders => {
+         if(!foundFolders) throw new Error("Not Found");
+         res.status(200).json(foundFolders)
+      })
       .catch(error => {
          error.status = 404;
          return next(error);

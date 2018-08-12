@@ -2,13 +2,18 @@ const {TodoList, Todo, Folder} = require("../models");
 
 exports.findAll = (req, res, next) => {
    const {isAdmin} = req.user,
-         {getAll} = req.query,
-         searchParam = isAdmin && getAll ? {} : {creator: req.user.id};
+         {getAll, page, sortProp, sortOrder} = req.query,
+         searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
+         options = {
+            sort: {[sortProp]: sortOrder},
+            page,
+            limit: 50
+         };
 
-   TodoList.find(searchParam)
-      .then(lists => {
-         if(!lists) throw new Error("Not Found");
-         res.status(200).json(lists)
+   TodoList.paginate(searchArg, options)
+      .then(foundLists => {
+         if(!foundLists) throw new Error("Not Found");
+         res.status(200).json(foundLists)
       })
       .catch(error => {
          error.status = 404;

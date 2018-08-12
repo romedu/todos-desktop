@@ -1,27 +1,26 @@
 import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
-import {sortByProp} from "../../helpers";
 qwest.limit(2);
 
-export const getFolders = () => {
+export const getFolders = (sortProp, sortOrder) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/folder?token=${token}`)
+      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
-            response = sortByProp("__v", response);
-            return dispatch(setFolders(response));
+            return dispatch(setFolders(response.docs, response.total));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-const setFolders = folders => ({
+const setFolders = (folders, total) => ({
    type: actionTypes.GET_FOLDERS,
-   folders
+   folders,
+   total
 });
 
 export const clearFoldersList = () => ({

@@ -11,8 +11,9 @@ import Folder from "../../components/todoDesktop/Folder/Folder";
 import ItemForm from "../ItemForm/ItemForm";
 import Loader from "../../components/UI/Loader/Loader";
 import Confirmation from "../../components/UI/Confirmation/Confirmation";
+import Options from "../../components/UI/Options/Options";
 import actionTypes from "../../store/actions/actionTypes";
-import {findByProp} from "../../helpers";
+import {findByProp, getQueries, toKebabCase} from "../../helpers";
 
 class Desktop extends Component{
    state = {
@@ -20,6 +21,11 @@ class Desktop extends Component{
       isLoading: false,
       itemToEdit: null,
       showItemForm: false,
+      sorting: {
+         property: null,
+         order: null,
+         label: null
+      },
       confirmation: {
          deleteConfirm: false,
          keepItemsConfirm: false,
@@ -29,15 +35,16 @@ class Desktop extends Component{
 
    componentDidMount(){
       this.checkToken();
-      this.getItems();
+      this.sortParamsHandler();
    }
 
-   componentDidUpdate(prevProps){
-      const {itemsType, folders, todos, message} = this.props,
-            {openFolderId, showItemForm, isLoading, confirmation} = this.state;
+   componentDidUpdate(prevProps, prevState){
+      const {itemsType, folders, todos, message, location} = this.props,
+            {openFolderId, showItemForm, isLoading, confirmation, sorting} = this.state;
             
       this.checkToken();
-      if(prevProps.itemsType !== itemsType) return this.getItems();
+      if((prevProps.itemsType !== itemsType) || (prevState.sorting.label !== sorting.label)) return this.getItems();
+      else if(prevProps.location !== location) return this.sortParamsHandler();
 
       //Close itemForm || openFolder, if an error ocurred
       if(prevProps.message !== message){
@@ -55,6 +62,8 @@ class Desktop extends Component{
                });
       }
       else if(isLoading && ((!prevProps.folders && folders) || (!prevProps.todos && todos))) return this.setState({isLoading: false});
+      //NEED TO REMOVE THIS ONE, DOES EXACTLY THE SAME THING AS THE ONE ABOVE
+      else if(isLoading && ((folders && prevProps.folders !== folders) || (todos && prevProps.todos !== todos))) return this.setState({isLoading: false});
    }
 
    componentWillUnmount(){
@@ -76,23 +85,85 @@ class Desktop extends Component{
    }
 
    getItems = () => {
-      const {folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
+      const {sorting} = this.state,
+            {folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
             action = (itemsType === "folder") 
                    ? () => {
                       if(todos) onTodosClear();
-                      onFoldersGet();} 
+                      onFoldersGet(sorting.property, sorting.order);} 
                    : () => {
                       if(folders) onFoldersClear();
-                      onTodosGet();};
+                      onTodosGet(sorting.property, sorting.order);};
 
       this.setState({isLoading: true}, action);
    };
 
-   openFolderHandler = folderId => this.setState({openFolderId: folderId || null}); 
+   openFolderHandler = folderId => this.setState({openFolderId: folderId || null});
+
+   sortingHandler = e => {
+      const {value} = e.target,
+            {history, location} = this.props;
+      history.push(`${location.pathname}?sort=${toKebabCase(value)}`);
+   };
+
+   sortParamsHandler = () => {
+      const {location} = this.props,
+            {sort: sortParam} = getQueries(location.search);
+
+      switch(sortParam){
+         case "unpopularity": return this.setState({
+            sorting: {
+               property: "__v",
+               order: "ascending",
+               label: "Unpopularity"
+            }
+         });
+         case "newest-to-oldest": return this.setState({
+            sorting: {
+               property: "createdAt",
+               order: "descending",
+               label: "Newest to Oldest"
+            }
+         });
+         case "oldest-to-newest": return this.setState({
+            sorting: {
+               property: "createdAt",
+               order: "ascending",
+               label: "Oldest to Newest"
+            }
+         });
+         case "from-a-z": return this.setState({
+            sorting: {
+               property: "name",
+               order: "ascending",
+               label: "From A-Z"
+            }
+         });
+         case "from-z-a": return this.setState({
+            sorting: {
+               property: "name",
+               order: "descending",
+               label: "From Z-A"
+            }
+         });
+         default: return this.setState({
+            sorting: {
+               property: "__v",
+               order: "descending",
+               label: "Popularity"
+            }
+         });
+      }
+   }; 
+
    itemFormHandler = () => this.setState(prevState => ({showItemForm: !prevState.showItemForm, itemToEdit: null}));
+
    settingsHandler = payload => {this.setState(prevState => ({itemToEdit: prevState.itemToEdit ? null : payload, showItemForm: true}))};
+
    hideConfirmation = () => {this.setState(prevState => ({itemToEdit: null, confirmation: {...prevState.confirmation, deleteConfirm: false, keepItemsConfirm: false}}))};
+   
    deleteConfHandler = payload => this.setState(prevState => ({itemToEdit: payload, confirmation: {...prevState.confirmation, deleteConfirm: true}}));
+   
    deleteItemHandler = () => {
       const {itemToEdit} = this.state,
             {folders} = this.props;
@@ -111,7 +182,7 @@ class Desktop extends Component{
    }
 
    render(){
-      const {isLoading, openFolderId, showItemForm, itemToEdit, confirmation} = this.state,
+      const {isLoading, openFolderId, showItemForm, itemToEdit, confirmation, sorting} = this.state,
             {itemsType, folders, todos, currentFolder, message} = this.props,
             buttons = [
                {
@@ -120,16 +191,17 @@ class Desktop extends Component{
                },
                {
                   description: "Folders",
-                  url: "/folders"
+                  url: `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
                },
                {
                   description: "TodoLists",
-                  url: "/todos"
+                  url: `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
                }
             ];
       const itemList = ((folders && folders.length) || (todos && todos.length))
                      ? <IconList folders={folders} todos={todos} openHandler={this.openFolderHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
                      : <h4> Your desktop is empty, *** SAD FACE *** </h4>;
+      const sortingLabels = ["Popularity", "Unpopularity", "Newest to Oldest", "Oldest to Newest", "From A-Z", "From Z-A"];
 
       //REMOVE INLINE STYLES
       return (
@@ -138,6 +210,7 @@ class Desktop extends Component{
                Todos Desktop
             </h1>
             {!isLoading && <ButtonGroup buttons={buttons} />}
+            {!isLoading && <Options label="Sort By: " optionList={sortingLabels} selected={sorting.label} pickOption={this.sortingHandler} />}
             {isLoading ? <Loader /> : itemList}
             {openFolderId && !message && <Folder folderId={openFolderId} closeHandler={this.openFolderHandler} newFormToggle={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />}
             {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} folderHandler={this.openFolderHandler} closeHandler={this.itemFormHandler} />}
@@ -160,11 +233,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   onFoldersGet: () => dispatch(getFolders()),
+   onFoldersGet: (sortProp, sortOrder) => dispatch(getFolders(sortProp, sortOrder)),
    onFoldersClear: () => dispatch(clearFolders()),
    onFolderListClear: () => dispatch(clearFoldersList()),
    onFolderDelete: (folderId, keep) => dispatch(deleteFolder(folderId, keep)),
-   onTodosGet: () => dispatch(getLists()),
+   onTodosGet: (sortProp, sortOrder) => dispatch(getLists(sortProp, sortOrder)),
    onTodosClear: () => dispatch({type: actionTypes.CLEAR_LIST}),
    onTodosDelete: (listId, inFolder) => dispatch(deleteList(listId, inFolder)),
    onUserLogout: () => dispatch(logoutUser()),
