@@ -15,7 +15,11 @@ exports.findAll = (req, res, next) => {
 
 //Owner && Admins Only for non admin creators
 exports.create = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+
    TodoList.findById(req.params.id)
       .then(list => {
          if(!list) throw new Error("Not Found");
@@ -53,12 +57,16 @@ exports.findOne = (req, res, next) => {
 
 //Owner && Admins Only for non admin creators
 exports.update = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
    const {todoId} = req.params,
          options = {
             runValidators: true,
             new: true
          };
+
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
 
    if(req.body.container) req.body.container = undefined;//make a validator to make it unchangeable or read only...
 

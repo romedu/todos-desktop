@@ -17,7 +17,7 @@ const mongoose = require("mongoose"),
          description: {
             type: String, 
             minlength: 3,
-            maxlength: 60
+            maxlength: 45
          }, 
          image: String,
          files: [

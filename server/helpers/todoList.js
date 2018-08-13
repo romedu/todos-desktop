@@ -1,15 +1,16 @@
 const {TodoList, Todo, Folder} = require("../models");
 
-exports.findAll = (req, res, next) => {
+exports.find = (req, res, next) => {
    const {isAdmin} = req.user,
-         {getAll, page, sortProp, sortOrder} = req.query,
+         {getAll, page, sortProp, sortOrder, folderLess} = req.query,
          searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
          options = {
             sort: {[sortProp]: sortOrder},
             page,
-            limit: 50
+            limit: 28
          };
 
+   if(folderLess) searchArg.folderName = undefined;
    TodoList.paginate(searchArg, options)
       .then(foundLists => {
          if(!foundLists) throw new Error("Not Found");
@@ -22,7 +23,10 @@ exports.findAll = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
 
    Folder.findOne({name: req.body.folderName}).populate("creator").exec()
       .then(folder => {
@@ -61,9 +65,13 @@ exports.findOne = (req, res, next) => {
 
 // IT SHOULD BE PROMISES INSTEAD OF CALLBACKS
 exports.update = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
-
    let {folderName, ...updateData} = req.body;
+   
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+
    Folder.findOne({name: folderName}, (error, newFolder) => {
       if(newFolder && error) return next(error);
       const options = {

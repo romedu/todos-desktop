@@ -8,8 +8,7 @@ const IconList = props => {
             const {files, ...folderData} = folder;
             return <DisplayIcon type="folder" key={folder._id} {...folderData} openHandler={() => openHandler(folder._id)} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
          }),
-         filteredTodos = (todos && !insideFolder) ? todos.filter(todo => !todo.folderName) : todos,
-         todosList = filteredTodos && filteredTodos.map(todo => <DisplayIcon type="todo" key={todo._id} {...todo} url={`/todos/${todo._id}`} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />);
+         todosList = todos && todos.map(todo => <DisplayIcon type="todo" key={todo._id} {...todo} url={`/todos/${todo._id}`} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />);
                
    return (
       <ul className="IconList">

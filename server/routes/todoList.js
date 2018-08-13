@@ -3,7 +3,7 @@ const router  = require("express").Router(),
       {todos} = require("../middlewares");
 
 router.route("/")
-   .get(helpers.findAll)
+   .get(helpers.find)
    .post(helpers.create);
 
 router.route("/:id")

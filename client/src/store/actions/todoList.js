@@ -7,7 +7,7 @@ qwest.limit(2);
 export const getLists = (sortProp, sortOrder) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}`)
+      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;

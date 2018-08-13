@@ -11,9 +11,9 @@ import Folder from "../../components/todoDesktop/Folder/Folder";
 import ItemForm from "../ItemForm/ItemForm";
 import Loader from "../../components/UI/Loader/Loader";
 import Confirmation from "../../components/UI/Confirmation/Confirmation";
-import Options from "../../components/UI/Options/Options";
+import SortOptions from "../../components/todoDesktop/SortOptions/SortOptions";
 import actionTypes from "../../store/actions/actionTypes";
-import {findByProp, getQueries, toKebabCase} from "../../helpers";
+import {findByProp, toKebabCase} from "../../helpers";
 
 class Desktop extends Component{
    state = {
@@ -35,16 +35,14 @@ class Desktop extends Component{
 
    componentDidMount(){
       this.checkToken();
-      this.sortParamsHandler();
    }
 
    componentDidUpdate(prevProps, prevState){
-      const {itemsType, folders, todos, message, location} = this.props,
+      const {itemsType, folders, todos, message} = this.props,
             {openFolderId, showItemForm, isLoading, confirmation, sorting} = this.state;
             
       this.checkToken();
       if((prevProps.itemsType !== itemsType) || (prevState.sorting.label !== sorting.label)) return this.getItems();
-      else if(prevProps.location !== location) return this.sortParamsHandler();
 
       //Close itemForm || openFolder, if an error ocurred
       if(prevProps.message !== message){
@@ -100,61 +98,7 @@ class Desktop extends Component{
 
    openFolderHandler = folderId => this.setState({openFolderId: folderId || null});
 
-   sortingHandler = e => {
-      const {value} = e.target,
-            {history, location} = this.props;
-      history.push(`${location.pathname}?sort=${toKebabCase(value)}`);
-   };
-
-   sortParamsHandler = () => {
-      const {location} = this.props,
-            {sort: sortParam} = getQueries(location.search);
-
-      switch(sortParam){
-         case "unpopularity": return this.setState({
-            sorting: {
-               property: "__v",
-               order: "ascending",
-               label: "Unpopularity"
-            }
-         });
-         case "newest-to-oldest": return this.setState({
-            sorting: {
-               property: "createdAt",
-               order: "descending",
-               label: "Newest to Oldest"
-            }
-         });
-         case "oldest-to-newest": return this.setState({
-            sorting: {
-               property: "createdAt",
-               order: "ascending",
-               label: "Oldest to Newest"
-            }
-         });
-         case "from-a-z": return this.setState({
-            sorting: {
-               property: "name",
-               order: "ascending",
-               label: "From A-Z"
-            }
-         });
-         case "from-z-a": return this.setState({
-            sorting: {
-               property: "name",
-               order: "descending",
-               label: "From Z-A"
-            }
-         });
-         default: return this.setState({
-            sorting: {
-               property: "__v",
-               order: "descending",
-               label: "Popularity"
-            }
-         });
-      }
-   }; 
+   setSortingHandler = sortingData => this.setState({sorting: {...sortingData}});
 
    itemFormHandler = () => this.setState(prevState => ({showItemForm: !prevState.showItemForm, itemToEdit: null}));
 
@@ -210,7 +154,7 @@ class Desktop extends Component{
                Todos Desktop
             </h1>
             {!isLoading && <ButtonGroup buttons={buttons} />}
-            {!isLoading && <Options label="Sort By: " optionList={sortingLabels} selected={sorting.label} pickOption={this.sortingHandler} />}
+            {!isLoading && <SortOptions sortingLabels={sortingLabels} selectedSorting={sorting.label} setSortingHandler={this.setSortingHandler} />}
             {isLoading ? <Loader /> : itemList}
             {openFolderId && !message && <Folder folderId={openFolderId} closeHandler={this.openFolderHandler} newFormToggle={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />}
             {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} folderHandler={this.openFolderHandler} closeHandler={this.itemFormHandler} />}

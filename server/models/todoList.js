@@ -18,7 +18,8 @@ const mongoose = require("mongoose"),
          folderName: {
             type: String,
             minlength: 3,
-            maxlength: 14
+            maxlength: 14,
+            default: undefined
          }, 
          todos: [{
             type: mongoose.Schema.Types.ObjectId,

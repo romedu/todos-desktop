@@ -1,13 +1,13 @@
 const {Folder, TodoList} = require("../models");
 
-exports.findAll = (req, res, next) => {
+exports.find = (req, res, next) => {
    const {isAdmin} = req.user,
          {getAll, page, sortProp, sortOrder} = req.query,
          searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
          options = {
             sort: {[sortProp]: sortOrder},
             page,
-            limit: 50
+            limit: 28
          };
 
    Folder.paginate(searchArg, options)
@@ -22,7 +22,11 @@ exports.findAll = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+
    Folder.create(req.body)
       .then(newFolder => {
          newFolder.creator = req.user.id;
@@ -50,11 +54,16 @@ exports.findOne = (req, res, next) => {
 
 //Only the owner or admins for non admin creators
 exports.update = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
    const options = {
       new: true,
       runValidators: true
    };
+
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+   
    Folder.findByIdAndUpdate(req.params.id, req.body, options).populate("files").exec()
       .then(folder => {
          if(!folder) throw new Error("Not Found");
