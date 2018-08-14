@@ -6,7 +6,7 @@ exports.find = (req, res, next) => {
          searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
          options = {
             sort: {[sortProp]: sortOrder},
-            page,
+            page: page,
             limit: 28
          };
 

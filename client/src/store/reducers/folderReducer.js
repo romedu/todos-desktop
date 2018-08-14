@@ -3,16 +3,19 @@ import * as helpers from "../../helpers";
 
 const initialState = {
    list: null,
-   total: 0,
    current: null,
-   namesList: []
+   namesList: [],
+   paginationData: {
+      limit: 0,
+      total: 0
+   }
 };
 
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
-      case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, total: action.total, namesList: helpers.extractProperty("name", action.folders)};
-      case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null, total: 0};
-      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, total: 0, current: null};
+      case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, paginationData: action.paginationData, namesList: helpers.extractProperty("name", action.folders)};
+      case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null, paginationData: initialState.paginationData};
+      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, current: null, paginationData: initialState.paginationData};
       case actionTypes.OPEN_FOLDER: return {...prevState, current: action.folder};
       case actionTypes.CLOSE_FOLDER: return {...prevState, current: null};
       case actionTypes.CREATE_FOLDER: return {

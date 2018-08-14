@@ -31,3 +31,7 @@ Button:hover {
       display: none;
    }
 }
+
+.selectedBtn {
+   font-weight: bold;
+}

@@ -4,24 +4,24 @@ import {createMessage} from "./message";
 import {addNewFile, updateFile, removeFile} from "./folder";
 qwest.limit(2);
 
-export const getLists = (sortProp, sortOrder) => {
+export const getLists = (sortProp, sortOrder, pageNum) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true`)
+      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true&page=${pageNum}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, docs, total, limit} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setLists(response.docs, response.total));
+            return dispatch(setLists(docs,{limit, total}));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-const setLists = (lists, total) => ({
+const setLists = (lists, paginationData) => ({
    type: actionTypes.GET_LISTS,
    lists,
-   total
+   paginationData
 });
 
 export const openList = listId => {

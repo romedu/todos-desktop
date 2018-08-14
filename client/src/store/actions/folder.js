@@ -3,24 +3,24 @@ import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
 qwest.limit(2);
 
-export const getFolders = (sortProp, sortOrder) => {
+export const getFolders = (sortProp, sortOrder, pageParam) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}`)
+      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&page=${pageParam}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
-            const {status, message} = response;
+            const {status, message, docs, total, limit} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setFolders(response.docs, response.total));
+            return dispatch(setFolders(docs, {limit, total}));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-const setFolders = (folders, total) => ({
+const setFolders = (folders, paginationData) => ({
    type: actionTypes.GET_FOLDERS,
    folders,
-   total
+   paginationData
 });
 
 export const clearFoldersList = () => ({

@@ -3,14 +3,17 @@ import {updateItem, removeById} from "../../helpers";
 
 const initialState = {
    lists: null,
-   total: 0,
-   current: null
+   current: null,
+   paginationData: {
+      limit: 0,
+      total: 0
+   }
 };
 
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
-      case actionTypes.GET_LISTS: return {...prevState, lists: action.lists, total: action.total};
-      case actionTypes.CLEAR_LIST: return {...prevState, lists: null, total: 0};
+      case actionTypes.GET_LISTS: return {...prevState, lists: action.lists, paginationData: action.paginationData};
+      case actionTypes.CLEAR_LIST: return {...prevState, lists: null, total: initialState.paginationData};
       case actionTypes.OPEN_LIST: return {...prevState, current: action.list};
       case actionTypes.CLOSE_LIST: return {...prevState, current: null};
       case actionTypes.CREATE_LIST: return {...prevState, lists: prevState.lists.concat(action.newList)};

@@ -1,7 +1,7 @@
 const {Todo, TodoList} = require("../models");
 
 //Owner && Admins Only
-exports.findAll = (req, res, next) => {
+exports.find = (req, res, next) => {
    Todo.find({container: req.params.id})
       .then(todos => {
          if(!todos) throw new Error("Not Found");

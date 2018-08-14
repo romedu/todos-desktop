@@ -3,7 +3,7 @@ const router  = require("express").Router({mergeParams: true}),
       {todos} = require("../middlewares");
 
 router.route("/")
-   .get(helpers.findAll)
+   .get(helpers.find)
    .post(todos.ownerOnly, helpers.create);
 
 router.route("/:todoId")
