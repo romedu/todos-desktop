@@ -1,20 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {getFolders, clearFolders, clearFoldersList, deleteFolder} from "../../store/actions/folder";
+import {getFolders, clearFolders, deleteFolder} from "../../store/actions/folder";
 import {getLists, deleteList} from "../../store/actions/todoList";
 import {logoutUser} from "../../store/actions/auth";
 import {createMessage} from "../../store/actions/message";
-import ButtonGroup from "../../components/UI/ButtonGroup/ButtonGroup";
-import IconList from "../../components/todoDesktop/IconList/IconList";
+import DesktopContent from "../../components/todoDesktop/DesktopContent/DesktopContent";
 import Folder from "../../components/todoDesktop/Folder/Folder";
 import ItemForm from "../ItemForm/ItemForm";
 import Loader from "../../components/UI/Loader/Loader";
 import Confirmation from "../../components/UI/Confirmation/Confirmation";
-import SortOptions from "../../components/todoDesktop/SortOptions/SortOptions";
-import Pagination from "../../components/todoDesktop/Pagination/Pagination";
 import actionTypes from "../../store/actions/actionTypes";
-import {findByProp, toKebabCase, getQueries} from "../../helpers";
+import {findByProp, getQueries} from "../../helpers";
 
 class Desktop extends Component{
    state = {
@@ -22,11 +19,6 @@ class Desktop extends Component{
       isLoading: false,
       itemToEdit: null,
       showItemForm: false,
-      sorting: {
-         property: null,
-         order: null,
-         label: null
-      },
       confirmation: {
          deleteConfirm: false,
          keepItemsConfirm: false,
@@ -38,12 +30,12 @@ class Desktop extends Component{
       this.checkToken();
    }
 
-   componentDidUpdate(prevProps, prevState){
-      const {location, itemsType, folders, todos, message} = this.props,
-            {openFolderId, showItemForm, isLoading, confirmation, sorting} = this.state;
+   componentDidUpdate(prevProps){
+      const {location, folders, todos, message, sorting} = this.props,
+            {openFolderId, showItemForm, isLoading, confirmation} = this.state;
             
       this.checkToken();
-      if((prevProps.itemsType !== itemsType) || (prevState.sorting.label !== sorting.label) || prevProps.location !== location) return this.getItems();
+      if((prevProps.sorting.label !== sorting.label) || prevProps.location !== location) return this.getItems();
 
       //Close itemForm || openFolder, if an error ocurred
       if(prevProps.message !== message){
@@ -65,13 +57,6 @@ class Desktop extends Component{
       else if(isLoading && ((folders && prevProps.folders !== folders) || (todos && prevProps.todos !== todos))) return this.setState({isLoading: false});
    }
 
-   componentWillUnmount(){
-      const {itemsType, onFolderListClear, onTodosClear} = this.props;
-
-      if(itemsType === "folder") return onFolderListClear(); 
-      return onTodosClear(); 
-   }
-
    checkToken = () => {
       const tokenExp = localStorage.getItem("tokenExp"),
             currentTime = Date.now(),
@@ -84,8 +69,7 @@ class Desktop extends Component{
    }
 
    getItems = () => {
-      const {sorting} = this.state,
-            {location, folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
+      const {sorting, location, folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
             pageParam = Number(getQueries(location.search).page) || 1, 
             action = (itemsType === "folder") 
                    ? () => {
@@ -99,8 +83,6 @@ class Desktop extends Component{
    };
 
    openFolderHandler = folderId => this.setState({openFolderId: folderId || null});
-
-   setSortingHandler = sortingData => this.setState({sorting: {...sortingData}});
 
    itemFormHandler = () => this.setState(prevState => ({showItemForm: !prevState.showItemForm, itemToEdit: null}));
 
@@ -127,42 +109,10 @@ class Desktop extends Component{
       return onTodosDelete(itemToEdit._id, !!currentFolder);  
    }
 
-   paginateHandler = page => {
-      const {location, history} = this.props,
-            {sort} = getQueries(location.search);
-
-      history.push(`${location.pathname}?sort=${sort}&page=${page}`);
-   }
-
    render(){
-      const {isLoading, openFolderId, showItemForm, itemToEdit, confirmation, sorting} = this.state,
-            {itemsType, location, folders, todos, currentFolder, message, foldersPaging, todosPaging} = this.props,
-            buttons = [
-               {
-                  description: "Create Item",
-                  action: this.itemFormHandler
-               },
-               {
-                  description: "Folders",
-                  url: `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
-               },
-               {
-                  description: "TodoLists",
-                  url: `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
-               }
-            ];
-      const itemList = ((folders && folders.length) || (todos && todos.length))
-                     ? <IconList folders={folders} todos={todos} openHandler={this.openFolderHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
-                     : <h4> Your desktop is empty, *** SAD FACE *** </h4>;
-      const sortingLabels = ["Popularity", "Unpopularity", "Newest to Oldest", "Oldest to Newest", "From A-Z", "From Z-A"];
-
-      const currentPage = Number(getQueries(location.search).page) || 1,
-            totalItems = foldersPaging.total || todosPaging.total,
-            itemsLength = (folders && folders.length) || (todos && todos.length),
-            itemsLimit = foldersPaging.limit || todosPaging.limit,
-      //CHECK IF PAGINATION IS NEEDED
-            pagination = (totalItems > itemsLength) && (totalItems >= (currentPage * itemsLimit) -1)
-                     && <Pagination currentPage={currentPage} limit={itemsLimit} total={totalItems} paginateHandler={this.paginateHandler} />
+      const {isLoading, openFolderId, showItemForm, itemToEdit, confirmation} = this.state,
+            {itemsType, currentFolder, message} = this.props,
+            content = isLoading ? <Loader /> : <DesktopContent itemsType={itemsType} newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />;
 
       //REMOVE INLINE STYLES
       return (
@@ -170,9 +120,7 @@ class Desktop extends Component{
             <h1 style={{fontSize: "3em", fontFamily: 'Alegreya'}}>
                Todos Desktop
             </h1>
-            {!isLoading && <ButtonGroup buttons={buttons} />}
-            {!isLoading && <SortOptions sortingLabels={sortingLabels} selectedSorting={sorting.label} setSortingHandler={this.setSortingHandler} />}
-            {isLoading ? <Loader /> : itemList}
+            {content}
             {openFolderId && !message && <Folder folderId={openFolderId} closeHandler={this.openFolderHandler} newFormToggle={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />}
             {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} folderHandler={this.openFolderHandler} closeHandler={this.itemFormHandler} />}
             {confirmation.deleteConfirm && <Confirmation isLoading={confirmation.isLoading} closeHandler={this.hideConfirmation} deleteHandler={this.deleteItemHandler} slightDrop={!!currentFolder}>
@@ -181,7 +129,6 @@ class Desktop extends Component{
             {confirmation.keepItemsConfirm && <Confirmation isLoading={confirmation.isLoading} deleteHandler={() => this.removeItemHandler(true)} negationHandler={() => this.removeItemHandler(false)} closeHandler={this.hideConfirmation} slightDrop={!!currentFolder}> 
                Do you want to keep the contents of the {itemToEdit.name} {itemToEdit.type}?
             </Confirmation>}
-            {!isLoading && pagination}
          </div>
       );
    }
@@ -190,16 +137,14 @@ class Desktop extends Component{
 const mapStateToProps = state => ({
    currentFolder: state.folder.current,
    folders: state.folder.list,
-   foldersPaging: state.folder.paginationData,
    todos: state.todoList.lists,
-   todosPaging: state.todoList.paginationData,
-   message: state.message.label
+   message: state.message.label,
+   sorting: state.sorting
 });
 
 const mapDispatchToProps = dispatch => ({
    onFoldersGet: (sortProp, sortOrder, pageNum) => dispatch(getFolders(sortProp, sortOrder, pageNum)),
    onFoldersClear: () => dispatch(clearFolders()),
-   onFolderListClear: () => dispatch(clearFoldersList()),
    onFolderDelete: (folderId, keep) => dispatch(deleteFolder(folderId, keep)),
    onTodosGet: (sortProp, sortOrder, pageNum) => dispatch(getLists(sortProp, sortOrder, pageNum)),
    onTodosClear: () => dispatch({type: actionTypes.CLEAR_LIST}),

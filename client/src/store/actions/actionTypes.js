@@ -31,4 +31,6 @@ actionTypes.CREATE_TODO = "CREATE_TODO";
 actionTypes.EDIT_TODO = "EDIT_TODO";
 actionTypes.DELETE_TODO = "DELETE_TODO";
 
+actionTypes.SET_SORTING = "SET_SORTING";
+
 export default actionTypes;

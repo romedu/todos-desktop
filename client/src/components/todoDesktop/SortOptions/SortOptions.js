@@ -9,8 +9,12 @@ class SortOptions extends Component {
    }
 
    componentDidUpdate(prevProps){
-      const {location, setSortingHandler} = this.props;
-      if(prevProps.location !== location) setSortingHandler(this.sortParamsHandler());
+      const {location, setSortingHandler} = this.props,
+            {sort: prevSort} = getQueries(prevProps.location.search),
+            {sort} = getQueries(location.search);
+
+      //CALLING THIS FUNCTION MORE TIMES THAN NEEDED
+      if(prevSort !== sort) setSortingHandler(this.sortParamsHandler());
    }
 
    sortingHandler = e => {
@@ -19,7 +23,7 @@ class SortOptions extends Component {
       history.push(`${location.pathname}?sort=${toKebabCase(value)}`);
    };
 
-   sortParamsHandler = sortingLabel => {
+   sortParamsHandler = () => {
       const {location} = this.props,
             {sort: sortParam} = getQueries(location.search);
 

@@ -8,6 +8,7 @@ import userReducer from './store/reducers/userReducer';
 import folderReducer from "./store/reducers/folderReducer";
 import todosReducer from "./store/reducers/todosReducer";
 import messageReducer from "./store/reducers/messageReducer";
+import sortingReducer from "./store/reducers/sortingReducer";
 import thunk from "redux-thunk";
 import actionTypes from "./store/actions/actionTypes";
 
@@ -17,7 +18,8 @@ const reducers = combineReducers({
    user: userReducer,
    folder: folderReducer,
    todoList: todosReducer,
-   message: messageReducer
+   message: messageReducer,
+   sorting: sortingReducer
 });
 
 const rootReducer = (state, action) => {
