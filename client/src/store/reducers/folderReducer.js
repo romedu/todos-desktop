@@ -13,7 +13,7 @@ const initialState = {
 
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
-      case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, paginationData: action.paginationData, namesList: helpers.extractProperty("name", action.folders)};
+      case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, current: null, paginationData: action.paginationData, namesList: helpers.extractProperty("name", action.folders)};
       case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null, paginationData: initialState.paginationData};
       case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, current: null, paginationData: initialState.paginationData};
       case actionTypes.OPEN_FOLDER: return {...prevState, current: action.folder};

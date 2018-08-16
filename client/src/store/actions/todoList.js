@@ -81,7 +81,8 @@ export const updateList = (listId, listFolder, payload) => {
             if(listFolder){
                if(editedList.folderName === listFolder) return dispatch(updateFile(editedList));
                return dispatch(removeFile(listId));
-            } 
+            }
+            else if(payload.folderName === editedList.folderName) return dispatch(removeList(editedList._id)); 
             return dispatch(editList(listId, editedList));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
