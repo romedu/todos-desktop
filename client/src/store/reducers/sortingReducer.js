@@ -1,9 +1,9 @@
 import actionTypes from "../actions/actionTypes";
 
 const initialState = {
-   property: null,
-   order: null,
-   label: null
+   property: "__v",
+   order: "descending",
+   label: "Popularity"
 };
 
 const reducer = (prevState = initialState, action) => {

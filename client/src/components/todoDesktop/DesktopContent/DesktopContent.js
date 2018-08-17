@@ -17,17 +17,24 @@ class DesktopContent extends Component {
    }
 
    componentDidMount(){
-      const {sorting} = this.props;
-      if(sorting.label) this.getItems();
+      const {sorting, location} = this.props,
+            {sort} = getQueries(location.search);
+
+      if(toKebabCase(sorting.label) === sort) this.getItems();
    }
 
    componentDidUpdate(prevProps){
       const {isLoading} = this.state,
-            {sorting, location, folders, todos} = this.props;
+            {itemsType, sorting, location, folders, todos} = this.props,
+            {sort} = getQueries(location.search),
+            {page: currentPage, sort: sortParam} = getQueries(location.search),
+            {page: prevPage, sort: prevSortParam} = getQueries(prevProps.location.search);
 
-      if((prevProps.sorting.label !== sorting.label) || prevProps.location !== location) return this.getItems();
+      if((prevProps.sorting.label !== sorting.label) || (prevProps.location !== location && (sort === sorting.label))
+         || prevProps.itemsType !== itemsType || ((currentPage !== prevPage) && (prevSortParam === sortParam))) return this.getItems();
+      
       else if(isLoading && ((!prevProps.folders && folders) || (!prevProps.todos && todos))) return this.setState({isLoading: false});
-      //NEED TO REMOVE THIS ONE, DOES EXACTLY THE SAME THING AS THE ONE ABOVE
+      //NEED TO REMOVE THIS ONE, RETURNS EXACTLY THE SAME THING AS THE ONE ABOVE
       else if(isLoading && ((folders && (prevProps.folders !== folders)) || (todos && (prevProps.todos !== todos)))) return this.setState({isLoading: false});
    }
 
@@ -42,7 +49,7 @@ class DesktopContent extends Component {
       const {sorting, location, folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
             pageParam = Number(getQueries(location.search).page) || 1, 
             action = (itemsType === "folder") 
-                   ? () => {
+                   ? () => {                    
                       if(todos) onTodosClear();
                       onFoldersGet(sorting.property, sorting.order, pageParam)} 
                    : () => {
@@ -79,19 +86,18 @@ class DesktopContent extends Component {
             itemList = ((folders && folders.length) || (todos && todos.length))
                ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <h4> Your desktop is empty, *** SAD FACE *** </h4>,
-            sortingLabels = ["Popularity", "Unpopularity", "Newest to Oldest", "Oldest to Newest", "From A-Z", "From Z-A"],
             currentPage = Number(getQueries(location.search).page) || 1,
             totalItems = foldersPaging.total || todosPaging.total,
             itemsLength = (folders && folders.length) || (todos && todos.length),
             itemsLimit = foldersPaging.limit || todosPaging.limit,
-            pagination = (totalItems > itemsLength) && (totalItems >= (currentPage * itemsLimit) -1)
+            pagination = (totalItems > itemsLength) && (totalItems >= (currentPage * itemsLimit) - itemsLimit)
+                         //NOT DISPLAYING WHEN LANDING IN THE LAST PAGE OF RESULTS
                         && <Pagination currentPage={currentPage} limit={itemsLimit} total={totalItems} paginateHandler={this.paginateHandler} />;
-
             const content = isLoading ? <Loader />
                            : (
                               <Fragment>
                                  <ButtonGroup buttons={buttons} />
-                                 <SortOptions sortingLabels={sortingLabels} selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
+                                 <SortOptions selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
                                  {itemList}
                                  {pagination}
                               </Fragment>

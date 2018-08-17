@@ -68,7 +68,9 @@ class SortOptions extends Component {
    }; 
 
    render(){
-      const {selectedSorting, sortingLabels} = this.props;
+      const {selectedSorting} = this.props,
+            sortingLabels = ["Popularity", "Unpopularity", "Newest to Oldest", "Oldest to Newest", "From A-Z", "From Z-A"];
+            
       return <Options label="Sort By: " optionList={sortingLabels} selected={selectedSorting} pickOption={this.sortingHandler} />;
    }
 };
