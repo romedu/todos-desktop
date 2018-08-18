@@ -21,7 +21,7 @@ const Confirmation = ({isLoading, slightDrop, children, deleteHandler, negationH
                                </Fragment>);
 
    return (
-      <Modal label={"Confirmation"} closeHandler={closeHandler} slightDrop={slightDrop}>
+      <Modal label={"Confirmation"} closeHandler={!isLoading ? closeHandler : null} slightDrop={slightDrop}>
          {content}
       </Modal>
    )

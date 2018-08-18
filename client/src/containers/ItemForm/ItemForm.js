@@ -92,18 +92,19 @@ class ItemForm extends Component {
    }
 
    render(){
-      const {itemType, currentFolder, closeHandler, itemToEdit, folderNames} = this.props,
+      const {isLoading} = this.state,
+            {itemType, currentFolder, closeHandler, itemToEdit, folderNames} = this.props,
             typeToUpdate = currentFolder ? "todo" : itemType,
             formToDisplay = itemToEdit ? (<ItemEditForm updateInput={this.updateInput} submitHandler={this.editItemHandler} folderNames={folderNames}
                                            itemType={typeToUpdate} {...this.state[typeToUpdate]} />) 
                                        : (<NewItemForm updateInput={this.updateInput} submitHandler={this.createItemHandler} folderNames={folderNames} 
                                           itemType={typeToUpdate} openFolderName={currentFolder && currentFolder.name} {...this.state[typeToUpdate]} />);
                                          
-      const content = this.state.isLoading ? <Loader /> : formToDisplay;
+      const content = isLoading ? <Loader /> : formToDisplay;
 
       return (
          <div>
-            <Backdrop closeHandler={closeHandler} slightDrop={!!currentFolder} coverNav />
+            <Backdrop closeHandler={!isLoading ? closeHandler : null} slightDrop={!!currentFolder} coverNav />
             <div className="itemForm">
                {content}
             </div>

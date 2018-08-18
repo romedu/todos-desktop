@@ -20,8 +20,12 @@ const reducer = (prevState = initialState, action) => {
       case actionTypes.CLOSE_FOLDER: return {...prevState, current: null};
       case actionTypes.CREATE_FOLDER: return {
          ...prevState, 
-         list: prevState.list.concat(action.newFolder),
-         namesList: prevState.namesList.concat(action.newFolder.name)
+         list: prevState.paginationData.limit > prevState.list.length ? prevState.list.concat(action.newFolder) : prevState.list,
+         namesList: prevState.namesList.concat(action.newFolder.name),
+         paginationData: {
+            ...prevState.paginationData,
+            total: prevState.paginationData.total + 1
+         }
       };
       case actionTypes.UPDATE_FOLDER: return {
          ...prevState,
@@ -31,7 +35,11 @@ const reducer = (prevState = initialState, action) => {
       case actionTypes.DELETE_FOLDER: return {
          ...prevState,
          list: helpers.removeById(action.folderId, prevState.list),
-         namesList: prevState.namesList.filter(name => (name !== helpers.findByProp("_id", action.folderId, prevState.list).name))
+         namesList: prevState.namesList.filter(name => (name !== helpers.findByProp("_id", action.folderId, prevState.list).name)),
+         paginationData: {
+            ...prevState.paginationData,
+            total: prevState.paginationData.total - 1
+         }
       };
       case actionTypes.ADD_NEW_FILE: return {
          ...prevState,

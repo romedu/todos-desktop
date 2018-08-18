@@ -15,8 +15,7 @@ const mongoose = require("mongoose"),
             }
          },
          description: {
-            type: String, 
-            minlength: 3,
+            type: String,
             maxlength: 45
          }, 
          image: String,

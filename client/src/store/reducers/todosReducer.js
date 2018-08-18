@@ -16,14 +16,25 @@ const reducer = (prevState = initialState, action) => {
       case actionTypes.CLEAR_LIST: return {...prevState, lists: null, total: initialState.paginationData};
       case actionTypes.OPEN_LIST: return {...prevState, current: action.list};
       case actionTypes.CLOSE_LIST: return {...prevState, current: null};
-      case actionTypes.CREATE_LIST: return {...prevState, lists: prevState.lists.concat(action.newList)};
+      case actionTypes.CREATE_LIST: return {
+         ...prevState,
+         lists: prevState.paginationData.limit > prevState.lists.length ? prevState.lists.concat(action.newList) : prevState.lists,
+         paginationData: {
+            ...prevState.paginationData,
+            total: prevState.paginationData.total + 1
+         }
+      };
       case actionTypes.UPDATE_LIST: return {
          ...prevState,
          lists: updateItem(action.editedList, prevState.lists)
       };
       case actionTypes.DELETE_LIST: return {
          ...prevState,
-         lists: removeById(action.listId, prevState.lists)
+         lists: removeById(action.listId, prevState.lists),
+         paginationData: {
+            ...prevState.paginationData,
+            total: prevState.paginationData.total - 1
+         }
       };
       case actionTypes.CREATE_TODO: return {
          ...prevState,
