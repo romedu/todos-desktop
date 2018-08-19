@@ -1,4 +1,5 @@
-const {TodoList, Todo, Folder} = require("../models");
+const {TodoList, Todo, Folder} = require("../models"),
+      {errorHandler} = require("./error");
 
 exports.find = (req, res, next) => {
    const {isAdmin} = req.user,
@@ -44,11 +45,12 @@ exports.create = (req, res, next) => {
                               .then(resolve => res.status(201).json(newList))
                               .catch(error => error);
                   })
-                  .catch(error => next(error))
+                  .catch(error => {
+                     if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
+                     next(error);
+                  })
       })
-      .catch(error => {
-         return next(error);
-      });
+      .catch(error => next(error));
 };
 
 exports.findOne = (req, res, next) => {
@@ -65,12 +67,12 @@ exports.findOne = (req, res, next) => {
 
 // IT SHOULD BE PROMISES INSTEAD OF CALLBACKS
 exports.update = (req, res, next) => {
-   let {folderName, ...updateData} = req.body;
-   
    for(field in req.body){ 
       req.body[field] = req.sanitize(req.body[field]);
       if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
    };
+
+   let {folderName, ...updateData} = req.body;
 
    Folder.findOne({name: folderName}, (error, newFolder) => {
       if(newFolder && error) return next(error);
@@ -80,7 +82,10 @@ exports.update = (req, res, next) => {
       };
 
       return TodoList.findByIdAndUpdate(req.params.id, updateData, options, (error, newList) => {
-               if(error || !newList) return next(error);
+               if(error || !newList){
+                  if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
+                  return next(error)
+               };
                //CHECK IF THE USER IS THE OWNER OF THE NEW FOLDER, OR IF "NO FOLDER" WAS REQUESTED
                if(((folderName !== "-- No Folder --") && !newFolder) || (newFolder && (newFolder.creator.id !== req.user.id))) folderName = newList.folderName;
                //CHECK IF THE NEW LIST IS DIFFERENT THAN THE ONE CURRENTLY IN THE FOLDER, CHECK IF THE LIST'S FOLDERNAME IS NOT UNDEFINED WHILE REQUESTING "NO FOLDER"

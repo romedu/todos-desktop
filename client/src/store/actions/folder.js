@@ -83,7 +83,7 @@ export const updateFolder = (folderId, payload) => {
             if(status && status !== 200) throw new Error(message);
             return dispatch(editFolder(editedFolder));
          })
-         .catch(error => createMessage("Error", error.message));
+         .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 

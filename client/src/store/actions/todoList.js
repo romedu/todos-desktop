@@ -61,7 +61,7 @@ export const createList = (newListData, insideFolder) => {
             }
             return dispatch(addList(newList));
          })
-         .catch(error => createMessage("Error", error.message));
+         .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
@@ -82,7 +82,7 @@ export const updateList = (listId, listFolder, payload) => {
                if(editedList.folderName === listFolder) return dispatch(updateFile(editedList));
                return dispatch(removeFile(listId));
             }
-            else if(payload.folderName === editedList.folderName) return dispatch(removeList(editedList._id)); 
+            else if(editedList.folderName && (payload.folderName === editedList.folderName)) return dispatch(removeList(editedList._id)); 
             return dispatch(editList(listId, editedList));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));

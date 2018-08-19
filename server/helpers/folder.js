@@ -1,4 +1,5 @@
-const {Folder, TodoList} = require("../models");
+const {Folder, TodoList} = require("../models"),
+      {errorHandler} = require("./error");
 
 exports.find = (req, res, next) => {
    const {isAdmin} = req.user,
@@ -35,6 +36,7 @@ exports.create = (req, res, next) => {
                   .catch(error => error);
       })
       .catch(error => {
+         if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
          return next(error);
       });
 };
@@ -54,14 +56,14 @@ exports.findOne = (req, res, next) => {
 
 //Only the owner or admins for non admin creators
 exports.update = (req, res, next) => {
-   const options = {
-      new: true,
-      runValidators: true
-   };
-
    for(field in req.body){ 
       req.body[field] = req.sanitize(req.body[field]);
       if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+
+   const options = {
+      new: true,
+      runValidators: true
    };
    
    Folder.findByIdAndUpdate(req.params.id, req.body, options).populate("files").exec()
@@ -83,7 +85,8 @@ exports.update = (req, res, next) => {
          return res.status(200).json(folder);
       })
       .catch(error => {
-         error.status = 404;
+         if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
+         else error.status = 404;
          return next(error);
       });
 };

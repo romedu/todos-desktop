@@ -27,7 +27,7 @@ app.use((error, req, res, next) => {
    error = serializeError(error);
    if(!error.status) error.status = 500;
    delete error.stack;
-   res.json(error);
+   return res.json(error);
 });
 
 app.listen(PORT, () => {

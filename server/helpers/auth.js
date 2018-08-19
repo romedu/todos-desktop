@@ -3,18 +3,24 @@ const jwt = require("jsonwebtoken"),
       {errorHandler} = require("./error");
 
 exports.register = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+
    User.create(req.body)
       .then(user => res.status(200).json(signUser(user)))
       .catch(error => {
-         if(!error.message || error.code === 11000) error = errorHandler(409, "Username Already Taken");
+         if(!error.message || error.code === 11000) error = errorHandler(409, "Username is not available");
          return next(error);
       });
 };
 
 exports.login = (req, res, next) => {
    for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
+
    const {username, password} = req.body;
+   
    User.findOne({username})
       .then(user => {
          if(!user) throw errorHandler(404, "Incorrect Username/Password");

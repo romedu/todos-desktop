@@ -5,10 +5,10 @@ const mongoose = require("mongoose"),
       folderSchema = new mongoose.Schema({
          name: {
             type: String,
-            required: true,
+            required: [true, "Name is required"],
             unique: true,
-            minlength: 3,
-            maxlength: 14,
+            minlength: [3, "Only between 3 and 14 characters are allowed"],
+            maxlength: [14, "Only between 3 and 14 characters are allowed"],
             validate: {
                validator: validator.alphanumOnly,
                message: "Only alphanumeric and space characters are allowed"
@@ -16,7 +16,7 @@ const mongoose = require("mongoose"),
          },
          description: {
             type: String,
-            maxlength: 45
+            maxlength: [45, "The maximun number of characters allowed is 45"]
          }, 
          image: String,
          files: [

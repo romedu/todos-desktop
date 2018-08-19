@@ -1,12 +1,17 @@
 const mongoose   = require("mongoose"),
       bcrypt     = require("bcrypt"),
+      validator  = require("../helpers/validator"),
       userSchema = new mongoose.Schema({
          username: {
             type: String, 
-            required: true,
+            required: [true, "Username is required"],
             unique: true,
-            minlength: 4,
-            maxlength: 20
+            minlength: [4, "Only between 4 and 20 characters are allowed"],
+            maxlength: [20, "Only between 4 and 20 characters are allowed"],
+            validate: {
+               validator: validator.alphanumOnly,
+               message: "Only alphanumeric and space characters are allowed"
+            }
          },
          // email: {
          //    type: String,
@@ -15,9 +20,9 @@ const mongoose   = require("mongoose"),
          // },
          password: {
             type: String,
-            required: true,
-            minlength: 8,
-            maxlength: 24
+            required: [true, "Password is required"],
+            minlength: [8, "Only between 8 and 24 characters are allowed"],
+            maxlength: [24, "Only between 8 and 24 characters are allowed"]
          },
          isAdmin: {
             type: Boolean,
