@@ -123,6 +123,11 @@ export const updateFile = editedFile => ({
    editedFile
 });
 
+export const moveFile = editedFile => ({
+   type: actionTypes.MOVE_FILE,
+   editedFile
+});
+
 export const removeFile = fileId => ({
    type: actionTypes.REMOVE_FILE,
    fileId

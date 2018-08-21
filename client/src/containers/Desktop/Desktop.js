@@ -34,13 +34,11 @@ class Desktop extends Component{
       //Close itemForm || openFolder, if an error ocurred
       if(prevProps.message !== message){
          if(showItemForm) return this.setState({showItemForm: false, itemToEdit: null});
-
-         //CONTINUE HERE, CHECKING FOR NECESSARY PROPS
-         else if(openFolderId) return this.folderHandler();
+         else if(openFolderId) return this.openFolderHandler();
       }
 
       //Close delete confirmation after its action is completed
-      else if(confirmation.isLoading && (prevProps !== this.props)){
+      if(confirmation.isLoading && (prevProps !== this.props)){
          return this.setState({
                   itemToEdit: null,
                   confirmation: {
@@ -113,6 +111,7 @@ class Desktop extends Component{
 const mapStateToProps = state => ({
    currentFolder: state.folder.current,
    folders: state.folder.list,
+   todos: state.todoList.lists,
    message: state.message.label,
 });
 

@@ -17,6 +17,7 @@ actionTypes.DELETE_FOLDER = "DELETE_FOLDER";
 
 actionTypes.ADD_NEW_FILE = "ADD_NEW_FILE";
 actionTypes.UPDATE_FILE = "UPDATE_FILE";
+actionTypes.MOVE_FILE = "MOVE_FILE";
 actionTypes.REMOVE_FILE = "REMOVE_FILE";
 
 actionTypes.GET_LISTS = "GET_LISTS";

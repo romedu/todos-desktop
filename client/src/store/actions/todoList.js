@@ -1,7 +1,7 @@
 import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
-import {addNewFile, updateFile, removeFile} from "./folder";
+import {addNewFile, updateFile, moveFile, removeFile} from "./folder";
 qwest.limit(2);
 
 export const getLists = (sortProp, sortOrder, pageNum) => {
@@ -80,7 +80,7 @@ export const updateList = (listId, listFolder, payload) => {
             if(status && status !== 200) throw new Error(message);
             if(listFolder){
                if(editedList.folderName === listFolder) return dispatch(updateFile(editedList));
-               return dispatch(removeFile(listId));
+               return dispatch(moveFile(editedList));
             }
             else if(editedList.folderName && (payload.folderName === editedList.folderName)) return dispatch(removeList(editedList._id)); 
             return dispatch(editList(listId, editedList));

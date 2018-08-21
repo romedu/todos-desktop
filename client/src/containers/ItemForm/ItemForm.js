@@ -24,10 +24,10 @@ class ItemForm extends Component {
    }
 
    componentDidMount(){
-      const {itemType, itemToEdit, currentFolder, folderHandler} = this.props;
+      const {itemType, itemToEdit, currentFolder} = this.props;
 
       if(itemToEdit){
-         let {name, image, description} = itemToEdit;
+         const {name, image, description} = itemToEdit;
          this.setState({
             [itemType]: {
                name,
@@ -37,18 +37,10 @@ class ItemForm extends Component {
             }
          });
       }
-      else folderHandler();
    }
 
    componentDidUpdate(prevProps){
       if(prevProps !== this.props) this.props.closeHandler();
-   }
-
-   componentWillUnmount(){
-      const {currentFolder, folderHandler} = this.props;
-      if(currentFolder){
-         folderHandler(currentFolder._id);
-      }
    }
 
    updateInput = e => {

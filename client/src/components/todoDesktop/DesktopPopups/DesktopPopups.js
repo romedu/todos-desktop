@@ -9,7 +9,7 @@ const DesktopPopups = props => {
    return (
       <Fragment>
          {openFolderId && !message && <Folder folderId={openFolderId} closeHandler={folderHandler} newFormToggle={itemFormHandler} settingsHandler={settingsHandler} deleteHandler={deleteConfHandler} />}
-         {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} folderHandler={folderHandler} closeHandler={itemFormHandler} />}
+         {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} closeHandler={itemFormHandler} />}
          {confirmation.deleteConfirm && <Confirmation isLoading={confirmation.isLoading} closeHandler={hideConfirmation} deleteHandler={deleteItemHandler} slightDrop={!!currentFolder}>
             Do you really want to delete the {itemToEdit.name} {itemToEdit.type}? 
          </Confirmation>}
