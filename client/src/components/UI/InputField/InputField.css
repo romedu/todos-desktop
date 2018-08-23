@@ -1,3 +1,26 @@
 .InputField {
    display: flex;
+   padding: 1vh 0;
+   border: none;
+}
+
+.InputField label {
+   font-size: 1.2em;
+}
+
+.InputField input {
+   width: 70%;
+   padding: 1.2vh 1vw;
+   margin: 0.5vh 0;
+   font-size: 1.1em;
+   border: 0.5px solid rgb(224, 193, 255);
+   border-radius: 8px;
+}
+
+.InputField input:focus {
+   outline: 2px solid rgb(207, 160, 255);
+}
+
+.InputField button {
+   display: block;
 }

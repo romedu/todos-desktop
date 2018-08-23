@@ -2,9 +2,9 @@
    position: fixed;
    left: 20vw;
    top: 20vh;
-   /* background-color: lightgoldenrodyellow; */
    background-color: rgb(255, 219, 234);
    border-radius: 8px;
+   box-shadow: 6px 9.5px 20px;
 }
 
 .Folder h2 {

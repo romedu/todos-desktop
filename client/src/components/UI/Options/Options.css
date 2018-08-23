@@ -1,0 +1,8 @@
+.selectOption {
+   margin: 0.5vh 0;
+   font-size: 0.9em;
+}
+
+.selectOption:focus {
+   outline: 2px solid rgb(207, 160, 255);
+}

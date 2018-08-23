@@ -17,7 +17,7 @@ const Confirmation = ({isLoading, slightDrop, children, deleteHandler, negationH
    const content = isLoading ? <Loader /> 
                              : (<Fragment>
                                   {children}
-                                  <ButtonGroup buttons={buttons} />
+                                  <ButtonGroup buttons={buttons} groupType="confirmGroup" />
                                </Fragment>);
 
    return (

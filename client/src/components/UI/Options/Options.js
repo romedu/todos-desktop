@@ -1,4 +1,5 @@
-import React from "react";
+import React, {Fragment} from "react";
+import "./Options.css";
 
 const Options = ({name, label, optionList, emptyOption, selected, pickOption}) => {
    if(!optionList) optionList = [emptyOption];
@@ -11,12 +12,14 @@ const Options = ({name, label, optionList, emptyOption, selected, pickOption}) =
    );
 
    return (
-      <label>
-         {label}
-         <select name={name} value={selected || emptyOption} onChange={pickOption}>
+      <Fragment>
+         <label>
+            {label}
+         </label>
+         <select name={name} value={selected || emptyOption} onChange={pickOption} className="selectOption">
             {options}
          </select>
-      </label>
+      </Fragment>
    );
 };
 

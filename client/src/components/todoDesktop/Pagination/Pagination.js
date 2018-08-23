@@ -45,7 +45,7 @@ const Pagination = ({currentPage, limit, total, paginateHandler}) => {
    }
 
    return (
-      <ButtonGroup buttons={buttons} />
+      <ButtonGroup buttons={buttons} groupType="pagesGroup" />
    );
 };
 

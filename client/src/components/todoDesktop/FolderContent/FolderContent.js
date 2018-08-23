@@ -9,7 +9,7 @@ const FolderContent = props => {
 
    return (
       <div>
-         <Button action={newFormToggle}>
+         <Button action={newFormToggle} design="toggler">
             New List
          </Button>
          <h2>

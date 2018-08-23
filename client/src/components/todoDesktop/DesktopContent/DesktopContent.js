@@ -39,10 +39,10 @@ class DesktopContent extends Component {
    }
 
    componentWillUnmount(){
-      const {itemsType, onFolderListClear, onTodosClear} = this.props;
+      const {folders, todos, itemsType, onFolderListClear, onTodosClear} = this.props;
 
-      if(itemsType === "folder") return onFolderListClear(); 
-      return onTodosClear(); 
+      if(folders && (itemsType === "folder")) return onFolderListClear(); 
+      else if(todos) return onTodosClear(); 
    }
 
    getItems = () => {

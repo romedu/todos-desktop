@@ -3,17 +3,17 @@ import Button from "../../UI/Button/Button";
 import "./InputField.css";
 
 const InputField = props => {
-   const {value, inputType, children, toggleHandler, updateHandler} = props;
+   const {input, children, toggleHandler, updateHandler} = props;
    const inputName = children === "Confirm Password" ? "confirmPassword" : children.toLowerCase();
    const toggleButton = toggleHandler &&
                         <Button action={() => toggleHandler(inputName)} type="button"> 
-                           {inputType === "password" ? "Show" : "Hide"}
+                           {input.type === "password" ? "Show" : "Hide"}
                         </Button>;
 
    return (
       <fieldset className="InputField">
          <label> {children} </label>
-         <input type={inputType} name={inputName} value={value} placeholder={children} onChange={updateHandler} autoComplete="off" />
+         <input type={input.type} name={inputName} value={input.value} placeholder={input.placeholder} onChange={updateHandler} autoComplete="off" maxLength={input.maxLength} />
          {toggleButton}
       </fieldset>
    );

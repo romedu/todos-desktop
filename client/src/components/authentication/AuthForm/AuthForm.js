@@ -12,24 +12,36 @@ class AuthForm extends Component {
    state = {
       login: {
          username: {
-            value: ""
+            value: "",
+            type: "text",
+            placeholder: "Your Username",
+            maxLength: "20"
          },
          password: {
             value: "",
-            type: "password"
+            type: "password",
+            placeholder: "Your Password",
+            maxLength: "24"
          }
       },
       register: {
          username: {
-            value: ""
+            value: "",
+            type: "text",
+            placeholder: "Only alphanumeric inputs are allowed, between 4 and 20 characters",
+            maxLength: "20"
          },
          password: {
             value: "",
-            type: "password"
+            type: "password",
+            placeholder: "Between 8 and 24 characters are allowed",
+            maxLength: "24"
          },
          confirmPassword: {
             value: "",
-            type: "password"
+            type: "password",
+            placeholder: "Repeat the same password as above",
+            maxLength: "24"
          }
       },
       isLoading: false
@@ -86,7 +98,7 @@ class AuthForm extends Component {
             {register} = this.state;
       const title = capitalizeWord(authType);
       const confirmPassword = authType === "register" &&
-                   <InputField value={register.confirmPassword.value} inputType={register.confirmPassword.type} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
+                   <InputField input={register.confirmPassword} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
                       Confirm Password
                     </InputField>;
       const changeAuthType = {
@@ -96,15 +108,15 @@ class AuthForm extends Component {
       const content = this.state.isLoading ? <Loader />
                                            : (
                                              <form onSubmit={this.authHandler}>
-                                                <InputField value={this.state[authType].username.value} inputType={"text"} updateHandler={this.updateInputHandler}>
+                                                <InputField input={this.state[authType].username} updateHandler={this.updateInputHandler}>
                                                    Username
                                                 </InputField>
-                                                <InputField value={this.state[authType].password.value} inputType={this.state[authType].password.type} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
+                                                <InputField input={this.state[authType].password} toggleHandler={this.passwordToggleHandler} updateHandler={this.updateInputHandler}>
                                                    Password
                                                 </InputField>
                                                 {confirmPassword}
                                                 <Link to={changeAuthType.linkTo}> {changeAuthType.text} </Link>
-                                                <Button type="submit"> Submit </Button>
+                                                <Button type="submit" design="submit"> Submit </Button>
                                              </form>
                                            )
 

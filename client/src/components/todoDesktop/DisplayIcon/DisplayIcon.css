@@ -2,7 +2,7 @@
       width: 8.5vw;
       height: 8.5vw;
       border: 1px solid lightgreen;
-      margin: 0 2vw 3vw 0;
+      margin: 0 2vw 4vw 0;
       text-align: center;
       font-size: 0.9em;
    }
@@ -19,8 +19,8 @@
    .displayIcon div {
       width: 80%;
       height: 80%;
-      margin: 0 auto;
-      /* border: 0.1px solid lightgray; */
+      margin: 0 auto 1vh;
+      box-shadow: 2px 2px 5px rgb(133, 131, 131);
    }
 
    .displayIcon img {
@@ -30,12 +30,11 @@
    }
 
    .folderDisplay {
-      /* background-color: rgb(255, 235, 153); */
+      border-radius: 2px;
       background-color: rgb(255, 186, 241);
    }
 
    .todoDisplay {
       border-radius: 8px;
       background-color: rgb(224, 193, 255);
-      /* border: 0.1px solid lightgray; */
    }
