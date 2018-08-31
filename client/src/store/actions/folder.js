@@ -1,12 +1,13 @@
 import qwest from "qwest";
 import actionTypes from "./actionTypes";
 import {createMessage} from "./message";
+import {extractProperty} from "../../helpers";
 qwest.limit(2);
 
 export const getFolders = (sortProp, sortOrder, pageParam) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&page=${pageParam}`)
+      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&page=${pageParam}&limit=14`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, docs, total, limit} = response;
@@ -21,6 +22,25 @@ const setFolders = (folders, paginationData) => ({
    type: actionTypes.GET_FOLDERS,
    folders,
    paginationData
+});
+
+export const getFolderNames = () => {
+   const token = localStorage.getItem("token"); 
+   return dispatch => {
+      qwest.get(`/folder?token=${token}`)
+         .then(data => JSON.parse(data.response))
+         .then(response => {
+            const {status, message} = response;
+            if(status && status !== 200) throw new Error(message);
+            return dispatch(setFolderNames(extractProperty("name", response)));
+         })
+         .catch(error => dispatch(createMessage("Error", error.message)));
+   }
+}
+
+const setFolderNames = folderNames => ({
+   type: actionTypes.GET_FOLDER_NAMES,
+   folderNames
 });
 
 export const clearFoldersList = () => ({

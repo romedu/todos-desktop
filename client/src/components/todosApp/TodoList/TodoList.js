@@ -28,7 +28,7 @@ class TodoList extends Component {
    };
 
    render(){
-      const {name, image, todos, currentFolder} = this.props,
+      const {name, todos, currentFolder} = this.props,
             todoList = todos.map(todo => <Todo key={todo._id} {...todo} checkHandler={() => this.todoUpdateHandler(todo._id, {checked: !todo.checked})} deleteHandler={e => this.deleteTodoHandler(e, todo._id)} />),
             fileNames = currentFolder && currentFolder.files.map(file => file.name),
             changeTodo = currentFolder && fileNames.length > 1 && <Options label="Change List: " optionList={fileNames} selected={name} pickOption={this.changeListHandler} />;
@@ -37,7 +37,6 @@ class TodoList extends Component {
          <div>
             <h1> {name} </h1>
             {changeTodo}
-            {image && <img src={image} alt="" />}
             <TodoForm />
             <ul>
                {todoList.length ? todoList : <h4> Your list is empty.... </h4>}

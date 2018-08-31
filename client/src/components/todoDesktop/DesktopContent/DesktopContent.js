@@ -1,11 +1,12 @@
 import React, {Component, Fragment} from "react";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
-import {getFolders, clearFolders, clearFoldersList} from "../../../store/actions/folder";
+import {getFolders, getFolderNames, clearFolders, clearFoldersList} from "../../../store/actions/folder";
 import {getLists} from "../../../store/actions/todoList";
 import IconList from "../IconList/IconList";
 import SortOptions from "../SortOptions/SortOptions";
 import Pagination from "../Pagination/Pagination";
+import Button from "../../UI/Button/Button";
 import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
 import Loader from "../../UI/Loader/Loader";
 import actionTypes from "../../../store/actions/actionTypes";
@@ -20,7 +21,7 @@ class DesktopContent extends Component {
       const {sorting, location} = this.props,
             {sort} = getQueries(location.search);
 
-      if(toKebabCase(sorting.label) === sort) this.getItems();
+      if(!sort || (toKebabCase(sorting.label) === sort)) this.getItems();
    }
 
    componentDidUpdate(prevProps){
@@ -46,7 +47,9 @@ class DesktopContent extends Component {
    }
 
    getItems = () => {
-      const {sorting, location, folders, todos, itemsType, onFoldersGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
+      const tokenExp = localStorage.getItem("tokenExp"),
+            currentTime = Date.now(),
+            {sorting, location, folders, folderNames, todos, itemsType, onFoldersGet, onFolderNamesGet, onFoldersClear, onTodosGet, onTodosClear} = this.props,
             pageParam = Number(getQueries(location.search).page) || 1, 
             action = (itemsType === "folder") 
                    ? () => {                    
@@ -56,6 +59,7 @@ class DesktopContent extends Component {
                       if(folders) onFoldersClear();
                       onTodosGet(sorting.property, sorting.order, pageParam)};
 
+      if(!folderNames && (Number(tokenExp) > currentTime)) onFolderNamesGet();
       this.setState({isLoading: true}, action);
    };
 
@@ -68,24 +72,30 @@ class DesktopContent extends Component {
 
    render(){
       const {isLoading} = this.state,
-            {sorting, location, folders, todos, foldersPaging, todosPaging, openFolderHandler, newFormHandler, settingsHandler, deleteHandler, setSortingHandler} = this.props,
+            {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, settingsHandler, deleteHandler, setSortingHandler} = this.props,
             buttons = [
                {
                   description: "Create Item",
-                  action: newFormHandler
+                  action: !isLoading ? newFormHandler : null
                },
                {
                   description: "Folders",
-                  url: `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
+                  url: !isLoading && `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`,
+                  design: (location.pathname === "/folders") && "selected"
                },
                {
                   description: "TodoLists",
-                  url: `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`
+                  url: !isLoading && `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`,
+                  design: (location.pathname === "/todos") && "selected"
                }
             ],
             itemList = ((folders && folders.length) || (todos && todos.length))
                ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
-               : <h4> Your desktop is empty, *** SAD FACE *** </h4>,
+               : <Fragment>
+                     <h4> Your desktop is empty </h4>
+                     <Button action={newFormHandler} design="item"> Create a new {itemsType} </Button>
+                 </Fragment>,
+
             currentPage = Number(getQueries(location.search).page) || 1,
             totalItems = foldersPaging.total || todosPaging.total,
             itemsLength = (folders && folders.length) || (todos && todos.length),
@@ -96,15 +106,15 @@ class DesktopContent extends Component {
             const content = isLoading ? <Loader />
                            : (
                               <Fragment>
-                                 <ButtonGroup buttons={buttons} />
                                  <SortOptions selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
                                  {itemList}
                                  {pagination}
                               </Fragment>
                            );
-
+            
       return (
          <Fragment>
+            <ButtonGroup buttons={buttons} />
             {content}
          </Fragment>
       );
@@ -114,6 +124,7 @@ class DesktopContent extends Component {
 const mapStateToProps = state => ({
    folders: state.folder.list,
    foldersPaging: state.folder.paginationData,
+   folderNames: state.folder.namesList,
    todos: state.todoList.lists,
    todosPaging: state.todoList.paginationData,
    sorting: state.sorting
@@ -121,6 +132,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    onFoldersGet: (sortProp, sortOrder, pageNum) => dispatch(getFolders(sortProp, sortOrder, pageNum)),
+   onFolderNamesGet: () => dispatch(getFolderNames()),
    onFoldersClear: () => dispatch(clearFolders()),
    onFolderListClear: () => dispatch(clearFoldersList()),
    onTodosGet: (sortProp, sortOrder, pageNum) => dispatch(getLists(sortProp, sortOrder, pageNum)),

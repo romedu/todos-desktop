@@ -1,5 +1,4 @@
 import React, {Fragment} from "react";
-import Logo from "../../UI/Logo/Logo";
 import NavItems from "../NavItems/NavItems";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import "./SideDrawer.css";
@@ -9,8 +8,7 @@ const SideDrawer = ({hideHandler}) => {
       <Fragment>
          <Backdrop closeHandler={hideHandler}/>
          <div className="SideDrawer">
-            <Logo />
-            <NavItems sideDrawer /> 
+            <NavItems sideDrawer hideHandler={hideHandler} /> 
          </div>
       </Fragment>
    );

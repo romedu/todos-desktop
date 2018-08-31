@@ -3,24 +3,39 @@ const {TodoList, Todo, Folder} = require("../models"),
 
 exports.find = (req, res, next) => {
    const {isAdmin} = req.user,
-         {getAll, page, sortProp, sortOrder, folderLess} = req.query,
+         {getAll, page, limit, sortProp, sortOrder, folderLess} = req.query,
          searchArg = isAdmin && getAll ? {} : {creator: req.user.id},
          options = {
             sort: {[sortProp]: sortOrder},
             page,
-            limit: 28
+            limit: Number(limit)
          };
 
    if(folderLess) searchArg.folderName = undefined;
-   TodoList.paginate(searchArg, options)
-      .then(foundLists => {
-         if(!foundLists) throw new Error("Not Found");
-         res.status(200).json(foundLists)
-      })
-      .catch(error => {
-         error.status = 404;
-         return next(error);
-      });
+
+   //Temporary fix for retrieving all the docs
+   if(limit){
+      TodoList.paginate(searchArg, options)
+         .then(foundLists => {
+            if(!foundLists) throw new Error("Not Found");
+            res.status(200).json(foundLists)
+         })
+         .catch(error => {
+            error.status = 404;
+            return next(error);
+         });
+   } 
+   else {
+      TodoList.find(searchArg)
+         .then(foundLists => {
+            if(!foundLists) throw new Error("Not Found");
+            res.status(200).json(foundLists)
+         })
+         .catch(error => {
+            error.status = 404;
+            return next(error);
+         });
+   }
 };
 
 exports.create = (req, res, next) => {

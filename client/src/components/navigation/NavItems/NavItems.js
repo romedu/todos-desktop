@@ -6,17 +6,21 @@ import NavItem from "../NavItem/NavItem";
 import "./NavItems.css";
 
 const NavItems = props => {
-   let {user, onLogoutHandler, sideDrawer} = props;
-   let userNav = user ? <NavItem action={onLogoutHandler} url={"/authentication/login"} inNav> Logout </NavItem>
+   let {user, sideDrawer, onLogoutHandler, hideHandler} = props,
+       logoutAction = () => {
+         onLogoutHandler();
+         if(hideHandler) hideHandler();
+       };
+   let userNav = user ? <NavItem action={logoutAction} url={"/authentication/login"} inNav> Logout </NavItem>
                       : (<Fragment>
-                           <NavItem url={"/authentication/login"} inNav> Login </NavItem>
-                           <NavItem url={"/authentication/register"} inNav> Register </NavItem>  
+                           <NavItem url={"/authentication/login"} action={hideHandler} inNav> Login </NavItem>
+                           <NavItem url={"/authentication/register"} action={hideHandler} inNav> Register </NavItem>  
                         </Fragment>);
 
    return (
-      <div className={sideDrawer ? "SideDrawer" : "NavItems"}>
-         <NavItem url={"/"} inNav> Home </NavItem>
-         <NavItem url={"/help"} inNav> Help </NavItem>
+      <div className={sideDrawer ? "DrawerItems" : "NavItems"}>
+         <NavItem url={"/"} action={hideHandler} inNav> Home </NavItem>
+         <NavItem url={"/help"} action={hideHandler} inNav> Help </NavItem>
          {userNav}
       </div>
    );

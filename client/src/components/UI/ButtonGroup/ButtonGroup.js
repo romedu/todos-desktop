@@ -7,7 +7,7 @@ const ButtonGroup = ({buttons, groupType}) => {
    const btnGroup = buttons.map((button, index) => {
       if(button.url){
          return (
-            <NavItem key={`${index}${button.description}`} {...button}>
+            <NavItem key={`${index}${button.description}`} style={button.design} {...button}>
                {button.description}
             </NavItem>
          );

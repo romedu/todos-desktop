@@ -9,8 +9,8 @@
 }
 
 .InputField input {
-   width: 70%;
-   padding: 1.2vh 1vw;
+   width: 97.4%;
+   padding: 1.2vh 1.3%;
    margin: 0.5vh 0;
    font-size: 1.1em;
    border: 0.5px solid rgb(224, 193, 255);
@@ -23,4 +23,17 @@
 
 .InputField button {
    display: block;
+   padding: 0.5vh 0.5vw;
+   box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
+   font-size: 0.9em;
+}
+
+@media(max-width: 599px){
+   .InputField input {
+      width: 98%;
+   }
+
+   .InputField button {
+      padding: 1vh 3vw;
+   }
 }

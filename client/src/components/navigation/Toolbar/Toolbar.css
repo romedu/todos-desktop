@@ -9,6 +9,7 @@
    height: 12vh;
    z-index: 2;
    background-color: rgb(224, 193, 255);
+   border-bottom: 1px solid gray;
 }
 
 @media(min-width: 600px){

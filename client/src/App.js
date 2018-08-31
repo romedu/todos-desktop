@@ -23,14 +23,16 @@ class App extends Component {
          onUserLogout();
          onMessageCreate("Your token is no longer valid, you must relog");
       }
-      else if(!user && token) onTokenVerify();
+      else if(!user && (Number(tokenExp) > currentTime)) onTokenVerify();
    }
 
    render(){
-      const token = localStorage.getItem("token"),
-            {user, message, onMessageClear} = this.props,
-            todoApp = token ? <Route path="/" component={TodoApp}/> : <Redirect from="/" to="/authentication" />,
-            authentication = token || user ? <Redirect from="/authentication" to="/" /> : <Route path="/authentication" component={Authentication}/>;
+      const tokenExp = localStorage.getItem("tokenExp"),
+            currentTime = Date.now(),
+            {message, onMessageClear} = this.props,
+            todoApp = tokenExp ? <Route path="/" component={TodoApp}/> : <Redirect from="/" to="/authentication" />,
+            authentication = (Number(tokenExp) > currentTime) ? <Redirect from="/authentication" to="/" /> : <Route path="/authentication" component={Authentication}/>;
+      
       return (
          <BrowserRouter>
             <div className="App">

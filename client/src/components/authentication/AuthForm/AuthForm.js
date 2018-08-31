@@ -48,11 +48,10 @@ class AuthForm extends Component {
    };
 
    componentDidUpdate(prevProps){
-      const token = localStorage.getItem("token"),
-            tokenExp = localStorage.getItem("tokenExp"),
+      const tokenExp = localStorage.getItem("tokenExp"),
             currentTime = Date.now(),
             {message, user, onTokenVerify} = this.props;
-      if(!user && token && tokenExp && Number(tokenExp) >= currentTime) onTokenVerify();
+      if(!user && (Number(tokenExp) >= currentTime)) onTokenVerify();
       else if(prevProps.message !== message) this.setState(prevState => ({...prevState, isLoading: false}));
    }
 

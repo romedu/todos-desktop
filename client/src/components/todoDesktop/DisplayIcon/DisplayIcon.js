@@ -7,8 +7,8 @@ const DisplayIcon = props => {
    const {openHandler, settingsHandler, deleteHandler, ...iconData} = props,
          content = (
             <Fragment>
-               <div className={`${iconData.type}Display`} title={iconData.description}>
-                  <img src={iconData.image} alt="" />
+               <div className={`${iconData.type}Icon`} title={iconData.description}>
+                  <img src={iconData.image || ""} alt="" />
                </div>
                {iconData.name}
             </Fragment>

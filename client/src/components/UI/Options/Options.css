@@ -1,8 +1,14 @@
 .selectOption {
-   margin: 0.5vh 0;
-   font-size: 0.9em;
+   margin: 0.5vh 1%;
+   font-size: 1em;
 }
 
 .selectOption:focus {
    outline: 2px solid rgb(207, 160, 255);
+}
+
+@media(max-width: 599px){
+   .selectOption {
+      font-size: 1.1em;
+   }
 }

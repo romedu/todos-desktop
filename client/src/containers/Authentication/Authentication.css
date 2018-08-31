@@ -8,6 +8,8 @@
 }
 
 .Authentication div form a, .Authentication div form a:visited {
+   display: inline-block;
+   margin-top: 3vh;
    font-style: oblique;
    color: rgb(167, 119, 218);
    text-decoration: none;
@@ -16,6 +18,21 @@
 
 @media(max-width: 599px){
    .Authentication {
+      width: 100vw;
       margin-top: 15vh;
+   }
+
+   .Authentication div {
+      width: 90vw;
+      margin: 0 auto;
+   }
+
+   .Authentication div h2 {
+      font-size: 2.5em;
+   }
+
+   .Authentication div form a, .Authentication div form a:visited {
+      font-size: 1.2em;
+      margin-bottom: 2vh;
    }
 }

@@ -8,6 +8,7 @@ import {createMessage} from "../../store/actions/message";
 import DesktopContent from "../../components/todoDesktop/DesktopContent/DesktopContent";
 import DesktopPopups from "../../components/todoDesktop/DesktopPopups/DesktopPopups";
 import {findByProp} from "../../helpers";
+import "./Desktop.css";
 
 class Desktop extends Component{
    state = {
@@ -22,6 +23,7 @@ class Desktop extends Component{
    };
 
    componentDidMount(){
+      console.log("desktop mounted");
       this.checkToken();
    }
 
@@ -92,10 +94,9 @@ class Desktop extends Component{
       const {openFolderId, itemToEdit, showItemForm, confirmation} = this.state,
             {itemsType} = this.props;
 
-      //REMOVE INLINE STYLES
       return (
-         <div>
-            <h1 style={{fontSize: "3em", fontFamily: 'Alegreya'}}>
+         <div className="Desktop">
+            <h1>
                Todos Desktop
             </h1>
             <DesktopContent itemsType={itemsType} openFolderHandler={this.openFolderHandler} newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />

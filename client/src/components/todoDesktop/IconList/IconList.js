@@ -11,24 +11,18 @@ const IconList = props => {
          todosList = todos && todos.map(todo => <DisplayIcon type="todo" key={todo._id} {...todo} url={`/todos/${todo._id}`} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />);
                
    return (
-      <ul className="IconList">
-         {!insideFolder && todosList && <li>
-            <h3>
-               Todolists
-            </h3>
-         </li>}
-         <div> 
+      <div className="IconList">
+         {!insideFolder && <h3>
+            {todosList && "Todolists"}
+            {folders && "Folders"}
+         </h3>} 
+         {todosList && <ul>
             {todosList}
-         </div>
-         {!insideFolder && folders && <li>
-            <h3> 
-               Folders 
-            </h3>
-         </li>}
-         <div> 
+         </ul>}
+         {folderList && <ul>
             {folderList}
-         </div>
-      </ul>
+         </ul>}
+      </div>
    )
 };
 

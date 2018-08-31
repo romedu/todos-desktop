@@ -31,3 +31,19 @@
    height: 64vh;
    z-index: 4;
 }
+
+@media(max-width: 599px){
+   .Folder {
+      left: 7vw;
+   }
+
+   .FolderInside {
+      width: 80vw;
+      height: 60vh;
+      padding: 0 3vw;
+   }
+
+   .FolderBorder {
+      display: none;
+   }
+}

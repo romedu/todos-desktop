@@ -2,12 +2,18 @@
    position: fixed;
    top: 12vh;
    left: 0;
-   width: 40vw;
-   height: 100vh;
+   width: 65vw;
+   height: 95vh;
+   padding-top: 5vh;
    z-index: 2;
    display: flex;
    flex-direction: column;
-   background-color: lightblue;
+   background: linear-gradient(to right, rgb(255, 221, 235), rgb(237, 214, 255));
+}
+
+.SideDrawer .ActiveNav button {
+   background-color: inherit;
+   transform: scale(1.1);
 }
 
 @media(min-width: 600px){

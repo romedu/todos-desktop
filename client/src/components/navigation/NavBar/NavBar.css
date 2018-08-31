@@ -4,11 +4,12 @@
    left: 0;
    display: flex;
    justify-content: space-between;
-   width: 98.8vw;
+   width: 97.6vw;
    height: 10vh;
-   padding-left: 1.2vw;
+   padding: 0 1.2vw;
    z-index: 2;
    background-color: rgb(224, 193, 255);
+   border-bottom: 0.1px solid #c3bbbb;
 }
 
 @media(max-width: 599px){

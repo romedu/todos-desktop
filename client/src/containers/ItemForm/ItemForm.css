@@ -3,8 +3,7 @@
    left: 37.5vw;
    top: 25vh;
    width: 23vw;
-   height: 56vh;
-   padding: 1vh 1vw;
+   padding: 1vh 1vw 3vh;
    z-index: 6;
    background-color: rgb(251, 221, 255);
    border-radius: 4px;
@@ -12,21 +11,24 @@
 }
 
 .itemForm h3 {
-   font-size: 1.3em;
+   font-size: 1.5em;
+   margin: 3.5vh 1%;
 }
 
 .itemForm form label {
    display: block;
    font-size: 1.2em;
+   margin: 0 1%;
 }
 
 .itemForm form textarea {
    display: block;
-   width: 77%;
-   height: 8vh;
-   resize: none;
+   width: 90%;
+   padding: 1.2vh 4.7%;
+   margin: 0.5vh 0.3%;
    font-size: 1.1em;
-   border: 0.5px solid rgb(224, 193, 255);
+   resize: none;
+   border-color: rgb(224, 193, 255);
    border-radius: 8px;
 }
 
@@ -36,7 +38,21 @@
 
 @media(max-width: 599px){
    .itemForm {
-      width: 80vw;
+      width: 70vw;
       left: 10vw;
+      padding: 0 5vw;
+   }
+
+   .itemForm h3 {
+      font-size: 1.8em;
+      margin: 2vh 0;
+   }
+
+   .itemForm form label {
+      margin: 0.3vh 0 0;
+   }
+
+   .itemForm form textarea {
+      font-size: 1.3em;
    }
 }

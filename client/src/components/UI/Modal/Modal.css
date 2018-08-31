@@ -15,3 +15,12 @@
 .Modal h3 {
    font-size: 1.3em;
 }
+
+@media(max-width: 599px){
+   .Modal {
+      left: 8vw;
+      width: 80vw;
+      height: 33.3vh;
+      font-size: 1.3em;
+   }
+}

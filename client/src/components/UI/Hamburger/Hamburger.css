@@ -1,0 +1,9 @@
+.Hamburger {
+   margin: 1vh 2.5vw 0;
+}
+
+.Hamburger div {
+   width: 13vw;
+   margin-top: 2.5vh;
+   border-top: 1px solid black;
+}

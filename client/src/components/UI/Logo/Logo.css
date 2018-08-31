@@ -6,7 +6,8 @@
 
 @media(max-width: 599px){
    .Logo {
-      height: 5vh;
-      width: 3vw;
+      height: 8vh;
+      width: 15vw;
+      margin: 2vh 0;
    }
 }

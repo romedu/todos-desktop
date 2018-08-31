@@ -1,0 +1,27 @@
+.Desktop h1 {
+   font-size: 3.5em; 
+   font-family: Alegreya;
+}
+
+.Desktop h4 {
+   margin: 17vh 0 4vh;
+   font-size: 1.8em;
+   text-align: center;
+}
+
+@media(max-width: 599px){
+   .Desktop h1 {
+      text-align: center;
+      font-size: 3.2em; 
+      font-family: Alegreya;
+   }   
+
+   .Desktop label {
+      font-size: 1.1em;
+      margin-left: 10%;
+   }
+
+   .Desktop h4 {
+      margin-top: 10vh;
+   }
+}

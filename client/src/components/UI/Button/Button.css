@@ -1,5 +1,6 @@
 .Button {
    outline: none;
+   background-color: rgb(224, 211, 236);
 }
 
 Button:hover {
@@ -30,20 +31,16 @@ Button:hover {
 
 .submitBtn {
    display: block;
-   margin-top: 2vh;
+   margin: 2vh 0;
    padding: 1vh 1vw;
    border-width: 2px;
-}
-
-@media(max-width: 599px){
-   .navItemBtn {
-      display: none;
-   }
+   font-size: 1.05em;
+   box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
 }
 
 .selectedBtn {
    font-weight: bold;
-   transform: scale(1.1);
+   background-color: rgb(224, 193, 255);
 }
 
 .togglerBtn {
@@ -56,4 +53,43 @@ Button:hover {
    border-bottom-left-radius: 8px;
    border-top-right-radius: 8px;
    outline: none;
+}
+
+.itemBtn {
+   display: block;
+   margin: 0 auto;
+   padding: 1vh 2vw;
+   font-size: 1em;
+   background-color: rgb(224, 193, 255);
+   box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
+}
+
+@media(max-width: 599px){
+   .Button {
+      padding: 1vh 2vw;
+      background-color: rgb(224, 193, 255);
+   }
+
+   .submitBtn {
+      padding: 1.5vh 3vw;
+      font-size: 0.9em;
+      width: 98%;
+   }
+
+   .settingsBtn {
+      flex-grow: 1;
+      height: inherit;
+      margin-left: 1vw;
+      border-radius: 8px;
+   }
+
+   .selectedBtn {
+      background-color: rgb(207, 160, 255)
+   }
+
+   .navItemBtn {
+      padding: 0 3vw;
+      background-color: inherit;
+      font-size: 1.3em;
+   }
 }

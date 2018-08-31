@@ -23,7 +23,7 @@ exports.login = (req, res, next) => {
    
    User.findOne({username})
       .then(user => {
-         if(!user) throw errorHandler(404, "Incorrect Username/Password");
+         if(!user || !password) throw errorHandler(404, "Incorrect Username/Password");
          return user.comparePassword(password)
                   .then(response => {
                      if(response === true)  return res.status(200).json(signUser(user));
