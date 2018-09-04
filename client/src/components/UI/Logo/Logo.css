@@ -1,13 +1,13 @@
 .Logo {
    height: 8vh;
-   width: 3.8vw;
+   width: 8vh;
    margin: 1vh 0;
 }
 
 @media(max-width: 599px){
    .Logo {
       height: 8vh;
-      width: 15vw;
+      width: 8vh;
       margin: 2vh 0;
    }
 }

@@ -4,7 +4,7 @@ import "./Loader.css";
 const Loader = props => {
    return (
       <div className="loader">
-         Loading...
+         <div className="spinner"></div>
       </div>
    )
 };

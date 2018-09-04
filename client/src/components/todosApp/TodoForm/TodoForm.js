@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {createTodo} from "../../../store/actions/todo";
 import Button from "../../UI/Button/Button";
+import "./TodoForm.css";
 
 class TodoForm extends Component {
    state = {
@@ -27,7 +28,7 @@ class TodoForm extends Component {
       const {description} = this.state;
 
       return (
-         <form onSubmit={this.onSubmit}>
+         <form onSubmit={this.onSubmit} className="TodoForm">
             <input type="text" name="description" value={description} autoComplete="off" onChange={this.onInputUpdate} />
             <Button type="submit"> Add </Button>
          </form>

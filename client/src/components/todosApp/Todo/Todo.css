@@ -1,4 +1,38 @@
+.Todo {
+   transition: all 0.5s ease-out;
+}
+
+.Todo span {
+   padding: 1vh 0;
+}
+
 .checkedTodo {
    color: darkgray;
+}
+
+.checkedTodo span {
    text-decoration: line-through;
+}
+
+.Todo div {
+   display: flex;
+   justify-content: space-between;
+}
+
+.Todo:hover {
+   background-color: rgba(0, 0, 0, .02);
+}
+
+.Todo:hover button {
+   opacity: 1;
+}
+
+@media(max-width: 599px){
+   .Todo div button {
+      background-color: inherit;
+   }
+
+   .Todo span {
+      padding: 2vh 0;
+   }
 }

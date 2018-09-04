@@ -1,5 +1,7 @@
 import React, {Fragment} from "react";
 import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
 import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
 import "./DisplayIcon.css";
 
@@ -15,7 +17,7 @@ const DisplayIcon = props => {
          ),
           buttons = [
             {
-               description: "D",
+               description: <FontAwesomeIcon icon={faTrashAlt} color="rgb(174, 126, 223)" />,
                design: "settings",
                action: e => {
                   e.stopPropagation(); 
@@ -23,7 +25,7 @@ const DisplayIcon = props => {
                }
             },
             {
-               description: "E",
+               description: <FontAwesomeIcon icon={faPencilAlt} color="rgb(174, 126, 223)" />,
                design: "settings",
                action: e => {
                   e.stopPropagation(); 

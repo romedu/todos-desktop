@@ -16,11 +16,20 @@
    font-size: 1.3em;
 }
 
+.Confirmation .loader {
+   padding: 0;
+}
+
 @media(max-width: 599px){
    .Modal {
       left: 8vw;
-      width: 80vw;
-      height: 33.3vh;
+      width: 70vw;
+      padding: 5vw;
+      height: fit-content;
       font-size: 1.3em;
+   }
+
+   .Modal h3 {
+      margin-top: 0;
    }
 }

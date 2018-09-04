@@ -12,13 +12,11 @@ class Nav extends Component {
    toggleSideDrawer = () => this.setState(prevState => ({showSideDrawer: !prevState.showSideDrawer}));
 
    render(){
-      let sideDrawer = this.state.showSideDrawer && <SideDrawer hideHandler={this.hideSideDrawer} />;
-      
       return (
          <div>
             <NavBar />
             <ToolBar toggleSideDrawer={this.toggleSideDrawer}/>
-            {sideDrawer}
+            <SideDrawer hideHandler={this.hideSideDrawer} showing={this.state.showSideDrawer} />
          </div>
       );
    }

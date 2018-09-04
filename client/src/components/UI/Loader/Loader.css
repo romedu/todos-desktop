@@ -1,0 +1,18 @@
+.loader {
+   padding: 15vh 0;
+}
+
+.spinner {
+   margin: 8.5vh auto;
+   height: 28px;
+   width: 28px;
+   animation: rotate 0.8s infinite linear;
+   border: 8px solid rgb(174, 126, 223);
+   border-right-color: transparent;
+   border-radius: 50%;
+ }
+ 
+ @keyframes rotate {
+   0%    { transform: rotate(0deg); }
+   100%  { transform: rotate(360deg); }
+ }

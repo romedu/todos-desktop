@@ -7,6 +7,7 @@ import InputField from "../../UI/InputField/InputField";
 import Button from "../../UI/Button/Button";
 import Loader from "../../UI/Loader/Loader";
 import {capitalizeWord} from "../../../helpers";
+import "./AuthForm.css";
 
 class AuthForm extends Component {
    state = {
@@ -120,7 +121,7 @@ class AuthForm extends Component {
                                            )
 
       return (
-         <div>
+         <div className="AuthForm">
             <h2> {title} </h2>
             {content}
          </div>

@@ -1,0 +1,28 @@
+.AuthForm h2 {
+   font-size: 2em;
+}
+
+.AuthForm form a, .AuthForm form a:visited {
+   display: inline-block;
+   margin-top: 3vh;
+   font-style: oblique;
+   color: rgb(167, 119, 218);
+   text-decoration: none;
+   text-shadow: 0.4px 0.3px black;
+}
+
+@media(max-width: 599px){
+   .AuthForm {
+      width: 90vw;
+      margin: 0 auto;
+   }
+
+   .AuthForm h2 {
+      font-size: 2.5em;
+   }
+
+   .AuthForm form a, .AuthForm form a:visited {
+      font-size: 1.2em;
+      margin-bottom: 2vh;
+   }
+}

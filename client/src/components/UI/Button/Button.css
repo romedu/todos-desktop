@@ -64,6 +64,16 @@ Button:hover {
    box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
 }
 
+.deleteBtn {
+   opacity: 0;
+   background-color: inherit;
+   border: none;
+   color: red;
+   font-size: 1.2em;
+   margin: auto 0;
+   transition: opacity 0.5s ease-in;
+}
+
 @media(max-width: 599px){
    .Button {
       padding: 1vh 2vw;
@@ -91,5 +101,9 @@ Button:hover {
       padding: 0 3vw;
       background-color: inherit;
       font-size: 1.3em;
+   }
+
+   .deleteBtn {
+      opacity: 1;
    }
 }

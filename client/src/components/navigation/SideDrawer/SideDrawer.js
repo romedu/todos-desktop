@@ -3,11 +3,11 @@ import NavItems from "../NavItems/NavItems";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import "./SideDrawer.css";
 
-const SideDrawer = ({hideHandler}) => {
+const SideDrawer = ({showing, hideHandler}) => {
    return (
       <Fragment>
-         <Backdrop closeHandler={hideHandler}/>
-         <div className="SideDrawer">
+         {showing && <Backdrop closeHandler={hideHandler}/>}
+         <div className={`SideDrawer ${showing ? "OpenDrawer" : "ClosedDrawer"}`}>
             <NavItems sideDrawer hideHandler={hideHandler} /> 
          </div>
       </Fragment>

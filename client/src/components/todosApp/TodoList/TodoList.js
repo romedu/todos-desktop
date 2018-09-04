@@ -6,6 +6,7 @@ import Todo from "../Todo/Todo";
 import TodoForm from "../TodoForm/TodoForm";
 import Options from "../../UI/Options/Options";
 import {findByProp} from "../../../helpers";
+import "./TodoList.css";
 
 class TodoList extends Component {
 
@@ -34,8 +35,8 @@ class TodoList extends Component {
             changeTodo = currentFolder && fileNames.length > 1 && <Options label="Change List: " optionList={fileNames} selected={name} pickOption={this.changeListHandler} />;
 
       return (
-         <div>
-            <h1> {name} </h1>
+         <div className="TodoList">
+            <h2> {name} </h2>
             {changeTodo}
             <TodoForm />
             <ul>

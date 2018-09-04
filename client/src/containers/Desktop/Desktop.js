@@ -23,7 +23,6 @@ class Desktop extends Component{
    };
 
    componentDidMount(){
-      console.log("desktop mounted");
       this.checkToken();
    }
 

@@ -4,9 +4,13 @@ import "./Todo.css";
 
 const Todo = ({description, checked, checkHandler, deleteHandler}) => {
    return (
-      <li className={checked ? "checkedTodo" : ""} onClick={checkHandler}>
-         {description}
-         <Button action={deleteHandler}> X </Button>
+      <li className={`Todo ${checked ? "checkedTodo" : ""}`} onClick={checkHandler}>
+         <div>
+            <span>
+               {description}
+            </span>
+            <Button action={deleteHandler} design="delete"> X </Button>
+         </div>
       </li>
    );
 };
