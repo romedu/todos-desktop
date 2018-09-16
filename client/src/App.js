@@ -6,6 +6,7 @@ import Nav from "./containers/Nav/Nav";
 import Modal from "./components/UI/Modal/Modal";
 import TodoApp from "./containers/TodoApp/TodoApp";
 import Authentication from "./containers/Authentication/Authentication";
+import ReportBug from "./containers/ReportBug/ReportBug";
 import {verifyToken, logoutUser} from "./store/actions/auth";
 import {clearMessage, createMessage} from "./store/actions/message";
 
@@ -30,8 +31,9 @@ class App extends Component {
       const tokenExp = localStorage.getItem("tokenExp"),
             currentTime = Date.now(),
             {message, onMessageClear} = this.props,
-            todoApp = tokenExp ? <Route path="/" component={TodoApp}/> : <Redirect from="/" to="/authentication" />,
-            authentication = (Number(tokenExp) > currentTime) ? <Redirect from="/authentication" to="/" /> : <Route path="/authentication" component={Authentication}/>;
+            authRoute = (Number(tokenExp) > currentTime) ? <Redirect from="/authentication" to="/" /> : <Route path="/authentication" component={Authentication}/>,
+            todoAppRoute = tokenExp ? <Route path="/" component={TodoApp}/> : <Redirect from="/" to="/authentication" />,
+            reportBugRoute = tokenExp && <Route path="/report-bugs" component={ReportBug}/>;
       
       return (
          <BrowserRouter>
@@ -39,8 +41,9 @@ class App extends Component {
                <Nav />
                {message.label ? <Modal label={message.label} closeHandler={onMessageClear}> {message.content} </Modal> : null}
                <Switch>
-                  {authentication}
-                  {todoApp}
+                  {authRoute}
+                  {reportBugRoute}
+                  {todoAppRoute}
                </Switch>
             </div>
          </BrowserRouter>

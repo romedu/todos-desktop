@@ -1,7 +1,9 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {logoutUser} from "../../../store/actions/auth";
+import UserNavItems from "../UserNavItems";
+import GuestNavItems from "../GuestNavItems";
 import NavItem from "../NavItem/NavItem";
 import "./NavItems.css";
 
@@ -11,17 +13,13 @@ const NavItems = props => {
          onLogoutHandler();
          if(hideHandler) hideHandler();
        };
-   let userNav = user ? <NavItem action={logoutAction} url={"/authentication/login"} inNav> Logout </NavItem>
-                      : (<Fragment>
-                           <NavItem url={"/authentication/login"} action={hideHandler} inNav> Login </NavItem>
-                           <NavItem url={"/authentication/register"} action={hideHandler} inNav> Register </NavItem>  
-                        </Fragment>);
 
    return (
       <div className={sideDrawer ? "DrawerItems" : "NavItems"}>
          <NavItem url={"/"} action={hideHandler} inNav> Home </NavItem>
-         <NavItem url={"/help"} action={hideHandler} inNav> Help </NavItem>
-         {userNav}
+         {user ? <UserNavItems logoutHandler={logoutAction} hideHandler={hideHandler} />
+               : <GuestNavItems hideHandler={hideHandler} />
+         }
       </div>
    );
 };
