@@ -1,11 +1,14 @@
 import React from "react";
+import HelpContent from "../../components/Help/HelpContent";
+import "./Help.css";
 
 const Help = props => {
    return (
-      <div>
-         <h2 style={{margin: "20vh auto"}}>
+      <div className="Help">
+         <h2>
             Help
          </h2>
+         <HelpContent />
       </div>
    );
 };

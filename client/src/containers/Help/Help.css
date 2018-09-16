@@ -1,0 +1,41 @@
+#appFeature {
+   font-size: 1.1em;
+}
+
+.Help div {
+   padding-bottom: 4vh;
+}
+
+.Help div:last-child{
+   padding-bottom: 0;
+}
+
+.Help h2 {
+   font-size: 3em;
+}
+
+.Help h4 {
+   font-size: 1.4em;
+   margin: 0;
+   padding-top: 2vh;
+}
+
+.Help h5 {
+   font-size: 1.2em;
+   margin-top: 2vh;
+   margin-bottom: 0;
+}
+
+.Help h6 {
+   margin: 0;
+   font-size: 1em;
+}
+
+.Help label {
+   display: inline-block;
+   padding-top: 2vh;
+}
+
+.Help ol {
+   margin-top: 1vh;
+}
