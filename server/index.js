@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const app              = require("express")(),
       cors             = require("cors"),
-      // morgan           = require("morgan"),
+      morgan           = require("morgan"),
       bodyParser       = require("body-parser"),
       serializeError   = require("serialize-error"),
       expressSanitizer = require("express-sanitizer"),
@@ -14,7 +14,7 @@ const app              = require("express")(),
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
-// app.use(morgan("tiny"));
+app.use(morgan("tiny"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api", checkIfToken);
