@@ -7,7 +7,7 @@ qwest.limit(2);
 export const getFolders = (sortProp, sortOrder, pageParam) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&page=${pageParam}&limit=14`)
+      qwest.get(`/api/folder?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&page=${pageParam}&limit=14`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, docs, total, limit} = response;
@@ -27,7 +27,7 @@ const setFolders = (folders, paginationData) => ({
 export const getFolderNames = () => {
    const token = localStorage.getItem("token"); 
    return dispatch => {
-      qwest.get(`/folder?token=${token}`)
+      qwest.get(`/api/folder?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
@@ -54,7 +54,7 @@ export const clearFolders = () => ({
 export const openFolder = folderId => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/folder/${folderId}?token=${token}`)
+      qwest.get(`/api/folder/${folderId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...folder} = response;
@@ -77,7 +77,7 @@ export const closeFolder = () => ({
 export const createFolder = newFolderData => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.post(`/folder?token=${token}`, newFolderData)
+      qwest.post(`/api/folder?token=${token}`, newFolderData)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...newFolder} = response;
@@ -96,7 +96,7 @@ const addFolder = newFolder => ({
 export const updateFolder = (folderId, payload) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.map("PATCH", `/folder/${folderId}?token=${token}`, payload)
+      qwest.map("PATCH", `/api/folder/${folderId}?token=${token}`, payload)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...editedFolder} = response;
@@ -117,7 +117,7 @@ export const deleteFolder = (folderId, keep) => {
          keepParam = keep ? "&keep=true" : "";
 
    return dispatch => {
-      qwest["delete"](`/folder/${folderId}?token=${token}${keepParam}`)
+      qwest["delete"](`/api/folder/${folderId}?token=${token}${keepParam}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;

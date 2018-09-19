@@ -6,7 +6,7 @@ qwest.limit(1);
 export const verifyToken = () => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/auth/verify?token=${token}`)
+      qwest.get(`/api/auth/verify?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {username, isAdmin, id, status, message} = response;
@@ -23,7 +23,7 @@ export const verifyToken = () => {
 
 export const authenticateUser = (type, username, password) => {
    return dispatch => {
-      qwest.post(`/auth/${type}`, {username, password})
+      qwest.post(`/api/auth/${type}`, {username, password})
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {username, isAdmin, id, token, tokenExp, status, message} = response;

@@ -7,7 +7,7 @@ qwest.limit(2);
 export const getLists = (sortProp, sortOrder, pageNum) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true&page=${pageNum}&limit=14`)
+      qwest.get(`/api/todos?token=${token}&sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true&page=${pageNum}&limit=14`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, docs, total, limit} = response;
@@ -27,7 +27,7 @@ const setLists = (lists, paginationData) => ({
 export const openList = listId => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.get(`/todos/${listId}?token=${token}`)
+      qwest.get(`/api/todos/${listId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...list} = response;
@@ -50,7 +50,7 @@ export const closeList = () => ({
 export const createList = (newListData, insideFolder) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.post(`/todos?token=${token}`, newListData)
+      qwest.post(`/api/todos?token=${token}`, newListData)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...newList} = response;
@@ -73,7 +73,7 @@ const addList = newList => ({
 export const updateList = (listId, listFolder, payload) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest.map("PATCH", `/todos/${listId}?token=${token}`, payload)
+      qwest.map("PATCH", `/api/todos/${listId}?token=${token}`, payload)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...editedList} = response;
@@ -98,7 +98,7 @@ const editList = (listId, editedList) => ({
 export const deleteList = (listId, insideFolder) => {
    const token = localStorage.getItem("token");
    return dispatch => {
-      qwest["delete"](`/todos/${listId}?token=${token}`)
+      qwest["delete"](`/api/todos/${listId}?token=${token}`)
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
