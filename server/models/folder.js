@@ -6,7 +6,6 @@ const mongoose = require("mongoose"),
          name: {
             type: String,
             required: [true, "Name is required"],
-            unique: true,
             minlength: [3, "Only between 3 and 14 characters are allowed"],
             maxlength: [14, "Only between 3 and 14 characters are allowed"],
             validate: {
