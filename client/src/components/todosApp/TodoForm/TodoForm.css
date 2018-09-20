@@ -4,6 +4,8 @@
 
 .TodoForm input {
    font-size: 1.1em;
+   padding: 0.3vh 1vh;
+   width: 60%;
    border: 0.5px solid rgb(224, 193, 255);
    border-radius: 8px;
 }
