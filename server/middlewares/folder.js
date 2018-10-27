@@ -22,7 +22,6 @@ exports.ownerPrivileges = (req, res, next) => {
    Folder.findById(req.params.id).populate("creator").exec()
       .then(folder => {
          if(!folder) throw new Error("Not Found");
-         //try to hide the creator id
          if(!folder.creator.isAdmin || folder.creator.id === userId) return next();
          throw new Error("You are not authorized to proceed");
       })
