@@ -1,10 +1,16 @@
 .Button {
    outline: none;
-   background-color: rgb(224, 211, 236);
+   background-color: rgba(92, 233, 214, 0.678);
+   border-radius: 2px;
 }
 
 Button:hover {
    cursor: pointer;
+}
+
+.Button:focus {
+   outline: 2px solid rgb(70, 207, 150);
+   transform: scale(1.02);
 }
 
 .settingsBtn {
@@ -12,11 +18,19 @@ Button:hover {
    height: 1.8vw;
    margin-left: 0.2vw;
    border-radius: 50%;
-   background-color: rgb(234, 214, 255);
+   background: #A1FFCE;
+   background: linear-gradient(145deg, #FAFFD1, #A1FFCE);
+   background: -webkit-linear-gradient(145deg, #FAFFD1, #A1FFCE);
+}
+
+.settingsBtn:focus {
+   outline: 0.5px solid rgb(70, 207, 150);
+   border: 1px solid rgb(70, 207, 150);
 }
 
 .navItemBtn {
-   height: 10vh;
+   height: 8.5vh;
+   margin-bottom: 1.5vh;
    padding: 0 3vw;
    background-color: inherit;
    border: none;
@@ -29,38 +43,42 @@ Button:hover {
    transform: scale(1.1);
 }
 
+.navItemBtn:focus {
+   height: 8.2vh;
+   outline: 2px solid rgb(59, 167, 122);
+   transform: scale(1.02);
+}
+
 .submitBtn {
    display: block;
    margin: 2vh 0;
    padding: 1vh 1vw;
    border-width: 2px;
    font-size: 1.05em;
-   box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
+   box-shadow: 0.1vw 0.2vh rgb(133, 131, 131), -0.05vw -0.05vh rgb(133, 131, 131);
 }
 
 .selectedBtn {
    font-weight: bold;
-   background-color: rgb(224, 193, 255);
+   background-color: rgb(70, 207, 150, 0.678);
 }
 
-.togglerBtn {
+.InFolderBtn {
    float: right;
    padding: 0.75vh 1.25vw;
    font-size: 0.95em;
    box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
-   background-color: rgb(239, 220, 255);
    border-top-left-radius: 8px;
    border-bottom-left-radius: 8px;
    border-top-right-radius: 8px;
    outline: none;
 }
 
-.itemBtn {
+.emptyDesktopBtn {
    display: block;
    margin: 0 auto;
    padding: 1vh 2vw;
    font-size: 1em;
-   background-color: rgb(224, 193, 255);
    box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
 }
 
@@ -68,7 +86,7 @@ Button:hover {
    opacity: 0;
    background-color: inherit;
    border: none;
-   color: red;
+   color: rgb(59, 167, 122);
    font-size: 1.2em;
    margin: auto 0;
    transition: opacity 0.5s ease-in;
@@ -77,7 +95,6 @@ Button:hover {
 @media(max-width: 599px){
    .Button {
       padding: 1vh 2vw;
-      background-color: rgb(224, 193, 255);
    }
 
    .submitBtn {
@@ -91,10 +108,6 @@ Button:hover {
       height: inherit;
       margin-left: 1vw;
       border-radius: 8px;
-   }
-
-   .selectedBtn {
-      background-color: rgb(207, 160, 255)
    }
 
    .navItemBtn {

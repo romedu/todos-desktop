@@ -6,9 +6,10 @@
    display: inline-block;
    margin-top: 3vh;
    font-style: oblique;
-   color: rgb(167, 119, 218);
+   color: rgb(70, 207, 150);
    text-decoration: none;
-   text-shadow: 0.4px 0.3px black;
+   text-shadow: 1px 0.7px black;
+   letter-spacing: 0.6px;
 }
 
 @media(max-width: 599px){

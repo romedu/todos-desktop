@@ -4,7 +4,7 @@
 }
 
 .ButtonGroup button, .ButtonGroup a button, .confirmGroup button {
-   margin-left: 0.5vw;
+   margin-left: 1vw;
    padding: 1vh 2vw;
    font-size: 0.95em;
    box-shadow: 0.1vw 0.2vh black, -0.05vw -0.05vh black;
@@ -30,7 +30,7 @@
 .settingsGroup button {
    border-width: 1px;
    margin-right: 0.15vw;
-   border-color: rgb(207, 160, 255);
+   border-color: rgb(70, 207, 150);
 }
 
 .confirmGroup {
@@ -40,7 +40,6 @@
 
 .confirmGroup button {
    padding: 0.5vh 1vw;
-   background-color: rgb(224, 211, 236);
 }
 
 .pagesGroup {

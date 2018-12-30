@@ -1,9 +1,9 @@
 import React from "react";
 import "./Loader.css";
 
-const Loader = props => {
+const Loader = ({mini}) => {
    return (
-      <div className="loader">
+      <div className={mini ? "MiniLoader" : "Loader"}>
          <div className="spinner"></div>
       </div>
    )

@@ -13,12 +13,13 @@
    padding: 1.2vh 1.3%;
    margin: 0.5vh 0;
    font-size: 1.1em;
-   border: 0.5px solid rgb(224, 193, 255);
+   border: 0.5px solid rgb(92, 233, 214);
    border-radius: 8px;
 }
 
 .InputField input:focus {
-   outline: 2px solid rgb(207, 160, 255);
+   outline: 2px solid rgb(70, 207, 150);
+   box-shadow: 3px 3px #A1FFCE;
 }
 
 .InputField button {

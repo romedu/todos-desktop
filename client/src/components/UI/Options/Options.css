@@ -4,7 +4,8 @@
 }
 
 .selectOption:focus {
-   outline: 2px solid rgb(207, 160, 255);
+   outline: 2px solid rgb(70, 207, 150);
+   box-shadow: 3px 3px #A1FFCE;
 }
 
 @media(max-width: 599px){

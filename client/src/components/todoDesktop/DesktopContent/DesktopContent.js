@@ -93,7 +93,7 @@ class DesktopContent extends Component {
                ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <Fragment>
                      <h4> Your desktop is empty </h4>
-                     <Button action={newFormHandler} design="item"> Create a new {itemsType} </Button>
+                     <Button action={newFormHandler} design="emptyDesktop"> Create a new {itemsType} </Button>
                  </Fragment>,
 
             currentPage = Number(getQueries(location.search).page) || 1,

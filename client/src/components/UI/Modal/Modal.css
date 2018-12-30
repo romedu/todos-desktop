@@ -6,7 +6,9 @@
    height: 33.3vh;
    padding: 1vh 1vw;
    font-size: 1.1em;
-   background-color: rgb(224, 193, 255);
+   background-color: #A1FFCE;
+   background: linear-gradient(145deg, #FAFFD1, #A1FFCE);
+   background: -webkit-linear-gradient(145deg, #FAFFD1, #A1FFCE);
    border-radius: 4px;
    box-shadow: 4px 4px 20px;
    z-index: 8;

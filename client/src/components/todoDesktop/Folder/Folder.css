@@ -2,7 +2,9 @@
    position: fixed;
    left: 20vw;
    top: 20vh;
-   background-color: rgb(255, 219, 234);
+   background: #A1FFCE;
+   background: linear-gradient(135deg, #FAFFD1, #A1FFCE);
+   background: -webkit-linear-gradient(135deg, #FAFFD1, #A1FFCE);
    border-radius: 8px;
    box-shadow: 6px 9.5px 20px;
 }

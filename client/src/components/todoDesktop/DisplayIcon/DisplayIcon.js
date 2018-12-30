@@ -17,7 +17,7 @@ const DisplayIcon = props => {
          ),
           buttons = [
             {
-               description: <FontAwesomeIcon icon={faTrashAlt} color="rgb(174, 126, 223)" />,
+               description: <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faTrashAlt} color="rgb(59, 167, 122)" />,
                design: "settings",
                action: e => {
                   e.stopPropagation(); 
@@ -25,7 +25,7 @@ const DisplayIcon = props => {
                }
             },
             {
-               description: <FontAwesomeIcon icon={faPencilAlt} color="rgb(174, 126, 223)" />,
+               description: <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faPencilAlt} color="rgb(59, 167, 122)" />,
                design: "settings",
                action: e => {
                   e.stopPropagation(); 

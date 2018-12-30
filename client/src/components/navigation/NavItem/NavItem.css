@@ -1,11 +1,20 @@
+.NavItem:focus {
+   outline: 2px solid rgb(59, 167, 122);
+   transform: scale(1.02);
+}
+
 .ActiveNav button {
-   height: 9vh;
-   margin-bottom: 1vh;
+   height: 8.5vh;
+   margin-bottom: 1.5vh;
    font-weight: 600;
-   background-color: rgb(207, 160, 255);
+   background-color: rgb(70, 207, 150);
 }
 
 .ActiveNav button:hover {
+   transform: none;
+}
+
+.ActiveNav button:focus {
    transform: none;
 }
 

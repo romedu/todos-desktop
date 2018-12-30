@@ -23,6 +23,7 @@
 @media(max-width: 599px){
    .IconList {
       width: 100%;
+      margin-top: 6vh;
    }
    
    .IconList h3 {

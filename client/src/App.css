@@ -3,7 +3,15 @@
    padding: 0;
    margin-bottom: 3vh;
    font-family: "roboto";
-   background: rgb(255, 221, 235);
-   background: -webkit-linear-gradient(to right, rgb(255, 221, 235), rgb(237, 214, 255));
-   background: linear-gradient(to right, rgb(255, 221, 235), rgb(237, 214, 255));
+   background: #A1FFCE;
+   background: linear-gradient(to top, #FAFFD1, #A1FFCE);
+   background: -webkit-linear-gradient(to top, #FAFFD1, #A1FFCE);
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+}
+
+@media(max-width: 599px){
+   .App, body, html {
+      margin-bottom: 0;
+   }
 }

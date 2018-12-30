@@ -5,7 +5,9 @@
    width: 23vw;
    padding: 1vh 1vw 3vh;
    z-index: 6;
-   background-color: rgb(251, 221, 255);
+   background-color: #A1FFCE;
+   background: linear-gradient(145deg, #FAFFD1, #A1FFCE);
+   background: -webkit-linear-gradient(145deg, #FAFFD1, #A1FFCE);
    border-radius: 4px;
    box-shadow: 4px 4px 20px;
 }
@@ -28,12 +30,13 @@
    margin: 0.5vh 0.3%;
    font-size: 1.1em;
    resize: none;
-   border-color: rgb(224, 193, 255);
+   border: 0.5px solid rgb(92, 233, 214);
    border-radius: 8px;
 }
 
 .itemForm form textarea:focus {
-   outline: 2px solid rgb(207, 160, 255);
+   outline: 2px solid rgb(70, 207, 150);
+   box-shadow: 3px 3px #A1FFCE;
 }
 
 @media(max-width: 599px){

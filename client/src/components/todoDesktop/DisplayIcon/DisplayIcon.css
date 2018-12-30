@@ -32,12 +32,12 @@
 
 .folderIcon {
    border-radius: 2px;
-   background-color: rgb(255, 186, 241);
+   background-color: rgba(96, 214, 145, 0.808);
 }
 
 .todoIcon {
    border-radius: 8px;
-   background-color: rgb(224, 193, 255);
+   background-color: rgba(92, 233, 214, 0.678);
 }
 
 @media(max-width: 599px){

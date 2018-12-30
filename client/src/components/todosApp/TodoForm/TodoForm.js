@@ -2,12 +2,19 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {createTodo} from "../../../store/actions/todo";
 import Button from "../../UI/Button/Button";
+import Loader from "../../UI/Loader/Loader";
 import "./TodoForm.css";
 
 class TodoForm extends Component {
    state = {
-      description: ""
+      description: "",
+      isLoading: false
    };
+
+   componentDidUpdate(prevProps, prevState){
+      const {currentList} = this.props;
+      if(prevState.isLoading && prevProps.currentList !== currentList) this.setState({isLoading: false});
+   }
 
    onInputUpdate = e => {
       const {name, value} = e.target;
@@ -21,16 +28,22 @@ class TodoForm extends Component {
       const {description} = this.state,
             {currentList, onCreateTodo} = this.props;
 
-      if(description.trim()) this.setState({description: ""}, onCreateTodo(currentList._id, description));
+      if(description.trim()){
+         this.setState({
+            description: "", 
+            isLoading: true
+         }, onCreateTodo(currentList._id, description));
+      }
    }
 
    render(){
-      const {description} = this.state;
+      const {description, isLoading} = this.state;
 
       return (
          <form onSubmit={this.onSubmit} className="TodoForm">
             <input type="text" name="description" value={description} autoComplete="off" onChange={this.onInputUpdate} />
-            <Button type="submit"> Add </Button>
+            <Button type="submit" disabled={isLoading || !description.trim()}> Add </Button>
+            {isLoading && <Loader mini={true} />}
          </form>
       )
    }
