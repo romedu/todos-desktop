@@ -6,6 +6,7 @@ import Nav from "./containers/Nav/Nav";
 import Modal from "./components/UI/Modal/Modal";
 import TodoApp from "./containers/TodoApp/TodoApp";
 import Authentication from "./containers/Authentication/Authentication";
+import Help from "./containers/Help/Help";
 import ReportBug from "./containers/ReportBug/ReportBug";
 import {verifyToken, logoutUser} from "./store/actions/auth";
 import {clearMessage, createMessage} from "./store/actions/message";
@@ -44,6 +45,7 @@ class App extends Component {
                   {authRoute}
                   {reportBugRoute}
                   {todoAppRoute}
+                  <Route path="/help" component={Help} />
                </Switch>
             </div>
          </BrowserRouter>

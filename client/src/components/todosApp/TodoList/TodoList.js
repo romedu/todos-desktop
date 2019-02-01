@@ -36,7 +36,12 @@ class TodoList extends Component {
 
       return (
          <div className="TodoList">
-            <h2> {name} </h2>
+            <h2>
+               {name}
+            </h2>
+            <h3>
+               {currentFolder.name}
+            </h3>
             {changeTodo}
             <TodoForm />
             <ul>
