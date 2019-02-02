@@ -42,10 +42,10 @@ class App extends Component {
                <Nav />
                {message.label ? <Modal label={message.label} closeHandler={onMessageClear}> {message.content} </Modal> : null}
                <Switch>
+                  <Route path="/help" component={Help} />
                   {authRoute}
                   {reportBugRoute}
                   {todoAppRoute}
-                  <Route path="/help" component={Help} />
                </Switch>
             </div>
          </BrowserRouter>

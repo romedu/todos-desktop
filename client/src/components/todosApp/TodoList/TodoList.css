@@ -2,9 +2,17 @@
    padding-top: 0.5vh;
 }
 
+.TodoList h2, .TodoList h3 {
+   padding-left: 5px;
+}
+
 .TodoList h2 {
    font-size: 2.2em;
-   padding-left: 5px;
+   margin-bottom: 0;
+}
+
+.TodoList h3 {
+   margin-top: 0;
 }
 
 .TodoList ul {

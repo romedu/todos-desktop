@@ -39,9 +39,7 @@ class TodoList extends Component {
             <h2>
                {name}
             </h2>
-            <h3>
-               {currentFolder.name}
-            </h3>
+            {currentFolder && <h3> {currentFolder.name} </h3>}
             {changeTodo}
             <TodoForm />
             <ul>

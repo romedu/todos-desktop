@@ -6,7 +6,9 @@ const ReportBugForm = ({reportMessage, updateInput, submitForm}) => (
         <textArea onChange={updateInput}>
             {reportMessage}
         </textArea>
-        <Button type="submit" design="submit" />
+        <Button type="submit" design="submit">
+            Submit
+        </Button>
     </form>
 );
 
