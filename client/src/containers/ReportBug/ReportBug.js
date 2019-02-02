@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Loader from "../../components/UI/Loader/Loader";
-import ReportBugForm from "../../components/ReportBug/RepurtBugForm/ReportBugForm";
+import ReportBugForm from "../../components/ReportBug/ReportBugForm/ReportBugForm";
 import "./ReportBug.css";
 
 class ReportBug extends Component {
