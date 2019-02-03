@@ -1,6 +1,9 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import Loader from "../../components/UI/Loader/Loader";
 import ReportBugForm from "../../components/ReportBug/ReportBugForm/ReportBugForm";
+import {createMessage} from "../../store/actions/message";
+import qwest from "qwest";
 import "./ReportBug.css";
 
 class ReportBug extends Component {
@@ -9,29 +12,49 @@ class ReportBug extends Component {
       isLoading: false,
       messageSent: false
    }
-   
+
    onInputUpdate = event => this.setState({reportMessage: event.target.value});
+
    onSubmitForm = event => {
-      //HANDLE FORM SUBMISSION
-      console.log("form submitted");
-      this.setState({isLoading: true});
+      event.preventDefault();
+      this.setState({isLoading: true}, () => {
+         const {onMessageCreate} = this.props,
+               token = localStorage.getItem("token");
+
+         qwest.post(`/api/services/sendMessage?token=${token}`, {message: this.state.reportMessage})
+            .then(response => {
+               if(response.status && response.status !== 200) throw new Error(response.message);
+               this.setState({isLoading: false, messageSent: true, reportMessage: ""}, () => {
+                  onMessageCreate("Notification", response.message)
+               });
+            })
+            .catch(error => {
+               this.setState({isLoading: false}, () => {
+                  onMessageCreate("Error", error.message)
+               });
+            })
+      });
    }
    
    render(){
       const {onInputUpdate, onSubmitForm} = this,
-            {reportMessage, isLoading, messageSent} = this.state,
-            content = messageSent ? <h5> Bug reported successfully </h5>
-                                  : <ReportBugForm reportMessage={reportMessage} updateInput={onInputUpdate} submitForm={onSubmitForm} />;
+            {reportMessage, isLoading} = this.state,
+            content = isLoading ? <Loader />
+                                : <ReportBugForm reportMessage={reportMessage} updateInput={onInputUpdate} submitForm={onSubmitForm} />;
       
       return (
          <div className="ReportBug">
             <h3>
                Report a bug:
             </h3>
-            {isLoading ? <Loader /> : content}
+            {content}
          </div>
       )
    }
 }
 
-export default ReportBug;
+const mapDispatchToProps = dispatch => ({
+   onMessageCreate: (label, content) => dispatch(createMessage(label, content))
+});
+
+export default connect(null, mapDispatchToProps)(ReportBug);
