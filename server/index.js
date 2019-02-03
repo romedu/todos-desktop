@@ -5,7 +5,7 @@ const app              = require("express")(),
       serializeError   = require("serialize-error"),
       expressSanitizer = require("express-sanitizer"),
       PORT             = process.env.PORT || 3000,
-      {authRoutes, folderRoutes, todoListRoutes, todoRoutes} = require("./routes"),
+      {authRoutes, folderRoutes, todoListRoutes, todoRoutes, servicesRoutes} = require("./routes"),
       {checkIfToken, todos} = require("./middlewares"),
       {errorHandler}   = require("./helpers/error");
 
@@ -19,6 +19,7 @@ app.use("/api", checkIfToken);
 app.use("/api/todos/:id/todo", todos.checkPermission, todoRoutes);
 app.use("/api/todos", todoListRoutes);
 app.use("/api/folder", folderRoutes);
+app.use("/api/services", servicesRoutes);
 app.get("*", (req, res, next) => next(errorHandler(404, "Route not found")));
 
 app.use((error, req, res, next) => {
