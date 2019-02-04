@@ -17,6 +17,7 @@ const NavItems = props => {
    return (
       <div className={sideDrawer ? "DrawerItems" : "NavItems"}>
          <NavItem url={"/"} action={hideHandler} inNav> Home </NavItem>
+         <NavItem url={"/help"} action={hideHandler} inNav> Help </NavItem>
          {user ? <UserNavItems logoutHandler={logoutAction} hideHandler={hideHandler} />
                : <GuestNavItems hideHandler={hideHandler} />
          }

@@ -13,7 +13,7 @@ const Options = ({name, label, optionList, emptyOption, selected, pickOption}) =
 
    return (
       <Fragment>
-         <label>
+         <label className="optionsLabel">
             {label}
          </label>
          <select name={name} value={selected || emptyOption} onChange={pickOption} className="selectOption">

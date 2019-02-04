@@ -1,3 +1,7 @@
+h3 + .optionsLabel {
+   padding-left: 5px;
+}
+
 .selectOption {
    margin: 0.5vh 1%;
    font-size: 1em;
