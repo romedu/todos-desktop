@@ -33,10 +33,9 @@ class DesktopContent extends Component {
 
       if((prevProps.sorting.label !== sorting.label) || (prevProps.location !== location && (sort === sorting.label))
          || prevProps.itemsType !== itemsType || ((currentPage !== prevPage) && (prevSortParam === sortParam))) return this.getItems();
-      
+
+      // Update the UI after changing from the todos to the folders route and vice versa 
       else if(isLoading && ((!prevProps.folders && folders) || (!prevProps.todos && todos))) return this.setState({isLoading: false});
-      //NEED TO REMOVE THIS ONE, RETURNS EXACTLY THE SAME THING AS THE ONE ABOVE
-      else if(isLoading && ((folders && (prevProps.folders !== folders)) || (todos && (prevProps.todos !== todos)))) return this.setState({isLoading: false});
    }
 
    componentWillUnmount(){
@@ -72,7 +71,8 @@ class DesktopContent extends Component {
 
    render(){
       const {isLoading} = this.state,
-            {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, settingsHandler, deleteHandler, setSortingHandler} = this.props,
+            {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, 
+            settingsHandler, deleteHandler, setSortingHandler} = this.props,
             buttons = [
                {
                   description: "Create Item",

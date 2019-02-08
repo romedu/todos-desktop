@@ -5,10 +5,11 @@ import ItemForm from "../../../containers/ItemForm/ItemForm";
 import Confirmation from "../../UI/Confirmation/Confirmation";
 
 const DesktopPopups = props => {
-   const {message, currentFolder, itemToEdit, itemsType, openFolderId, showItemForm, confirmation, folderHandler, itemFormHandler, settingsHandler, deleteConfHandler, hideConfirmation, deleteItemHandler, removeItemHandler} = props;
+   const {message, currentFolder, itemToEdit, itemsType, folderDisplaying, showItemForm, confirmation, folderHandler, itemFormHandler,
+          settingsHandler, deleteConfHandler, hideConfirmation, deleteItemHandler, removeItemHandler} = props;
    return (
       <Fragment>
-         {openFolderId && !message && <Folder folderId={openFolderId} closeHandler={folderHandler} newFormToggle={itemFormHandler} settingsHandler={settingsHandler} deleteHandler={deleteConfHandler} />}
+         {folderDisplaying && !message && <Folder folderId={folderDisplaying} closeHandler={folderHandler} newFormToggle={itemFormHandler} settingsHandler={settingsHandler} deleteHandler={deleteConfHandler} />}
          {showItemForm && !message && <ItemForm itemType={itemToEdit ? itemToEdit.type : itemsType} itemToEdit={itemToEdit} closeHandler={itemFormHandler} />}
          {confirmation.deleteConfirm && <Confirmation isLoading={confirmation.isLoading} closeHandler={hideConfirmation} deleteHandler={deleteItemHandler} slightDrop={!!currentFolder}>
             Do you really want to delete the {itemToEdit.name} {itemToEdit.type}? 

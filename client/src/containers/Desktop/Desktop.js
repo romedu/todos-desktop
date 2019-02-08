@@ -12,9 +12,9 @@ import "./Desktop.css";
 
 class Desktop extends Component{
    state = {
-      openFolderId: null,
-      itemToEdit: null,
-      showItemForm: false,
+      folderDisplaying: null, // Folder showing in the folder's component
+      itemToEdit: null, // Item selected for update
+      showItemForm: false, // Display for the new item or edit item form
       confirmation: {
          deleteConfirm: false,
          keepItemsConfirm: false,
@@ -22,20 +22,17 @@ class Desktop extends Component{
       }
    };
 
-   componentDidMount(){
-      this.checkToken();
-   }
-
    componentDidUpdate(prevProps){
       const {message} = this.props,
-            {showItemForm, confirmation, openFolderId} = this.state;
-            
+            {showItemForm, confirmation, folderDisplaying} = this.state;
+      
+      // This one is used to make sure the UI only gets updated if the data really changed in the server
       this.checkToken();
 
-      //Close itemForm || openFolder, if an error ocurred
-      if(prevProps.message !== message){
+      // If an error were to occur close the component that caused it, the itemForm or the folderDisplaying 
+      if(prevProps.message && !message){
          if(showItemForm) return this.setState({showItemForm: false, itemToEdit: null});
-         else if(openFolderId) return this.openFolderHandler();
+         else if(!showItemForm && folderDisplaying) return this.displayFolderHandler();
       }
 
       //Close delete confirmation after its action is completed
@@ -62,7 +59,8 @@ class Desktop extends Component{
       }
    }
 
-   openFolderHandler = folderId => this.setState({openFolderId: folderId || null});
+   // Updates the displaying folder state
+   displayFolderHandler = folderId => this.setState({folderDisplaying: folderId || null});
 
    itemFormHandler = () => this.setState(prevState => ({showItemForm: !prevState.showItemForm, itemToEdit: null}));
 
@@ -76,21 +74,21 @@ class Desktop extends Component{
       const {itemToEdit} = this.state,
             {folders} = this.props;
 
-      //Check if the keep files message is needed
+      // If the item to delete is a folder and it contains todos, the keep files message is displayed
       if((itemToEdit.type === "folder") && findByProp("_id", itemToEdit._id, folders).files.length) return this.setState(prevState => ({confirmation: {...prevState.confirmation, deleteConfirm: false, keepItemsConfirm: true}}));
       return this.setState(prevState => ({confirmation: {...prevState.confirmation, isLoading: true}}), this.removeItemHandler);
    }
 
    removeItemHandler = keep => {
-      const {currentFolder, onFolderDelete, onTodosDelete} = this.props,
-            {itemToEdit} = this.state;
+      const {onFolderDelete, onTodosDelete} = this.props,
+            {itemToEdit, folderDisplaying} = this.state;
 
       if(itemToEdit.type === "folder") return this.setState(prevState => ({confirmation: {...prevState.confirmation, isLoading: true}}), () => onFolderDelete(itemToEdit._id, keep));
-      return onTodosDelete(itemToEdit._id, !!currentFolder);  
+      return onTodosDelete(itemToEdit._id, !!folderDisplaying);  
    }
 
    render(){
-      const {openFolderId, itemToEdit, showItemForm, confirmation} = this.state,
+      const {folderDisplaying, itemToEdit, showItemForm, confirmation} = this.state,
             {itemsType} = this.props;
 
       return (
@@ -98,9 +96,9 @@ class Desktop extends Component{
             <h1>
                Todos Desktop
             </h1>
-            <DesktopContent itemsType={itemsType} openFolderHandler={this.openFolderHandler} newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
-            <DesktopPopups itemToEdit={itemToEdit} itemsType={itemsType} openFolderId={openFolderId} showItemForm={showItemForm}
-                           confirmation={confirmation} folderHandler={this.openFolderHandler} itemFormHandler={this.itemFormHandler} 
+            <DesktopContent itemsType={itemsType} openFolderHandler={this.displayFolderHandler} newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
+            <DesktopPopups itemToEdit={itemToEdit} itemsType={itemsType} folderDisplaying={folderDisplaying} showItemForm={showItemForm}
+                           confirmation={confirmation} folderHandler={this.displayFolderHandler} itemFormHandler={this.itemFormHandler} 
                            settingsHandler={this.settingsHandler} deleteConfHandler={this.deleteConfHandler} hideConfirmation={this.hideConfirmation}
                            deleteItemHandler={this.deleteItemHandler} removeItemHandler= {this.removeItemHandler} />
          </div>
@@ -109,9 +107,8 @@ class Desktop extends Component{
 }
 
 const mapStateToProps = state => ({
-   currentFolder: state.folder.current,
+   todos: state.todoList.lists, // Needed to update the props when removing a todoList
    folders: state.folder.list,
-   todos: state.todoList.lists,
    message: state.message.label,
 });
 

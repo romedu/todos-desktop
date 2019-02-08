@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {openList, closeList} from "../../store/actions/todoList";
+import {openList} from "../../store/actions/todoList";
+import {closeFolder} from "../../store/actions/folder";
 import TodoList from "../../components/todosApp/TodoList/TodoList";
 import Loader from "../../components/UI/Loader/Loader";
 
@@ -23,8 +24,9 @@ class TodoFile extends Component {
    }
 
    componentWillUnmount(){
-      const {onListClose} = this.props;
-      onListClose();
+      const {currentFolder, onFolderClose} = this.props;
+      // If the file belongs to a folder, it gets closed
+      if(currentFolder) onFolderClose();
    }
 
    render(){
@@ -43,12 +45,13 @@ class TodoFile extends Component {
 
 const mapStateToProps = state => ({
    message: state.message.content,
-   currentList: state.todoList.current
+   currentList: state.todoList.current,
+   currentFolder: state.folder.current
 });
 
 const mapDispatchToProps = dispatch => ({
    onListOpen: listId => dispatch(openList(listId)),
-   onListClose: () => dispatch(closeList())
+   onFolderClose: () => dispatch(closeFolder())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoFile);
