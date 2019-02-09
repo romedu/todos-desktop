@@ -1,29 +1,10 @@
 import React from "react";
-import NavItem from "../../navigation/NavItem/NavItem";
-import Button from "../Button/Button";
 import "./ButtonGroup.css";
 
-const ButtonGroup = ({buttons, groupType}) => {
-   const btnGroup = buttons.map((button, index) => {
-      if(button.url){
-         return (
-            <NavItem key={`${index}${button.description}`} style={button.design} {...button}>
-               {button.description}
-            </NavItem>
-         );
-      }
-      return (
-         <Button key={`${index}${button.description}`} {...button}>
-            {button.description}
-         </Button>
-      );
-   });
-
-   return (
-      <span className={`${groupType || "ButtonGroup"}`}>
-         {btnGroup}
-      </span>
-   );
-};
+const ButtonGroup = ({groupType, children}) => (
+   <span className={`${groupType || "ButtonGroup"}`}>
+      {children}
+   </span>
+);
 
 export default ButtonGroup;

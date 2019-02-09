@@ -6,6 +6,7 @@ import {getLists} from "../../../store/actions/todoList";
 import IconList from "../IconList/IconList";
 import SortOptions from "../SortOptions/SortOptions";
 import Pagination from "../Pagination/Pagination";
+import NavItem from "../../navigation/NavItem/NavItem";
 import Button from "../../UI/Button/Button";
 import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
 import Loader from "../../UI/Loader/Loader";
@@ -73,22 +74,6 @@ class DesktopContent extends Component {
       const {isLoading} = this.state,
             {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, 
             settingsHandler, deleteHandler, setSortingHandler} = this.props,
-            buttons = [
-               {
-                  description: "Create Item",
-                  action: !isLoading ? newFormHandler : null
-               },
-               {
-                  description: "Folders",
-                  url: !isLoading && `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`,
-                  design: (location.pathname === "/folders") && "selected"
-               },
-               {
-                  description: "TodoLists",
-                  url: !isLoading && `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`,
-                  design: (location.pathname === "/todos") && "selected"
-               }
-            ],
             itemList = ((folders && folders.length) || (todos && todos.length))
                ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <Fragment>
@@ -114,7 +99,17 @@ class DesktopContent extends Component {
             
       return (
          <Fragment>
-            <ButtonGroup buttons={buttons} />
+            <ButtonGroup>
+               <Button action={newFormHandler}>
+                  Create Item
+               </Button>
+               <NavItem style={(location.pathname === "/folders") && "selected"} url={!isLoading && `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+                  Folders
+               </NavItem>
+               <NavItem style={(location.pathname === "/todos") && "selected"} url={!isLoading && `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+                  TodoLists
+               </NavItem>
+            </ButtonGroup>
             {content}
          </Fragment>
       );

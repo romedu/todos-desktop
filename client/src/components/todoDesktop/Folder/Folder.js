@@ -17,7 +17,7 @@ class Folder extends Component {
    }
 
    componentDidUpdate(prevProps){
-      if(prevProps.folder !== this.props.folder) this.setState({isLoading: false});
+      if(!prevProps.folder && this.props.folder) this.setState({isLoading: false});
    }
 
    clearFolderHandler = () => {
