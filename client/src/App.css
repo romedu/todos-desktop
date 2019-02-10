@@ -1,13 +1,13 @@
 .App, body, html {
    margin: 0;
    padding: 0;
-   margin-bottom: 3vh;
    font-family: "roboto";
    background: #A1FFCE;
    background: linear-gradient(to top, #FAFFD1, #A1FFCE);
    background: -webkit-linear-gradient(to top, #FAFFD1, #A1FFCE);
    background-repeat: no-repeat;
    background-attachment: fixed;
+   overflow-x: hidden;
 }
 
 @media(max-width: 599px){

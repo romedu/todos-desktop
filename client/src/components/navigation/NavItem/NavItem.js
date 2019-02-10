@@ -3,9 +3,8 @@ import {NavLink, withRouter} from "react-router-dom";
 import Button from "../../UI/Button/Button";
 import "./NavItem.css";
 
-const NavItem = props => {
-   const {action, url, style, children, inNav, location} = props,
-         {pathname} = location,
+const NavItem = ({action, url, style, children, inNav, location}) => {
+   const {pathname} = location,
          isHomeActive = url === "/" && (pathname === "/folders" || pathname === "/todos");
 
    return (

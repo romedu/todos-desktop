@@ -1,11 +1,13 @@
 .TodoApp {
    margin-top: 13vh;
+   margin-bottom: 3vh;
    padding: 0 10vw;
 }
 
 @media(max-width: 599px){
    .TodoApp {
       margin-top: 15vh;
+      margin-bottom: 0;
       padding: 0 2vw;
    }
 }

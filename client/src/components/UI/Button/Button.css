@@ -92,6 +92,14 @@ Button:hover {
    transition: opacity 0.5s ease-in;
 }
 
+.footerBtn {
+   background-color: #faf8f8;
+   padding: 1.5vw;
+   font-weight: bold;
+   font-size: 1.3em;
+   border-radius: 10px;
+}
+
 @media(max-width: 599px){
    .Button {
       padding: 1vh 2vw;
