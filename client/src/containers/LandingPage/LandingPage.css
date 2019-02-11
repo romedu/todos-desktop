@@ -1,0 +1,9 @@
+.LandingPage {
+   width: 100vw;
+}
+
+.BackgroundSection {
+   height: 60vh;
+   background-attachment: fixed;
+   background-position: center;
+}

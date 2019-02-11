@@ -1,0 +1,43 @@
+.MainSection {
+   height: 95vh;
+   background-repeat: no-repeat;
+   background-origin: content-box;
+   background-attachment: fixed;
+}
+
+.MainSection h1 {
+   padding-top: 26vh;
+   font-size: 4em;
+   font-family: Alegreya;
+}
+
+.MainSection h3 {
+   padding-top: 4vh;
+   font-size: 1.3em;
+   font-family: Roboto;
+}
+
+.MainSection h1, .MainSection h3 {
+   text-align: center;
+   margin: 0;
+   width: 100%;
+}
+
+.LandingLink {
+   display: block;
+   width: fit-content;
+   margin: 7vh auto;
+   padding: 1.5vw;
+   background-color: rgb(92, 233, 214);
+   text-decoration: none;
+   color: black;
+   font-size: 1.1em;
+   font-weight: bold;
+   border-radius: 10px;
+   box-shadow: 2px 2px;
+   transition: all 0.1s;
+}
+
+.LandingLink:active {
+   box-shadow: 1px 1px;
+}

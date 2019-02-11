@@ -1,0 +1,16 @@
+.OverviewSection {
+   height: fit-content;
+   background-color: #faf8f8;
+}
+
+.OverviewSection h2 {
+   margin: 0;
+   padding-top: 10vh;
+   text-align: center;
+}
+
+.OverviewSection ul {
+   display: flex;
+   justify-content: space-around;
+   padding: 10vh 10vw 15vh;
+}

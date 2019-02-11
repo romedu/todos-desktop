@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import './App.css';
 import Nav from "./containers/Nav/Nav";
 import Modal from "./components/UI/Modal/Modal";
+import LandingPage from "./containers/LandingPage/LandingPage";
 import TodoApp from "./containers/TodoApp/TodoApp";
 import Authentication from "./containers/Authentication/Authentication";
 import Help from "./containers/Help/Help";
@@ -43,6 +44,7 @@ class App extends Component {
                {message.label ? <Modal label={message.label} closeHandler={onMessageClear}> {message.content} </Modal> : null}
                <Switch>
                   <Route path="/help" component={Help} />
+                  <Route path="/landing" component={LandingPage} />
                   {authRoute}
                   {reportBugRoute}
                   {todoAppRoute}

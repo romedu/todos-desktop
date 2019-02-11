@@ -1,0 +1,20 @@
+.InfoBlock {
+   width: 19.3vw;
+   height: 70vh;
+   padding: 10vh 7vw;
+   text-align: center;
+}
+
+.InfoBlock h5 {
+   font-size: 1.5em;
+}
+
+.InfoBlock .ImageContainer {
+   display: inline-block;
+   width: 14.3vw;
+   height: 14.3vw;
+   margin: 0 2.5vw 5vh;
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center;
+}

@@ -1,0 +1,11 @@
+.OverviewThumbnail {
+   width: 16vw;
+   list-style: none;
+   text-align: center;
+}
+
+.OverviewThumbnail img {
+   width: 8vw;
+   height: 8vw;
+   margin: 0 auto;
+}
