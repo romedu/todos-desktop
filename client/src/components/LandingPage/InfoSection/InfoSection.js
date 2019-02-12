@@ -8,13 +8,13 @@ import "./InfoSection.css";
 const InfoSection = props => {
    return (
       <section className="InfoSection">
-         <InfoBlock title="Lorem ipsum dolor" image={reactImage} backgroundColor="rgb(236, 255, 130)">
+         <InfoBlock title="Lorem ipsum dolor" image={reactImage} backgroundColor="#CFBAE1">
             Lorem ipsum dolor sit amet, nec nemore causae prompta ut. Vel idque persequeris id, vel cu volumus intellegam deterruisset. 
          </InfoBlock>
-         <InfoBlock title="Lorem ipsum dolor" image={nodeHerokuImage} backgroundColor="skyblue">
+         <InfoBlock title="Lorem ipsum dolor" image={nodeHerokuImage} backgroundColor="#FEC3A6">
             Lorem ipsum dolor sit amet, nec nemore causae prompta ut. Vel idque persequeris id, vel cu volumus intellegam deterruisset.
          </InfoBlock>
-         <InfoBlock title="Lorem ipsum dolor" image={resortImage} backgroundColor="rgb(162, 219, 116)">
+         <InfoBlock title="Lorem ipsum dolor" image={resortImage} backgroundColor="#EFE9AE">
             Lorem ipsum dolor sit amet, nec nemore causae prompta ut. Vel idque persequeris id, vel cu volumus intellegam deterruisset.
          </InfoBlock>
       </section>

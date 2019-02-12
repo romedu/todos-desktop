@@ -19,7 +19,7 @@ const OverviewSection = props => {
                We are active at all times, if you ever feel like reporting a bug or proving feedback you can be sure we will listen.
             </OverviewThumbnail>
             <OverviewThumbnail title="Security creates comfortness" image={theaterImage}>
-               We make sure to keep your todos and your data private at al times.
+               We make sure to keep your todos and your data private at all times.
             </OverviewThumbnail>
          </ul>
       </section>

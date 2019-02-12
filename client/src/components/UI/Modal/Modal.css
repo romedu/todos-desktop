@@ -7,8 +7,8 @@
    padding: 1vh 1vw;
    font-size: 1.1em;
    background-color: #A1FFCE;
-   background: linear-gradient(145deg, #FAFFD1, #A1FFCE);
-   background: -webkit-linear-gradient(145deg, #FAFFD1, #A1FFCE);
+   background: linear-gradient(0deg,#EFE9AE,#FEC3A6);
+   background: -webkit-linear-gradient(0deg,#EFE9AE,#FEC3A6);
    border-radius: 4px;
    box-shadow: 4px 4px 20px;
    z-index: 8;
