@@ -9,8 +9,8 @@
    display: flex;
    flex-direction: column;
    background: #A1FFCE;
-   background: linear-gradient(0deg, #EFE9AE, #FEC3A6);
-   background: -webkit-linear-gradient(0deg, #EFE9AE, #FEC3A6);
+   background: linear-gradient(0deg, #EFE9AE, #fcb38f);
+   background: -webkit-linear-gradient(0deg, #EFE9AE, #fcb38f);
    background-repeat: no-repeat;
    transition: transform 0.45s ease-out;
 }
