@@ -1,6 +1,6 @@
 .Button {
    outline: none;
-   background-color: #9CD1CE;
+   background-color: #7FD1B9;
    border-radius: 2px;
 }
 
@@ -45,7 +45,7 @@ Button:hover {
 
 .navItemBtn:focus {
    height: 8.2vh;
-   outline: 2px solid rgb(59, 167, 122);
+   outline: 2px solid rgb(155, 154, 154);
    transform: scale(1.02);
 }
 
@@ -60,7 +60,7 @@ Button:hover {
 
 .selectedBtn {
    font-weight: bold;
-   background-color: rgb(70, 207, 150, 0.678);
+   background-color: #CFBAE1;
 }
 
 .InFolderBtn {
@@ -90,6 +90,10 @@ Button:hover {
    font-size: 1.2em;
    margin: auto 0;
    transition: opacity 0.5s ease-in;
+}
+
+.deleteBtn:focus {
+   opacity: 1;
 }
 
 .footerBtn {

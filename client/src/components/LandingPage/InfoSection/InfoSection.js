@@ -14,7 +14,7 @@ const InfoSection = props => {
          <InfoBlock title="Smooth User Interface" image={UIImage} backgroundColor="#fcb38f">
             The user interface was designed thinking in the casual user, who doesn't want to learn anything new in order to use it.
          </InfoBlock>
-         <InfoBlock title="Live Sorting" image={sortingImage} backgroundColor="#EFE9AE">
+         <InfoBlock title="Live Sorting" image={sortingImage} backgroundColor="#8AEA92">
             Our sorting algorithm supports multiple ways to organize your items, making sure you find the one suited for your needs.
          </InfoBlock>
       </section>

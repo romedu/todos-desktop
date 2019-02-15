@@ -2,9 +2,9 @@
    position: fixed;
    left: 20vw;
    top: 20vh;
-   background: #A1FFCE;
-   background: linear-gradient(135deg, #FAFFD1, #A1FFCE);
-   background: -webkit-linear-gradient(135deg, #FAFFD1, #A1FFCE);
+   background: #fcb38f;
+   background: linear-gradient(0deg, #EFE9AE, #fcb38f);
+   background: -webkit-linear-gradient(0deg, #EFE9AE, #fcb38f);
    border-radius: 8px;
    box-shadow: 6px 9.5px 20px;
 }

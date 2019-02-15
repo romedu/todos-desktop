@@ -103,10 +103,10 @@ class DesktopContent extends Component {
                <Button action={newFormHandler}>
                   Create Item
                </Button>
-               <NavItem style={(location.pathname === "/folders") && "selected"} url={!isLoading && `/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+               <NavItem style={(location.pathname === "/folders") && "selected"} disabled={isLoading} url={`/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
                   Folders
                </NavItem>
-               <NavItem style={(location.pathname === "/todos") && "selected"} url={!isLoading && `/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+               <NavItem style={(location.pathname === "/todos") && "selected"} disabled={isLoading} url={`/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
                   TodoLists
                </NavItem>
             </ButtonGroup>
