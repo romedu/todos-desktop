@@ -1,5 +1,5 @@
 .TodoList {
-   padding-top: 0.5vh;
+   padding: 0.5vh 0 1vh;
 }
 
 .TodoList h2, .TodoList h3 {

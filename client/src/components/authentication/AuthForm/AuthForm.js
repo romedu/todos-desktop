@@ -115,7 +115,9 @@ class AuthForm extends Component {
                                                    Password
                                                 </InputField>
                                                 {confirmPassword}
-                                                <Link to={changeAuthType.linkTo}> {changeAuthType.text} </Link>
+                                                <Link to={changeAuthType.linkTo}>
+                                                   {changeAuthType.text}
+                                                </Link>
                                                 <Button type="submit" design="submit"> Submit </Button>
                                              </form>
                                            )

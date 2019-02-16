@@ -7,13 +7,13 @@
    font-size: 1.1em;
    padding: 0.3vh 1vh;
    width: 85%;
-   border: 0.5px solid rgb(92, 233, 214);
+   border: 0.5px solid #CFBAE1;
    border-radius: 8px;
 }
 
 .TodoForm input:focus {
-   outline: 2px solid rgb(70, 207, 150);
-   box-shadow: 3px 3px #A1FFCE;
+   outline: 2px solid #CFBAE1;
+   box-shadow: 2px 1px #CFBAE1;
 }
 
 .TodoForm button {

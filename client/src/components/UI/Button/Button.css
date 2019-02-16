@@ -9,7 +9,7 @@ Button:hover {
 }
 
 .Button:focus {
-   outline: 2px solid rgb(70, 207, 150);
+   outline: 2px solid rgb(155, 154, 154);
    transform: scale(1.02);
 }
 

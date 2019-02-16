@@ -1,6 +1,6 @@
 .spinner {
    animation: rotate 0.8s infinite linear;
-   border: 8px solid rgb(92, 233, 214);
+   border: 8px solid #7FD1B9;
    border-right-color: transparent;
    border-radius: 50%;
 }
@@ -18,6 +18,14 @@
    margin: 8.5vh auto;
    height: 28px;
    width: 28px;
+}
+
+.ModalLoader {
+   padding: 3vh 0;
+}
+
+.ModalLoader .spinner {
+   margin: 0 auto;
 }
 
 .MiniLoader {

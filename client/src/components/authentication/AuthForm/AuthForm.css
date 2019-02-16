@@ -5,10 +5,11 @@
 .AuthForm form a, .AuthForm form a:visited {
    display: inline-block;
    margin-top: 3vh;
+   font-size: 1.1em;
    font-style: oblique;
-   color: rgb(70, 207, 150);
+   font-weight: bold;
+   color: rgb(78, 78, 78);
    text-decoration: none;
-   text-shadow: 1px 0.7px black;
    letter-spacing: 0.6px;
 }
 

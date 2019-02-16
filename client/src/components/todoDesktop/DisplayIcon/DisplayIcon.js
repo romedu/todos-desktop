@@ -24,13 +24,13 @@ const DisplayIcon = props => {
                   e.stopPropagation(); 
                   deleteHandler(iconData)
             }}>
-               <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faTrashAlt} color="rgb(59, 167, 122)" />
+               <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faTrashAlt} color="rgb(91, 146, 130)" />
             </Button>
             <Button design="settings" action={e => {
                   e.stopPropagation(); 
                   settingsHandler(iconData)
             }}>
-               <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faPencilAlt} color="rgb(59, 167, 122)" />
+               <FontAwesomeIcon size={window.screen.availWidth < 600 ? "2x" : "1x"} icon={faPencilAlt} color="rgb(91, 146, 130)" />
             </Button>
          </ButtonGroup>
          {iconData.url 

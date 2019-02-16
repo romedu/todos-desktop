@@ -5,7 +5,7 @@ import ButtonGroup from "../ButtonGroup/ButtonGroup";
 import Loader from "../Loader/Loader";
 
 const Confirmation = ({isLoading, slightDrop, children, deleteHandler, negationHandler, closeHandler}) => {
-   const content = isLoading ? <Loader /> 
+   const content = isLoading ? <Loader insideModal /> 
                              : (<Fragment>
                                   {children}
                                   <ButtonGroup>
