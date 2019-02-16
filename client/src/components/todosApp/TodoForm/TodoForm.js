@@ -13,7 +13,7 @@ class TodoForm extends Component {
 
    componentDidUpdate(prevProps, prevState){
       const {currentList} = this.props;
-      if(prevState.isLoading && prevProps.currentList !== currentList) this.setState({isLoading: false});
+      if(prevState.isLoading && prevProps.currentList !== currentList) this.setState({isLoading: false, description: ""});
    }
 
    onInputUpdate = e => {
@@ -30,7 +30,6 @@ class TodoForm extends Component {
 
       if(description.trim()){
          this.setState({
-            description: "", 
             isLoading: true
          }, onCreateTodo(currentList._id, description));
       }
