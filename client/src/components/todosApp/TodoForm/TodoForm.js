@@ -17,8 +17,10 @@ class TodoForm extends Component {
    }
 
    onInputUpdate = e => {
-      const {name, value} = e.target;
+      const {name, value} = e.target,
+            {isLoading} = this.state;
 
+      if(isLoading) return;
       this.setState({[name]: value});
    };
 

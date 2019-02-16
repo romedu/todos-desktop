@@ -35,8 +35,11 @@ class DesktopContent extends Component {
       if((prevProps.sorting.label !== sorting.label) || (prevProps.location !== location && (sort === sorting.label))
          || prevProps.itemsType !== itemsType || ((currentPage !== prevPage) && (prevSortParam === sortParam))) return this.getItems();
 
-      // Update the UI after changing from the todos to the folders route and vice versa 
-      else if(isLoading && ((!prevProps.folders && folders) || (!prevProps.todos && todos))) return this.setState({isLoading: false});
+      // Update the UI after changing itemType or sortingParam 
+      else if(isLoading){
+         if((!prevProps.folders && folders) || (!prevProps.todos && todos)) return this.setState({isLoading: false});
+         else if((folders && (prevProps.folders !== folders)) || (todos && (prevProps.todos !== todos))) return this.setState({isLoading: false}); 
+      }
    }
 
    componentWillUnmount(){
