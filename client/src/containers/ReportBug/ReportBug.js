@@ -22,6 +22,7 @@ class ReportBug extends Component {
                headers = {Authorization: localStorage.getItem("token")};
 
          qwest.post("/api/services/sendMail", {message: this.state.reportMessage}, {headers})
+            .then(data => JSON.parse(data.response))
             .then(response => {
                if(response.status && response.status !== 200) throw new Error(response.message);
                this.setState({isLoading: false, messageSent: true, reportMessage: ""}, () => {

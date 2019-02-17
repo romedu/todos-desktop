@@ -65,14 +65,8 @@ exports.create = (req, res, next) => {
 
 exports.findOne = (req, res, next) => {
    TodoList.findOne({_id: req.params.id}).populate("todos").exec()
-      .then(list => {
-         if(!list) throw new Error("Not Found");
-         return res.status(200).json(list);
-      })
-      .catch(error => {
-         error.status = 404;
-         return next(error);
-      });
+      .then(list => res.status(200).json(list))
+      .catch(error => next(error));
 };
 
 // IT SHOULD BE PROMISES INSTEAD OF CALLBACKS

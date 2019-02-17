@@ -1,43 +1,33 @@
-const {TodoList} = require("../models");
+const {TodoList} = require("../models"),
+      {errorHandler} = require("../helpers/error");
 
 exports.checkPermission = (req, res, next) => {
-   let {isAdmin} = req.user;
-   if(isAdmin) return next();
-   TodoList.findById(req.params.id).populate("creator").exec()
+   const {isAdmin, id: userId} = req.user;
+   TodoList.findOne({_id: req.params.id}).populate("creator").exec()
       .then(list => {
-         if(!list) throw new Error("Not Found");
-         if(list.creator.id !== req.user.id) throw new Error("You are not authorized");
+         if(!list) throw errorHandler(404, "Not Found");
+
+         const {creator} = list;
+         if(!isAdmin && creator.id !== userId) throw errorHandler(401, "You are not authorized");
+         req.creator = creator;
          return next();
       })
       .catch(error => {
-         error.status = 401;
-         return next(error);
-      });
-}
-
-exports.ownerPrivileges = (req, res, next) => {
-   let {isAdmin} = req.user;
-   let userId = req.user.id;
-   if(!isAdmin) return next();
-   TodoList.findById(req.params.id).populate("creator").exec()
-      .then(list => {
-         if(!list.creator.isAdmin || list.creator.id === userId) return next();
-         throw new Error("You are not authorized to proceed");
-      })
-      .catch(error => {
-         error.status = 401;
+         if(!error.status) error = errorHandler(404, "Not Found");
          return next(error);
       });
 };
 
+exports.ownerPrivileges = (req, res, next) => {
+   const {user, creator} = req;
+
+   //If the user isn't an admin then it means he's the owner
+   if(!user.isAdmin || !creator.isAdmin || creator.id === user.id) return next();
+   return next(errorHandler(401, "You are not authorized to proceed"));
+};
+
 exports.ownerOnly = (req, res, next) => {
-   TodoList.findById(req.params.id).populate("creator").exec()
-      .then(list => {
-         if(!list || (list.creator.id !== req.user.id)) throw new Error("You are not authorized to proceed");
-         return next();
-      })
-      .catch(error => {
-         error.status = 401;
-         return next(error);
-      });
+   const {user, creator} = req;
+   if(creator.id === user.id) return next();
+   return next(errorHandler(401, "You are not authorized to proceed"));
 }

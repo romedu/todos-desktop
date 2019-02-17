@@ -1,32 +1,27 @@
-const {Folder} = require("../models");
+const {Folder} = require("../models"),
+      {errorHandler} = require("../helpers/error");
 
 exports.checkPermission = (req, res, next) => {
-   let {isAdmin} = req.user;
-   if(isAdmin) return next();
-   Folder.findById(req.params.id).populate("creator").exec()
+   const {isAdmin, id: userId} = req.user;
+   Folder.findOne({_id: req.params.id}).populate("creator").exec()
       .then(folder => {
-         if(!folder) throw new Error("Not Found");
-         if(folder.creator.id === req.user.id) return next();
-         throw new Error("You are not authorized");
+         if(!folder) throw errorHandler(404, "Not Found");
+         
+         const {creator} = folder;
+         if(!isAdmin && creator.id !== userId) throw errorHandler(401, "You are not authorized");
+         req.creator = creator;
+         return next();
       })
       .catch(error => {
-         error.status = 401;
+         if(!error.status) error = errorHandler(404, "Not Found");
          return next(error);
       });
 };
 
 exports.ownerPrivileges = (req, res, next) => {
-   let {isAdmin} = req.user;
-   let userId = req.user.id;
-   if(!isAdmin) return next();
-   Folder.findById(req.params.id).populate("creator").exec()
-      .then(folder => {
-         if(!folder) throw new Error("Not Found");
-         if(!folder.creator.isAdmin || folder.creator.id === userId) return next();
-         throw new Error("You are not authorized to proceed");
-      })
-      .catch(error => {
-         error.status = 401;
-         return next(error);
-      });
+   const {user, creator} = req;
+
+   //If the user isn't an admin then it means he's the owner
+   if(!user.isAdmin || !creator.isAdmin || creator.id === user.id) return next();
+   return next(errorHandler(401, "You are not authorized to proceed"));
 };

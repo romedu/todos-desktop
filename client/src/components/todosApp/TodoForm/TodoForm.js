@@ -12,8 +12,11 @@ class TodoForm extends Component {
    };
 
    componentDidUpdate(prevProps, prevState){
-      const {currentList} = this.props;
+      const {currentList, message} = this.props,
+            {isLoading} = this.state;
+
       if(prevState.isLoading && prevProps.currentList !== currentList) this.setState({isLoading: false, description: ""});
+      else if(isLoading && prevProps.message && !message) this.setState({isLoading: false});
    }
 
    onInputUpdate = e => {
@@ -51,7 +54,8 @@ class TodoForm extends Component {
 }
 
 const mapStateToProps = state => ({
-   currentList: state.todoList.current
+   currentList: state.todoList.current,
+   message: state.message.label
 })
 
 const mapDispatchToProps = dispatch => ({
