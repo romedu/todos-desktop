@@ -15,7 +15,7 @@ const nodemailer = require("nodemailer"),
          }
       });
 
-exports.sendMessage = (req, res, next) => {
+exports.sendMail = (req, res, next) => {
    const {message: mailMessage} = req.body,
          mailOptions = {
             from: `"TodoDesktop👻" ${EMAIL_HOST}`,

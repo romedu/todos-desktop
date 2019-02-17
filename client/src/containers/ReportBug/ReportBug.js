@@ -21,7 +21,7 @@ class ReportBug extends Component {
          const {onMessageCreate} = this.props,
                token = localStorage.getItem("token");
 
-         qwest.post(`/api/services/sendMessage?token=${token}`, {message: this.state.reportMessage})
+         qwest.post(`/api/services/sendMail?token=${token}`, {message: this.state.reportMessage})
             .then(response => {
                if(response.status && response.status !== 200) throw new Error(response.message);
                this.setState({isLoading: false, messageSent: true, reportMessage: ""}, () => {
