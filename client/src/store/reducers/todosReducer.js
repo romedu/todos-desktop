@@ -13,7 +13,7 @@ const initialState = {
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
       case actionTypes.GET_LISTS: return {...prevState, lists: action.lists, paginationData: action.paginationData};
-      case actionTypes.CLEAR_LIST: return {...prevState, lists: null, total: initialState.paginationData};
+      case actionTypes.CLEAR_LIST: return {...prevState, lists: null, paginationData: initialState.paginationData};
       case actionTypes.OPEN_LIST: return {...prevState, current: action.list};
       case actionTypes.CLOSE_LIST: return {...prevState, current: null};
       case actionTypes.CREATE_LIST: return {

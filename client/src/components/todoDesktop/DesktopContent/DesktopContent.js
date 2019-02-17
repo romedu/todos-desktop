@@ -89,7 +89,6 @@ class DesktopContent extends Component {
             itemsLength = (folders && folders.length) || (todos && todos.length),
             itemsLimit = foldersPaging.limit || todosPaging.limit,
             pagination = (totalItems > itemsLength) && (totalItems >= (currentPage * itemsLimit) - itemsLimit)
-                         //NOT DISPLAYING WHEN LANDING IN THE LAST PAGE OF RESULTS
                         && <Pagination currentPage={currentPage} limit={itemsLimit} total={totalItems} paginateHandler={this.paginateHandler} />;
             const content = isLoading ? <Loader />
                            : (
