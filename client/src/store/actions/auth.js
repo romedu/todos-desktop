@@ -4,9 +4,9 @@ import {createMessage} from "./message";
 qwest.limit(1);
 
 export const verifyToken = () => {
-   const token = localStorage.getItem("token");
+   const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.get(`/api/auth/verify?token=${token}`)
+      qwest.get("/api/auth/verify", null, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {username, isAdmin, id, status, message} = response;

@@ -5,7 +5,7 @@ exports.folder = require("./folder");
 exports.todos  = require("./todos");
 
 exports.checkIfToken = (req, res, next) => {
-   const {token} = req.query;
+   const token = req.get("Authorization");
    if(!token){
       let error = errorHandler(403, "You need a valid token to proceed!");
       return next(error);
