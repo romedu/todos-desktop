@@ -6,7 +6,7 @@ const app              = require("express")(),
       expressSanitizer = require("express-sanitizer"),
       PORT             = process.env.PORT || 3000,
       {authRoutes, folderRoutes, todoListRoutes, todoRoutes, servicesRoutes} = require("./routes"),
-      {checkIfToken, todos} = require("./middlewares"),
+      {checkIfToken, sanitizeBody, todos} = require("./middlewares"),
       {errorHandler}   = require("./helpers/error");
 
 app.use(cors());
@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
 app.use(morgan("tiny"));
 
+app.use(sanitizeBody);
 app.use("/api/auth", authRoutes);
 app.use("/api", checkIfToken);
 app.use("/api/todos/:id/todo", todos.checkPermission, todoRoutes);

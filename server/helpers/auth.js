@@ -3,11 +3,6 @@ const jwt = require("jsonwebtoken"),
       {errorHandler} = require("./error");
 
 exports.register = (req, res, next) => {
-   for(field in req.body){ 
-      req.body[field] = req.sanitize(req.body[field]);
-      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
-   };
-
    User.create(req.body)
       .then(user => res.status(200).json(signUser(user)))
       .catch(error => {
@@ -17,8 +12,6 @@ exports.register = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-   for(field in req.body) req.body[field] = req.sanitize(req.body[field]);
-
    const {username, password} = req.body;
    
    User.findOne({username})

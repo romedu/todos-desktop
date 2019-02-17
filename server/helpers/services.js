@@ -16,12 +16,15 @@ const nodemailer = require("nodemailer"),
       });
 
 exports.sendMessage = (req, res, next) => {
-   const mailOptions = {
+   const {message: mailMessage} = req.body,
+         mailOptions = {
             from: `"TodoDesktop👻" ${EMAIL_HOST}`,
             to: EMAIL_RECEIVER,
             subject: `Todo Desktop Bug Report, User: ${req.user.username}`,
-            text: req.body.message
+            text: mailMessage
          };
+
+   if(!mailMessage) return next(errorHandler(409, "A message body is required to proceed"));
 
    transporter.sendMail(mailOptions)
       .then(mail => res.status(200).json({message: "Message sent successfully"}))

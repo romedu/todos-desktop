@@ -5,7 +5,7 @@ exports.folder = require("./folder");
 exports.todos  = require("./todos");
 
 exports.checkIfToken = (req, res, next) => {
-   let {token} = req.query;
+   const {token} = req.query;
    if(!token){
       let error = errorHandler(403, "You need a valid token to proceed!");
       return next(error);
@@ -19,5 +19,13 @@ exports.checkIfToken = (req, res, next) => {
             return next();
          });
 };
+
+exports.sanitizeBody = (req, res, next) => {
+   for(field in req.body){ 
+      req.body[field] = req.sanitize(req.body[field]);
+      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
+   };
+   return next();
+}
 
 module.exports = exports;

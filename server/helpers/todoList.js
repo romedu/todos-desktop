@@ -39,11 +39,6 @@ exports.find = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-   for(field in req.body){ 
-      req.body[field] = req.sanitize(req.body[field]);
-      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
-   };
-
    Folder.findOne({name: req.body.folderName}).populate("creator").exec()
       .then(folder => {
          if(!folder || folder.creator.id !== req.user.id) req.body.folderName = undefined;
@@ -82,11 +77,6 @@ exports.findOne = (req, res, next) => {
 
 // IT SHOULD BE PROMISES INSTEAD OF CALLBACKS
 exports.update = (req, res, next) => {
-   for(field in req.body){ 
-      req.body[field] = req.sanitize(req.body[field]);
-      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
-   };
-
    let {folderName, ...updateData} = req.body;
 
    Folder.findOne({name: folderName}, (error, newFolder) => {

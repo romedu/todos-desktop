@@ -37,11 +37,6 @@ exports.find = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-   for(field in req.body){ 
-      req.body[field] = req.sanitize(req.body[field]);
-      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
-   };
-
    Folder.create(req.body)
       .then(newFolder => {
          newFolder.creator = req.user.id;
@@ -70,12 +65,7 @@ exports.findOne = (req, res, next) => {
 
 //Only the owner or admins for non admin creators
 exports.update = (req, res, next) => {
-   for(field in req.body){ 
-      req.body[field] = req.sanitize(req.body[field]);
-      if(typeof req.body[field] === "string") req.body[field] = req.body[field].trim();
-   };
-
-   const options = {
+  const options = {
       new: true,
       runValidators: true
    };
