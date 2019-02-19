@@ -39,28 +39,23 @@ exports.find = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-   Folder.findOne({name: req.body.folderName}).populate("creator").exec()
-      .then(folder => {
-         if(!folder || folder.creator.id !== req.user.id) req.body.folderName = undefined;
-         return TodoList.create(req.body)
-                  .then(newList => {
-                     const addons = [];
-                     newList.creator = req.user.id;
-                     addons.push(newList.save());
-                     if(folder){
-                        folder.files.push(newList);
-                        addons.push(folder.save());
-                     }
-                     return Promise.all(addons)
-                              .then(resolve => res.status(201).json(newList))
-                              .catch(error => error);
-                  })
-                  .catch(error => {
-                     if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
-                     next(error);
-                  })
+   const {newFolder, user, body} = req;
+   body.creator = user.id
+
+   TodoList.create(body)
+      .then(newList => {
+         const addons = [newList];
+         if(newFolder){
+            newFolder.files.push(newList.id);
+            addons.push(newFolder.save());
+         }
+         return Promise.all(addons)
       })
-      .catch(error => next(error));
+      .then(([newList, response]) => res.status(201).json(newList))
+      .catch(error => {
+         if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
+         next(error);
+      })
 };
 
 exports.findOne = (req, res, next) => {
@@ -69,81 +64,44 @@ exports.findOne = (req, res, next) => {
       .catch(error => next(error));
 };
 
-// IT SHOULD BE PROMISES INSTEAD OF CALLBACKS
 exports.update = (req, res, next) => {
    let {folderName, ...updateData} = req.body;
+   const options = {
+      new: true, 
+      runValidators: true
+   };   
 
-   Folder.findOne({name: folderName}, (error, newFolder) => {
-      if(newFolder && error) return next(error);
-      const options = {
-         new: true, 
-         runValidators: true
-      };
-
-      return TodoList.findByIdAndUpdate(req.params.id, updateData, options, (error, newList) => {
-               if(error || !newList){
-                  if(!error.message || error.code === 11000) error = errorHandler(409, "That name is not avaibale, please try another one");
-                  return next(error)
-               };
-               //CHECK IF THE USER IS THE OWNER OF THE NEW FOLDER, OR IF "NO FOLDER" WAS REQUESTED
-               if(((folderName !== "-- No Folder --") && !newFolder) || (newFolder && (newFolder.creator.id !== req.user.id))) folderName = newList.folderName;
-               //CHECK IF THE NEW LIST IS DIFFERENT THAN THE ONE CURRENTLY IN THE FOLDER, CHECK IF THE LIST'S FOLDERNAME IS NOT UNDEFINED WHILE REQUESTING "NO FOLDER"
-               if(((folderName && (folderName !== "-- No Folder --")) && (newList.folderName !== folderName)) || (!newList.folderName && (folderName !== "-- No Folder --") || (newList.folderName && (folderName === "-- No Folder --")))){
-                  if(newList.folderName) return Folder.findOne({name: newList.folderName}, (error, oldFolder) => {
-                     if(error || !oldFolder){
-                        error.status = 404;
-                        return next(error);
-                     }
-                     oldFolder.files.pull(newList.id);
-                     oldFolder.save(error => {
-                        if(error){
-                           error.status = 404;
-                           return next(error);
-                        }
-                        if(folderName === "-- No Folder --"){
-                           newList.set({folderName: null});
-                           return newList.save((error, updatedList) => {
-                                    if(error){
-                                       error.status = 404;
-                                       return next(error);
-                                    }
-                                    return res.status(200).json(updatedList); 
-                                 });
-                        }
-                        else if(folderName){
-                           newFolder.files.push(newList.id);
-                           newFolder.save(error => {
-                              if(error){
-                                 error.status = 404;
-                                 return next(error);
-                              }
-                              newList.set({folderName});
-                              return newList.save((error, updatedList) => {
-                                       if(error) return next(error);
-                                       return res.status(200).json(updatedList); 
-                                    });
-                           });
-                        }
-                     })
-                  });
-                  else if(folderName){
-                     newFolder.files.push(newList.id);
-                     return newFolder.save(error => {
-                              if(error) return next(error)
-                              newList.set({folderName});
-                              return newList.save((error, updatedList) => {
-                                       if(error){
-                                          error.status = 404;
-                                          return next(error);
-                                       }
-                                       return res.status(200).json(updatedList); 
-                                    });
-                           });
-                  }
-               }
-               res.status(200).json(newList); 
+   return TodoList.findByIdAndUpdate(req.params.id, updateData, options)
+            .then(updatedList => {
+               const {newFolder} = req;
+               
+               //Checks if there is no folderName change or if there wasn't a previous folderName
+               if(!folderName || !updatedList.folderName || (newFolder && newFolder.name === updatedList.folderName)) return Promise.all([null, updatedList]);
+               else return Promise.all([Folder.findOne({name: updatedList.folderName}), updatedList]);
             })
-   }).populate("creator").exec();  
+            .then(([oldFolder, updatedList]) => {
+               const addons = [],
+                     {newFolder} = req;
+
+               if(oldFolder){
+                  oldFolder.files.pull(updatedList.id);
+                  addons.push(oldFolder.save());
+               }
+               if(newFolder && newFolder.name !== updatedList.folderName){
+                  newFolder.files.push(updatedList.id);
+                  updatedList.folderName = newFolder.name;
+                  addons.push(newFolder.save());
+               }
+               else if(oldFolder && folderName === "-- No Folder --") updatedList.folderName = null;
+
+               addons.push(updatedList.save());
+               return Promise.all(addons);
+            })
+            .then(response => res.status(200).json(response[response.length -1]))
+            .catch(error => {
+               console.log("Found it: ", error);
+               next(error);
+            }); 
 }
 
 exports.delete = (req, res, next) => {

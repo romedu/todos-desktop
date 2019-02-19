@@ -80,6 +80,7 @@ export const updateList = (listId, listFolder, payload) => {
             if(status && status !== 200) throw new Error(message);
             if(listFolder){
                if(editedList.folderName === listFolder) return dispatch(updateFile(editedList));
+               if(!editedList.folderName) return dispatch(removeFile(editedList._id));
                return dispatch(moveFile(editedList));
             }
             else if(editedList.folderName && (payload.folderName === editedList.folderName)) return dispatch(removeList(editedList._id)); 

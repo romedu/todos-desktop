@@ -40,8 +40,8 @@ class ItemForm extends Component {
    }
 
    componentDidUpdate(prevProps){
-      const {folders, todoLists} = this.props;
-      if((prevProps.folders !== folders) || (prevProps.todoLists !== todoLists)) this.props.closeHandler();
+      const {folders, todoLists, currentFolder} = this.props;
+      if((prevProps.folders !== folders) || (prevProps.todoLists !== todoLists) || (prevProps.currentFolder !== currentFolder)) this.props.closeHandler();
    }
 
    updateInput = e => {

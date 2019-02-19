@@ -57,16 +57,19 @@ const reducer = (prevState = initialState, action) => {
             files: helpers.updateItem(action.editedFile, prevState.current.files)
          }
       };
+      //MOVES ONE FILE FROM ONE FOLDER TO ANOTHER
       case actionTypes.MOVE_FILE: 
-         const folderToUpdate = helpers.findByProp("name", action.editedFile.folderName, prevState.list),
-               udpatedFolder = Object.assign(folderToUpdate, {files: folderToUpdate.files.concat(action.editedFile)});
+         const folderChangedTo = helpers.findByProp("name", action.editedFile.folderName, prevState.list),
+               changedFolder = Object.assign(folderChangedTo, {files: folderChangedTo.files.concat(action.editedFile)}),
+               folderToChangeFrom = helpers.findByProp("name", prevState.current.name, prevState.list),
+               folderChangedFrom = Object.assign(folderToChangeFrom, {files: helpers.removeById(action.editedFile._id, prevState.current.files)});
          return {
             ...prevState,
             current: {
                ...prevState.current,
                files: helpers.removeById(action.editedFile._id, prevState.current.files)
             },
-            list: helpers.updateItem(udpatedFolder, prevState.list)
+            list: helpers.updateItem(folderChangedFrom, helpers.updateItem(changedFolder, prevState.list))
          };
       case actionTypes.REMOVE_FILE: return {
          ...prevState,

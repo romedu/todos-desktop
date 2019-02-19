@@ -4,12 +4,12 @@ const router  = require("express").Router(),
 
 router.route("/")
    .get(helpers.find)
-   .post(helpers.create);
+   .post(todos.checkIfFolderOwner, helpers.create);
 
 router.route("/:id")
    .all(todos.checkPermission)
    .get(helpers.findOne)
-   .patch(todos.ownerOnly, helpers.update)
+   .patch(todos.ownerOnly, todos.checkIfFolderOwner, helpers.update)
    .delete(todos.ownerPrivileges, helpers.delete);
 
 module.exports = router;
