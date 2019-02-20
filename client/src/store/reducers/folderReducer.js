@@ -14,11 +14,17 @@ const initialState = {
 const reducer = (prevState = initialState, action) => {
    switch(action.type){
       case actionTypes.GET_FOLDERS: return {...prevState, list: action.folders, current: null, paginationData: action.paginationData};
+      
       case actionTypes.GET_FOLDER_NAMES: return {...prevState, namesList: action.folderNames};
+      
       case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null, paginationData: initialState.paginationData};
+      
       case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, current: null, paginationData: initialState.paginationData};
+      
       case actionTypes.OPEN_FOLDER: return {...prevState, current: action.folder};
+      
       case actionTypes.CLOSE_FOLDER: return {...prevState, current: null};
+      
       case actionTypes.CREATE_FOLDER: return {
          ...prevState, 
          list: prevState.paginationData.limit > prevState.list.length ? prevState.list.concat(action.newFolder) : prevState.list,
@@ -28,11 +34,13 @@ const reducer = (prevState = initialState, action) => {
             total: prevState.paginationData.total + 1
          }
       };
+      
       case actionTypes.UPDATE_FOLDER: return {
          ...prevState,
          list: helpers.updateItem(action.editedFolder, prevState.list),
          namesList: prevState.namesList.map(name => (name === helpers.findByProp("_id", action.editedFolder._id, prevState.list).name) ? action.editedFolder.name : name)
       };
+      
       case actionTypes.DELETE_FOLDER: return {
          ...prevState,
          list: helpers.removeById(action.folderId, prevState.list),
@@ -42,6 +50,7 @@ const reducer = (prevState = initialState, action) => {
             total: prevState.paginationData.total - 1
          }
       };
+      
       case actionTypes.ADD_NEW_FILE: return {
          ...prevState,
          list: prevState.list.map(folder => folder._id === prevState.current._id ? {...folder, files: folder.files.concat(action.newFile)} : folder),
@@ -50,6 +59,7 @@ const reducer = (prevState = initialState, action) => {
             files: prevState.current.files.concat(action.newFile)
          }
       };
+      
       case actionTypes.UPDATE_FILE: return {
          ...prevState,
          current: {
@@ -57,20 +67,22 @@ const reducer = (prevState = initialState, action) => {
             files: helpers.updateItem(action.editedFile, prevState.current.files)
          }
       };
+      
       //MOVES ONE FILE FROM ONE FOLDER TO ANOTHER
       case actionTypes.MOVE_FILE: 
-         const folderChangedTo = helpers.findByProp("name", action.editedFile.folderName, prevState.list),
-               changedFolder = Object.assign(folderChangedTo, {files: folderChangedTo.files.concat(action.editedFile)}),
-               folderToChangeFrom = helpers.findByProp("name", prevState.current.name, prevState.list),
-               folderChangedFrom = Object.assign(folderToChangeFrom, {files: helpers.removeById(action.editedFile._id, prevState.current.files)});
+         const fileNewDestination = helpers.findByProp("name", action.editedFile.folderName, prevState.list),
+               updatedNewDest = Object.assign(fileNewDestination, {files: fileNewDestination.files.concat(action.editedFile)}),
+               fileOldDestination = helpers.findByProp("name", prevState.current.name, prevState.list),
+               updatedOldDest = Object.assign(fileOldDestination, {files: helpers.removeById(action.editedFile._id, prevState.current.files)});
          return {
             ...prevState,
             current: {
                ...prevState.current,
                files: helpers.removeById(action.editedFile._id, prevState.current.files)
             },
-            list: helpers.updateItem(folderChangedFrom, helpers.updateItem(changedFolder, prevState.list))
+            list: helpers.updateItem(updatedOldDest, helpers.updateItem(updatedNewDest, prevState.list))
          };
+         
       case actionTypes.REMOVE_FILE: return {
          ...prevState,
          list: prevState.list.map(folder => folder._id === prevState.current._id ? {...folder, files: helpers.removeById(action.fileId, folder.files)} : folder),

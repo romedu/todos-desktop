@@ -83,16 +83,16 @@ export const updateList = (listId, listFolder, payload) => {
                if(!editedList.folderName) return dispatch(removeFile(editedList._id));
                return dispatch(moveFile(editedList));
             }
-            else if(editedList.folderName && (payload.folderName === editedList.folderName)) return dispatch(removeList(editedList._id)); 
+            //CALLED WHEN CHANGED FROM NO FOLDER TO FOLDER
+            else if(editedList.folderName) return dispatch(removeList(editedList._id)); 
             return dispatch(editList(listId, editedList));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
 };
 
-const editList = (listId, editedList) => ({
+const editList = editedList => ({
    type: actionTypes.UPDATE_LIST,
-   listId,
    editedList
 });
 
