@@ -5,3 +5,9 @@
 .ReportBug h3 {
    font-size: 2.5em;
 }
+
+@media(max-width: 599px){
+   .ReportBug {
+      padding: 17vh 5vw 0;
+   }
+}

@@ -20,6 +20,11 @@
 }
 
 @media(max-width: 599px){
+   .TodoList {
+      min-height: 83.5vh;
+      max-height: fit-content;
+   }
+
    .TodoList h2 {
       font-size: 2.4em;
       margin-top: 1vh;

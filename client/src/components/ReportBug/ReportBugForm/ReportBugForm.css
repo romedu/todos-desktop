@@ -16,3 +16,9 @@
 .ReportBugForm button {
    margin: 0.5vh;
 }
+
+@media(max-width: 599px){
+   .ReportBugForm button {
+      margin-top: 2vh;
+   }
+}

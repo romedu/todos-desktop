@@ -6,6 +6,8 @@
 @media(max-width: 599px){
    .Authentication {
       width: 100vw;
+      min-height: 85vh;
+      max-height: fit-content;
       margin-top: 15vh;
    }
 }
