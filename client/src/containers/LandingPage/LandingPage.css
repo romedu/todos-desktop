@@ -7,3 +7,7 @@
    background-attachment: fixed;
    background-position: center;
 }
+
+@media(max-width: 599px){
+   
+}

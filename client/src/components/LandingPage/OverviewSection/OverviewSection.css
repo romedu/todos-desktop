@@ -14,3 +14,7 @@
    justify-content: space-around;
    padding: 10vh 10vw 15vh;
 }
+
+@media(max-width: 599px){
+   
+}

@@ -1,6 +1,7 @@
 {
   "short_name": "Todo Desktop",
   "name": "Todo Desktop",
+  "description": "An useful and simple way of organizing your todos in different folders",
   "icons": [
     {
       "src": "./todoList.ico",
@@ -10,6 +11,9 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "any",
+  "theme_color": "#7fd1b9",
+  "background_color": "#fcb38f",
+  "dir": "ltr",
+  "lang": "en-US"
 }

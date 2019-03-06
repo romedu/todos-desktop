@@ -41,3 +41,7 @@
 .LandingLink:active {
    box-shadow: 1px 1px;
 }
+
+@media(max-width: 599px){
+   
+}
