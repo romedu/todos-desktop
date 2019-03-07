@@ -11,5 +11,25 @@
 }
 
 @media(max-width: 599px){
-   
+   .OverviewThumbnail {
+      width: 80vw;
+      margin-top: 6vh;
+      list-style: none;
+      text-align: center;
+   }
+
+   .OverviewThumbnail h4 {
+      font-size: 1.2em;
+      margin-bottom: 0;
+   }
+
+   .OverviewThumbnail p {
+      font-size: 1.05em;
+      margin-top: 1vh;
+   }
+
+   .OverviewThumbnail img {
+      width: 35vw;
+      height: 35vw;
+   }
 }

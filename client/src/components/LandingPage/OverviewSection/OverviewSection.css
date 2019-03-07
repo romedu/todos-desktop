@@ -1,5 +1,6 @@
 .OverviewSection {
    height: fit-content;
+   padding: 0 5vw;
    background-color: #faf8f8;
 }
 
@@ -16,5 +17,17 @@
 }
 
 @media(max-width: 599px){
-   
+   .OverviewSection {
+      padding: 6vh 5vw;
+   }
+
+   .OverviewSection h2 {
+      padding: 0;
+      text-align: center;
+   }
+
+   .OverviewSection ul {
+      flex-direction: column;
+      padding: 0 5vw;
+   }
 }

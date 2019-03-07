@@ -31,11 +31,16 @@
    background-color: rgb(92, 233, 214);
    text-decoration: none;
    color: black;
-   font-size: 1.1em;
+   font-size: 1.3em;
    font-weight: bold;
-   border-radius: 10px;
+   font-family: Alegreya;
+   border-radius: 4px;
    box-shadow: 2px 2px;
    transition: all 0.1s;
+}
+
+.LandingLink:hover {
+   transform: scale(1.05);
 }
 
 .LandingLink:active {
@@ -43,5 +48,19 @@
 }
 
 @media(max-width: 599px){
-   
+   .MainSection h1 {
+      font-size: 3.5em;
+   }
+
+   .MainSection h3 {
+      font-size: 1.3em;
+      padding-top: 2vh;
+   }
+
+   .LandingLink {
+      margin-top: 12vh;
+      padding: 3.5vw 3vw;
+      background-color: rgb(92, 233, 214);
+      font-size: 1.4em;
+   }
 }

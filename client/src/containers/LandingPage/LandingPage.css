@@ -9,5 +9,7 @@
 }
 
 @media(max-width: 599px){
-   
+   .BackgroundSection {
+      height: 40vh;
+   }
 }

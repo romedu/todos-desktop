@@ -1,24 +1,43 @@
 .InfoBlock {
    width: 19.3vw;
    height: 70vh;
-   padding: 10vh 7vw;
+   padding: 8vh 7vw 10vh;
    text-align: center;
 }
 
 .InfoBlock h5 {
    font-size: 1.5em;
+   margin-bottom: 10vh;
 }
 
 .InfoBlock .ImageContainer {
    display: inline-block;
-   width: 14.3vw;
-   height: 14.3vw;
-   margin: 0 2.5vw 5vh;
+   width: 12.3vw;
+   height: 12.3vw;
+   margin: 0 3.5vw 5vh;
    background-size: cover;
    background-repeat: no-repeat;
    background-position: center;
 }
 
 @media(max-width: 599px){
+   .InfoBlock {
+      width: 86vw;
+      height: fit-content;
+      padding: 5vh 7vw;
+      font-size: 1.1em;
+   }
    
+   .InfoBlock h5 {
+      font-size: 1.6em;
+      margin-top: 0;
+      margin-bottom: 6vh;
+   }
+   
+   .InfoBlock .ImageContainer {
+      width: 33vw;
+      height: 33vw;
+      margin: 0;
+      margin-bottom: 3vh;
+   }
 }

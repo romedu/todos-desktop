@@ -4,5 +4,7 @@
 }
 
 @media(max-width: 599px){
-   
+   .InfoSection {
+      flex-direction: column;
+   }
 }
