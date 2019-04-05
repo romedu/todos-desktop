@@ -23,7 +23,7 @@ const DesktopPopups = props => {
 
 const mapStateToProps = state => ({
    currentFolder: state.folder.current,
-   message: state.message.label,
+   message: state.message.label
 });
 
 export default connect(mapStateToProps)(DesktopPopups);

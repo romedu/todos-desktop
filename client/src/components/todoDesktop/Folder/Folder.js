@@ -12,12 +12,16 @@ class Folder extends Component {
    }
 
    componentDidMount(){
-      const {folderId, onFolderOpen} = this.props;
-      onFolderOpen(folderId);
+      const {folder, folderId, onFolderOpen} = this.props;
+      
+      // Check if the folder were already fetched
+      if(folder) this.setState({isLoading: false});
+      else onFolderOpen(folderId);
    }
 
    componentDidUpdate(prevProps){
-      if(!prevProps.folder && this.props.folder) this.setState({isLoading: false});
+      const {folder} = this.props;
+      if(!prevProps.folder && folder) this.setState({isLoading: false});
    }
 
    clearFolderHandler = () => {
@@ -45,7 +49,8 @@ class Folder extends Component {
 };
 
 const mapStateToProps = state => ({
-   folder: state.folder.current
+   folder: state.folder.current,
+   message: state.message.content
 });
 
 const mapDispatchToProps = dispatch => ({
