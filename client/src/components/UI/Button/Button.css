@@ -96,6 +96,10 @@ Button:hover {
    opacity: 1;
 }
 
+.deleteBtn:hover {
+   color: rgb(53, 141, 104);
+}
+
 .footerBtn {
    background-color: #faf8f8;
    padding: 1.5vw;

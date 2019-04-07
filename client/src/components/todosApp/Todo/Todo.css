@@ -2,22 +2,55 @@
    transition: all 0.5s ease-out;
 }
 
-.Todo span {
-   font-size: 1.1em;
+.Todo div {
+   display: flex;
+   justify-content: space-between;
+}
+
+.Todo span, .Todo input {
    padding: 1vh 0;
+}
+
+.Todo input {
+   background-color: inherit;
+   border: none;
+   outline: none;
+   font-family: "roboto";
+}
+
+.Todo .TodoDescription, .Todo input {
+   width: 90%;
+   word-wrap: break-word;
+   font-size: 1.1em;
+}
+
+.Todo .TodoButtons {
+   width: 10%;
+   display: flex;
+   justify-content: flex-end;
+}
+
+.Todo svg {
+   margin: auto 1vw auto 0;
+   padding: 1vh 0;
+   opacity: 0;
+   transition: opacity 0.5s ease-in;
+}
+
+.Todo svg:focus {
+   opacity: 1;
+}
+
+.Todo svg:hover {
+   color: rgb(53, 141, 104);
 }
 
 .checkedTodo {
    color: darkgray;
 }
 
-.checkedTodo span {
+.checkedTodo .TodoDescription {
    text-decoration: line-through;
-}
-
-.Todo div {
-   display: flex;
-   justify-content: space-between;
 }
 
 .Todo:hover {
@@ -25,16 +58,28 @@
    cursor: pointer;
 }
 
-.Todo:hover button {
+.Todo:hover button, .Todo:hover svg {
    opacity: 1;
 }
 
 @media(max-width: 599px){
-   .Todo div button {
+   .Todo button {
       background-color: inherit;
    }
 
    .Todo span {
       padding: 2vh 0;
+   }
+
+   .Todo .TodoDescription {
+      width: 80%;
+   }
+
+   .Todo .TodoButtons {
+      width: 20%;
+   }
+
+   .Todo svg {
+      opacity: 1;
    }
 }

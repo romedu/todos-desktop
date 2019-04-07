@@ -23,14 +23,15 @@ class TodoList extends Component {
    };
 
    deleteTodoHandler = (e, todoId) => {
-      e.stopPropagation();
+      // It can also be called from the todo without an event triggering it
+      if(e) e.stopPropagation();
       const {_id: listId, onTodoDelete} = this.props;
       onTodoDelete(listId, todoId);
    };
 
    render(){
       const {name, todos, currentFolder} = this.props,
-            todoList = todos.map(todo => <Todo key={todo._id} {...todo} checkHandler={() => this.todoUpdateHandler(todo._id, {checked: !todo.checked})} deleteHandler={e => this.deleteTodoHandler(e, todo._id)} />),
+            todoList = todos.map(todo => <Todo key={todo._id} {...todo} updateHandler={this.todoUpdateHandler} deleteHandler={e => this.deleteTodoHandler(e, todo._id)} />),
             fileNames = currentFolder && currentFolder.files.map(file => file.name),
             changeTodo = currentFolder && fileNames.length > 1 && <Options label="Change List: " optionList={fileNames} selected={name} pickOption={this.changeListHandler} />;
 
