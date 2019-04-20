@@ -1,5 +1,5 @@
-.TodoDownload {
-   display: flex;
+.DownloadIcon {
+   display: inline-block;
 }
 
 .EnabledIcon {
@@ -8,4 +8,10 @@
 
 .DisabledIcon {
    cursor: wait;
+}
+
+@media(max-width: 599px){
+   .DownloadIcon {
+      margin-left: 20vw;
+   }
 }

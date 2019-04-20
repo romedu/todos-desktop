@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {createTodo} from "../../../store/actions/todo";
 import Button from "../../UI/Button/Button";
-import Loader from "../../UI/Loader/Loader";
 import "./TodoForm.css";
 
 class TodoForm extends Component {
@@ -11,17 +10,15 @@ class TodoForm extends Component {
       isLoading: false
    };
 
-   componentDidUpdate(prevProps, prevState){
-      const {currentList, message} = this.props,
-            {isLoading} = this.state;
-
-      if(prevState.isLoading && prevProps.currentList !== currentList) this.setState({isLoading: false, description: ""});
-      else if(isLoading && prevProps.message && !message) this.setState({isLoading: false});
+   componentDidUpdate(prevProps){
+      const {currentList, message, isLoading, updateLoader} = this.props;
+      if(prevProps.isLoading && prevProps.currentList !== currentList) this.setState({description: ""}, () => updateLoader(false));
+      else if(isLoading && prevProps.message && !message) updateLoader(false);
    }
 
    onInputUpdate = e => {
       const {name, value} = e.target,
-            {isLoading} = this.state;
+            {isLoading} = this.props;
 
       if(isLoading) return;
       this.setState({[name]: value});
@@ -31,23 +28,22 @@ class TodoForm extends Component {
       e.preventDefault();
 
       const {description} = this.state,
-            {currentList, onCreateTodo} = this.props;
+            {currentList, updateLoader, onCreateTodo} = this.props;
 
       if(description.trim()){
-         this.setState({
-            isLoading: true
-         }, onCreateTodo(currentList._id, description));
+         updateLoader(true);
+         onCreateTodo(currentList._id, description);
       }
    }
 
    render(){
-      const {description, isLoading} = this.state;
+      const {description} = this.state,
+            {isLoading} = this.props;
 
       return (
          <form onSubmit={this.onSubmit} className="TodoForm">
             <input type="text" name="description" value={description} autoComplete="off" onChange={this.onInputUpdate} />
             <Button type="submit" disabled={isLoading || !description.trim()}> Add </Button>
-            {isLoading && <Loader mini={true} />}
          </form>
       )
    }

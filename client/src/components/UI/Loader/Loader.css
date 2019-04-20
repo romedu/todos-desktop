@@ -29,7 +29,8 @@
 }
 
 .MiniLoader {
-   float: right;
+   display: inline-block;
+   margin-left: 1.5vw;
 }
 
 .MiniLoader .spinner {

@@ -8,6 +8,10 @@ Button:hover {
    cursor: pointer;
 }
 
+Button:disabled {
+   cursor: not-allowed;
+}
+
 .Button:focus {
    outline: 2px solid rgb(155, 154, 154);
    transform: scale(1.02);
