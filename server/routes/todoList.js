@@ -12,4 +12,6 @@ router.route("/:id")
    .patch(todos.ownerOnly, todos.checkIfFolderOwner, helpers.update)
    .delete(todos.ownerPrivileges, helpers.delete);
 
+router.get("/:id/download", helpers.downloadFile);
+
 module.exports = router;

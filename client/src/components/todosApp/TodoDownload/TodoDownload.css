@@ -1,0 +1,11 @@
+.TodoDownload {
+   display: flex;
+}
+
+.EnabledIcon {
+   cursor: pointer;
+}
+
+.DisabledIcon {
+   cursor: wait;
+}

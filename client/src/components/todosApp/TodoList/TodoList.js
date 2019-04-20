@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {updateTodo, removeTodo} from "../../../store/actions/todo";
 import Todo from "../Todo/Todo";
 import TodoForm from "../TodoForm/TodoForm";
+import TodoDownload from "../TodoDownload/TodoDownload";
 import Options from "../../UI/Options/Options";
 import {findByProp} from "../../../helpers";
 import "./TodoList.css";
@@ -30,7 +31,7 @@ class TodoList extends Component {
    };
 
    render(){
-      const {name, todos, currentFolder} = this.props,
+      const {name, _id: todoId, todos, currentFolder} = this.props,
             todoList = todos.map(todo => <Todo key={todo._id} {...todo} updateHandler={this.todoUpdateHandler} deleteHandler={e => this.deleteTodoHandler(e, todo._id)} />),
             fileNames = currentFolder && currentFolder.files.map(file => file.name),
             changeTodo = currentFolder && fileNames.length > 1 && <Options label="Change List: " optionList={fileNames} selected={name} pickOption={this.changeListHandler} />;
@@ -43,6 +44,7 @@ class TodoList extends Component {
             {currentFolder && <h3> {currentFolder.name} </h3>}
             {changeTodo}
             <TodoForm />
+            <TodoDownload todoId={todoId} />
             <ul>
                {todoList.length ? todoList : <h4> Your list is empty.... </h4>}
             </ul>

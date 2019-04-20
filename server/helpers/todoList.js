@@ -1,4 +1,6 @@
-const {TodoList, Todo, Folder} = require("../models"),
+const fs = require("fs"),
+      path = require("path"),
+      {TodoList, Todo, Folder} = require("../models"),
       {errorHandler} = require("./error");
 
 exports.find = (req, res, next) => {
@@ -17,7 +19,7 @@ exports.find = (req, res, next) => {
    if(limit){
       TodoList.paginate(searchArg, options)
          .then(foundLists => {
-            if(!foundLists) throw new Error("Not Found");
+            if(!foundLists) throw errorHandler(404, "Not Found");
             res.status(200).json(foundLists)
          })
          .catch(error => {
@@ -28,13 +30,10 @@ exports.find = (req, res, next) => {
    else {
       TodoList.find(searchArg)
          .then(foundLists => {
-            if(!foundLists) throw new Error("Not Found");
+            if(!foundLists) throw errorHandler(404, "Not Found");
             res.status(200).json(foundLists)
          })
-         .catch(error => {
-            error.status = 404;
-            return next(error);
-         });
+         .catch(error => next(error));
    }
 };
 
@@ -98,16 +97,13 @@ exports.update = (req, res, next) => {
                return Promise.all(addons);
             })
             .then(response => res.status(200).json(response[response.length -1]))
-            .catch(error => {
-               console.log("Found it: ", error);
-               next(error);
-            }); 
+            .catch(error => next(error)); 
 }
 
 exports.delete = (req, res, next) => {
    TodoList.findByIdAndRemove(req.params.id)
       .then(list => {
-         if(!list) throw new Error("Not Found");
+         if(!list) throw errorHandler(404, "Not Found");
          if(!list.folderName) return;
          return Folder.findOne({name: list.folderName})
       })
@@ -118,10 +114,23 @@ exports.delete = (req, res, next) => {
       })
       .then(resolve => Todo.deleteMany({container: req.params.id}))
       .then(todos => res.status(200).json({message: "Todo List Removed Successfully"}))
-      .catch(error => {
-         error.status = 404;
-         return next(error);
+      .catch(error => next(error));
+}
+
+exports.downloadFile = (req, res, next) => {
+   TodoList.findById(req.params.id).populate("todos").exec()
+      .then(list => {
+         if(!list) throw errorHandler(404, "Not Found");
+         const {name, todos, folderName} = list,
+               // THE FILE WILL CONTAIN THE DESCRIPTION OF ALL OF THE TODOS IN THE TODOLIST SEPARATED BY A NEW LINE
+               fileText = `${folderName ? folderName + "\n" : ""}${name}: \n\n${todos.map(todo => `• ${todo.description}`).join("\n")}`;
+
+         fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
+            if(error) throw errorHandler(500, "Failed to create file");
+            res.download(path.join(__dirname, "../assets/files/todo-download.txt"));
+         })
       })
+      .catch(error => next(error));
 }
 
 module.exports = exports;
