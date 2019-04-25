@@ -85,7 +85,7 @@ export const updateList = (listId, listFolder, payload) => {
             }
             //CALLED WHEN CHANGED FROM NO FOLDER TO FOLDER
             else if(editedList.folderName) return dispatch(removeList(editedList._id)); 
-            return dispatch(editList(listId, editedList));
+            return dispatch(editList(editedList));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }
