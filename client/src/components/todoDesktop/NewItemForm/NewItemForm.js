@@ -18,11 +18,12 @@ const NewItemForm = props => {
                type: "text",
                placeholder: `${capitalizeWord(itemType)}'s Image Url`
             }
-         };
+         },
+         formatedFolderNames = folderNames.map(folderName => ({name: folderName}));
 
    let itemDescription = openFolderName && `Belongs to the folder: ${openFolderName}`;
    if(!itemDescription){
-      if(itemType === "todo") itemDescription = <Options name="folderName" selected={newItemData.folderName} label="Belonging Folder" pickOption={updateInput} optionList={folderNames} emptyOption="-- No Folder --" />;
+      if(itemType === "todo") itemDescription = <Options name="folderName" selected={newItemData.folderName} label="Belonging Folder" pickOption={updateInput} optionList={formatedFolderNames} emptyOption="-- No Folder --" />;
       else itemDescription = (
          <Fragment>
             <label> Description: </label>

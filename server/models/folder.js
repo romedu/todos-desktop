@@ -5,6 +5,7 @@ const mongoose = require("mongoose"),
       folderSchema = new mongoose.Schema({
          name: {
             type: String,
+            unique: true,
             required: [true, "Name is required"],
             minlength: [3, "Only between 3 and 14 characters are allowed"],
             maxlength: [14, "Only between 3 and 14 characters are allowed"],

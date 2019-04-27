@@ -1,13 +1,15 @@
 import React, {Fragment} from "react";
 import "./Options.css";
 
+// The optionList property should be an object, containing the props: name and id.
+// The emptyOption property should be a string
 const Options = ({name, label, optionList, emptyOption, selected, pickOption}) => {
-   if(!optionList) optionList = [emptyOption];
-   else if(emptyOption && !optionList.includes(emptyOption)) optionList.unshift(emptyOption);
+   if(!optionList) optionList = [{name: emptyOption}];
+   else if(emptyOption && !optionList.includes(emptyOption)) optionList.unshift({name: emptyOption});
 
-   const options = optionList.map((optionName, index) => (
-      <option key={`${optionName}${index}`} value={optionName}> 
-         {optionName}
+   const options = optionList.map(({name, id}, index) => (
+      <option key={`${id || name}${index}`} value={id || name}> 
+         {name}
       </option>)
    );
 

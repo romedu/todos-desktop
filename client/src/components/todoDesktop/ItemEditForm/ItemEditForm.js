@@ -18,9 +18,10 @@ const ItemEditForm = props => {
                type: "text",
                placeholder: `${capitalizeWord(itemType)}'s Image Url`
             }
-         };
+         },
+         formatedFolderNames = folderNames.map(folderName => ({name: folderName}));
 
-   let itemDescription = (itemType === "todo") ? <Options name="folderName" label="Belonging Folder" pickOption={updateInput} optionList={folderNames} emptyOption="-- No Folder --" selected={itemData.folderName} /> 
+   let itemDescription = (itemType === "todo") ? <Options name="folderName" label="Belonging Folder" pickOption={updateInput} optionList={formatedFolderNames} emptyOption="-- No Folder --" selected={itemData.folderName} /> 
                                                : (
                                                    <Fragment>
                                                       <label> Description: </label>
