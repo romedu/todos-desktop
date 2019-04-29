@@ -78,10 +78,13 @@ class DesktopContent extends Component {
             {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, 
             settingsHandler, deleteHandler, setSortingHandler} = this.props,
             itemList = ((folders && folders.length) || (todos && todos.length))
-               ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
+               ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} 
+                           settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <Fragment>
                      <h4> Your desktop is empty </h4>
-                     <Button action={newFormHandler} design="emptyDesktop"> Create a new {itemsType} </Button>
+                     <Button action={newFormHandler} design="emptyDesktop"> 
+                        Create a new {itemsType} 
+                     </Button>
                  </Fragment>,
 
             currentPage = Number(getQueries(location.search).page) || 1,
@@ -105,10 +108,12 @@ class DesktopContent extends Component {
                <Button action={newFormHandler}>
                   Create Item
                </Button>
-               <NavItem style={(location.pathname === "/folders") && "selected"} disabled={isLoading} url={`/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+               <NavItem style={(location.pathname === "/folders") && "selected"} disabled={isLoading} 
+                        url={`/folders?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
                   Folders
                </NavItem>
-               <NavItem style={(location.pathname === "/todos") && "selected"} disabled={isLoading} url={`/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
+               <NavItem style={(location.pathname === "/todos") && "selected"} disabled={isLoading} 
+                        url={`/todos?sort=${sorting.label ? toKebabCase(sorting.label) : "popularity"}`}>
                   TodoLists
                </NavItem>
             </ButtonGroup>

@@ -11,22 +11,17 @@ import Help from "./containers/Help/Help";
 import ReportBug from "./containers/ReportBug/ReportBug";
 import {verifyToken, logoutUser} from "./store/actions/auth";
 import {clearMessage, createMessage} from "./store/actions/message";
+import withTokenVerification from "./hoc/withTokenVerification";
 
 class App extends Component {
-   componentDidMount(){this.updateToken()}
-   componentDidUpdate(){this.updateToken()}
-
-   updateToken = () => {
+   componentDidMount(){
       const token = localStorage.getItem("token"),
             tokenExp = localStorage.getItem("tokenExp"),
             currentTime = Date.now(),
-            {user, onTokenVerify, onUserLogout, onMessageCreate} = this.props;
+            {onTokenVerify} = this.props;
 
-      if(user && (!token || (tokenExp && Number(tokenExp) <= currentTime))){
-         onUserLogout();
-         onMessageCreate("Your token is no longer valid, you must relog");
-      }
-      else if(!user && (Number(tokenExp) > currentTime)) onTokenVerify();
+      // If there is a token, check if it is still valid and login the user if needed
+      if(token && Number(tokenExp) > currentTime) onTokenVerify();
    }
 
    render(){
@@ -64,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
    onTokenVerify: () => dispatch(verifyToken()),
    onUserLogout: () => dispatch(logoutUser()),
    onMessageClear: () => dispatch(clearMessage()),
-   onMessageCreate: message => dispatch(createMessage("Notification", message))
+   onMessageCreate: (label, message) => dispatch(createMessage(label, message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withTokenVerification(App));

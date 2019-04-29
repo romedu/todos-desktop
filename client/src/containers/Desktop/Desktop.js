@@ -8,6 +8,7 @@ import {createMessage} from "../../store/actions/message";
 import DesktopContent from "../../components/todoDesktop/DesktopContent/DesktopContent";
 import DesktopPopups from "../../components/todoDesktop/DesktopPopups/DesktopPopups";
 import {findByProp} from "../../helpers";
+import withTokenVerification from "../../hoc/withTokenVerification";
 import "./Desktop.css";
 
 class Desktop extends Component{
@@ -25,11 +26,8 @@ class Desktop extends Component{
    componentDidUpdate(prevProps){
       const {message} = this.props,
             {showItemForm, confirmation, folderDisplaying} = this.state;
-      
-      // This one is used to make sure the UI only gets updated if the data really changed in the server
-      this.checkToken();
 
-      // If an error were to occur close the component that caused it, the itemForm or the folderDisplaying 
+      // If an error were to occur close the component that caused it, either the itemForm or the folderDisplaying 
       if(prevProps.message && !message){
          if(showItemForm) return this.setState({showItemForm: false, itemToEdit: null});
          else if(!showItemForm && folderDisplaying) return this.displayFolderHandler();
@@ -45,17 +43,6 @@ class Desktop extends Component{
                      keepItemsConfirm: false
                   }
                });
-      }
-   }
-
-   checkToken = () => {
-      const tokenExp = localStorage.getItem("tokenExp"),
-            currentTime = Date.now(),
-            {onUserLogout, onMessageCreate} = this.props;
-
-      if(tokenExp && Number(tokenExp) <= currentTime){
-         onUserLogout();
-         onMessageCreate("Notification", "Your token is no longer valid, you must relog");
       }
    }
 
@@ -96,7 +83,8 @@ class Desktop extends Component{
             <h1>
                Todos Desktop
             </h1>
-            <DesktopContent itemsType={itemsType} openFolderHandler={this.displayFolderHandler} newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
+            <DesktopContent itemsType={itemsType} openFolderHandler={this.displayFolderHandler} 
+                            newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
             <DesktopPopups itemToEdit={itemToEdit} itemsType={itemsType} folderDisplaying={folderDisplaying} showItemForm={showItemForm}
                            confirmation={confirmation} folderHandler={this.displayFolderHandler} itemFormHandler={this.itemFormHandler} 
                            settingsHandler={this.settingsHandler} deleteConfHandler={this.deleteConfHandler} hideConfirmation={this.hideConfirmation}
@@ -116,7 +104,7 @@ const mapDispatchToProps = dispatch => ({
    onFolderDelete: (folderId, keep) => dispatch(deleteFolder(folderId, keep)),
    onTodosDelete: (listId, inFolder) => dispatch(deleteList(listId, inFolder)),
    onUserLogout: () => dispatch(logoutUser()),
-   onMessageCreate: (type, message) => dispatch(createMessage(type, message))
+   onMessageCreate: (label, message) => dispatch(createMessage(label, message))
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Desktop));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTokenVerification(Desktop)));

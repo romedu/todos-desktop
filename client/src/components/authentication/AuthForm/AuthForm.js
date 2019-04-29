@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link, withRouter} from "react-router-dom";
-import {authenticateUser, verifyToken} from "../../../store/actions/auth";
+import {authenticateUser} from "../../../store/actions/auth";
 import {createMessage} from "../../../store/actions/message";
 import InputField from "../../UI/InputField/InputField";
 import Button from "../../UI/Button/Button";
@@ -49,11 +49,9 @@ class AuthForm extends Component {
    };
 
    componentDidUpdate(prevProps){
-      const tokenExp = localStorage.getItem("tokenExp"),
-            currentTime = Date.now(),
-            {message, user, onTokenVerify} = this.props;
-      if(!user && (Number(tokenExp) >= currentTime)) onTokenVerify();
-      else if(prevProps.message !== message) this.setState(prevState => ({...prevState, isLoading: false}));
+      const {message} = this.props;
+
+      if(prevProps.message !== message) this.setState(prevState => ({...prevState, isLoading: false}));
    }
 
    updateInputHandler = e => {
@@ -132,13 +130,11 @@ class AuthForm extends Component {
 };
 
 const mapStateToProps = state => ({
-   user: state.user.id,
    message: state.message.content
 });
 
 const mapDispatchToProps = dispatch => ({
    onAuthenticate: (type, username, password) => dispatch(authenticateUser(type, username, password)),
-   onTokenVerify: () => dispatch(verifyToken()),
    onErrorCreate: message => dispatch(createMessage("Error", message))
 });
 
