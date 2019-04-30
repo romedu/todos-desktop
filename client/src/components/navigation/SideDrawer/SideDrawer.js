@@ -6,7 +6,7 @@ import "./SideDrawer.css";
 const SideDrawer = ({showing, hideHandler}) => {
    return (
       <Fragment>
-         {showing && <Backdrop closeHandler={hideHandler}/>}
+         {showing && <Backdrop closeHandler={hideHandler} zIndex="1" />}
          <div className={`SideDrawer ${showing ? "OpenDrawer" : "ClosedDrawer"}`}>
             <NavItems sideDrawer hideHandler={hideHandler} /> 
          </div>

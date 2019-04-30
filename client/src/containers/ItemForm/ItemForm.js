@@ -97,7 +97,7 @@ class ItemForm extends Component {
 
       return (
          <div>
-            <Backdrop closeHandler={!isLoading ? closeHandler : null} slightDrop={!!currentFolder} coverNav />
+            <Backdrop closeHandler={!isLoading ? closeHandler : null} slightDrop={!!currentFolder} zIndex="5" coverNav />
             <div className="itemForm">
                {content}
             </div>

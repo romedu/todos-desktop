@@ -77,8 +77,8 @@ class DesktopContent extends Component {
       const {isLoading} = this.state,
             {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, 
             settingsHandler, deleteHandler, setSortingHandler} = this.props,
-            itemList = ((folders && folders.length) || (todos && todos.length))
-               ? <IconList folders={folders} todos={todos} openHandler={openFolderHandler} 
+            itemList = (todos && todos.length)
+               ? <IconList todos={todos} openHandler={openFolderHandler} 
                            settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <Fragment>
                      <h4> Your desktop is empty </h4>
@@ -97,7 +97,7 @@ class DesktopContent extends Component {
                            : (
                               <Fragment>
                                  <SortOptions selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
-                                 {itemList}
+                                 {!folders && itemList}
                                  {pagination}
                               </Fragment>
                            );

@@ -38,7 +38,7 @@ class Folder extends Component {
 
       return (
          <Fragment>
-            <Backdrop closeHandler={this.clearFolderHandler} coverNav />
+            <Backdrop closeHandler={this.clearFolderHandler} zIndex="3" coverNav />
             <div className="Folder FolderBorder"></div>
             <div className="Folder FolderInside">
                {content}
