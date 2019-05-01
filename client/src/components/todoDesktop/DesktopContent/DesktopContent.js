@@ -75,10 +75,10 @@ class DesktopContent extends Component {
 
    render(){
       const {isLoading} = this.state,
-            {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, openFolderHandler, newFormHandler, 
+            {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, newFormHandler, 
             settingsHandler, deleteHandler, setSortingHandler} = this.props,
             itemList = (todos && todos.length)
-               ? <IconList todos={todos} openHandler={openFolderHandler} 
+               ? <IconList todos={todos} 
                            settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
                : <Fragment>
                      <h4> Your desktop is empty </h4>

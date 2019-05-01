@@ -119,12 +119,11 @@ class Desktop extends Component{
             <h1>
                Todos Desktop
             </h1>
-            <DesktopContent itemsType={itemsType} openFolderHandler={this.displayFolderHandler} 
+            <DesktopContent itemsType={itemsType} 
                             newFormHandler={this.itemFormHandler} settingsHandler={this.settingsHandler} deleteHandler={this.deleteConfHandler} />
             
-            <DesktopPopups itemToEdit={itemToEdit} itemsType={itemsType} showItemForm={showItemForm}
-                           confirmation={confirmation} folderHandler={this.displayFolderHandler} itemFormHandler={this.itemFormHandler} 
-                           settingsHandler={this.settingsHandler} deleteConfHandler={this.deleteConfHandler} hideConfirmation={this.hideConfirmation}
+            <DesktopPopups itemToEdit={itemToEdit} itemsType={itemsType} showItemForm={showItemForm} confirmation={confirmation} 
+                           itemFormHandler={this.itemFormHandler} hideConfirmation={this.hideConfirmation}
                            deleteItemHandler={this.deleteItemHandler} removeItemHandler= {this.removeItemHandler} />
 
             <FoldersDisplay folders={folders} itemFormHandler={this.itemFormHandler} 
