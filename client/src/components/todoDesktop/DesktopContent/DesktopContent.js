@@ -77,30 +77,37 @@ class DesktopContent extends Component {
       const {isLoading} = this.state,
             {sorting, location, folders, todos, itemsType, foldersPaging, todosPaging, newFormHandler, 
             settingsHandler, deleteHandler, setSortingHandler} = this.props,
-            itemList = (todos && todos.length)
-               ? <IconList todos={todos} 
-                           settingsHandler={settingsHandler} deleteHandler={deleteHandler} />
-               : <Fragment>
-                     <h4> Your desktop is empty </h4>
-                     <Button action={newFormHandler} design="emptyDesktop"> 
-                        Create a new {itemsType} 
-                     </Button>
-                 </Fragment>,
-
             currentPage = Number(getQueries(location.search).page) || 1,
             totalItems = foldersPaging.total || todosPaging.total,
             itemsLength = (folders && folders.length) || (todos && todos.length),
             itemsLimit = foldersPaging.limit || todosPaging.limit,
             pagination = (totalItems > itemsLength) && (totalItems >= (currentPage * itemsLimit) - itemsLimit)
                         && <Pagination currentPage={currentPage} limit={itemsLimit} total={totalItems} paginateHandler={this.paginateHandler} />;
-            const content = isLoading ? <Loader />
-                           : (
-                              <Fragment>
-                                 <SortOptions selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
-                                 {!folders && itemList}
-                                 {pagination}
-                              </Fragment>
-                           );
+
+      let itemList = null;
+      
+      if(todos && todos.length){
+         itemList = <IconList todos={todos} 
+                              settingsHandler={settingsHandler} 
+                              deleteHandler={deleteHandler} />
+      }
+      else if((todos && !todos.length) || (folders && !folders.length)){
+         itemList = <Fragment>
+                        <h4> Your desktop is empty </h4>
+                        <Button action={newFormHandler} design="emptyDesktop"> 
+                           Create a new {itemsType} 
+                        </Button>
+                  </Fragment>
+      }    
+
+      const content = isLoading ? <Loader />
+                                 : (
+                                    <Fragment>
+                                       <SortOptions selectedSorting={sorting.label} setSortingHandler={setSortingHandler} />
+                                       {itemList}
+                                       {pagination}
+                                    </Fragment>
+                                 );
             
       return (
          <Fragment>

@@ -21,7 +21,12 @@ class FolderDisplay extends Component {
 
    render(){
       const {folderInDisplay} = this.state,
-            {folders, itemFormHandler, settingsHandler, deleteHandler} = this.props;
+            {folders, itemFormHandler, settingsHandler, deleteHandler} = this.props,
+            foldersList = (folders && folders.length) ? <IconList folders={folders} 
+                                                               openHandler={this.displayFolderHandler} 
+                                                               settingsHandler={settingsHandler} 
+                                                               deleteHandler={deleteHandler} />
+                                                      : null;
 
       return (
          <Fragment>
@@ -29,12 +34,8 @@ class FolderDisplay extends Component {
                                         closeHandler={this.displayFolderHandler} 
                                         newFormToggle={itemFormHandler} 
                                         settingsHandler={settingsHandler} 
-                                        deleteHandler={deleteHandler} />}
-                                        
-            {folders && folders.length && <IconList folders={folders} 
-                                                    openHandler={this.displayFolderHandler} 
-                                                    settingsHandler={settingsHandler} 
-                                                    deleteHandler={deleteHandler} />}
+                                        deleteHandler={deleteHandler} />}            
+            {foldersList}
          </Fragment>
       )
    }
