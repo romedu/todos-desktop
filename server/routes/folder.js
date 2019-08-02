@@ -7,7 +7,7 @@ router.route("/")
    .post(helpers.create);
 
 router.route("/:id")
-   .all(folder.checkPermission)
+   .all(folder.getCurrentFolder, folder.checkPermission)
    .get(helpers.findOne)
    .patch(helpers.update)
    .delete(folder.ownerPrivileges, helpers.delete);
