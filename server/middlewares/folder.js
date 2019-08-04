@@ -5,7 +5,7 @@ const { Folder } = require("../models"),
 // Find the current folder using the id parameter and pass it in the req.locals object as currentFolder
 exports.getCurrentFolder = (req, res, next) => {
 	Folder.findOne({ id: req.params.id })
-		.then(filterResource.bind({}, "Not Found"))
+		.then(filterResource("Not Found"))
 		.then(foundFolder => {
 			req.locals.currentFolder = foundFolder;
 			next();
