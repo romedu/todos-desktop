@@ -1,6 +1,6 @@
 const { Folder } = require("../models"),
 	{ errorHandler } = require("../helpers/error"),
-	{ filterResource } = require("./index");
+	{ filterResource } = require("../helpers");
 
 // Find the current folder using the id parameter and pass it in the req.locals object as currentFolder
 exports.getCurrentFolder = (req, res, next) => {
