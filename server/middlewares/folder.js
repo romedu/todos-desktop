@@ -1,43 +1,44 @@
 const { Folder } = require("../models"),
-	{ errorHandler } = require("../helpers/error"),
-	{ filterResource } = require("../helpers");
+	{ errorHandler } = require("../helpers/error");
 
 // Find the current folder using the id parameter and pass it in the req.locals object as currentFolder
-exports.getCurrentFolder = (req, res, next) => {
-	Folder.findOne({ id: req.params.id })
-		.then(filterResource("Not Found"))
-		.then(foundFolder => {
-			req.locals.currentFolder = foundFolder;
-			next();
-		})
-		.catch(error => next(error));
+exports.getCurrentFolder = async (req, res, next) => {
+	try {
+		const foundFolder = await Folder.findById(req.params.id);
+
+		if (!foundFolder) throw errorHandler(404, "Not Found");
+		req.locals.currentFolder = foundFolder;
+		next();
+	} catch (error) {
+		next(error);
+	}
 };
 
 // Populate the currentFolder's creator property, check if the current user is the folder owner or an admin,
 // and pass in the creator property in the req.locals object
-exports.checkPermission = (req, res, next) => {
-	const { currentFolder } = req.locals;
+exports.checkPermission = async (req, res, next) => {
+	try {
+		const { currentFolder, user } = req.locals,
+			populatedFolder = await currentFolder
+				.populate("creator")
+				.execPopulate(),
+			{ creator } = populatedFolder,
+			{ isAdmin, id: userId } = user;
 
-	currentFolder
-		.populate("creator")
-		.exec()
-		.then(populatedFolder => {
-			const { creator } = populatedFolder,
-				{ isAdmin, id: userId } = req.locals.user;
-
-			if (!isAdmin && creator.id !== userId)
-				throw errorHandler(401, "You are not authorized");
-			req.locals.creator = creator;
-			return next();
-		})
-		.catch(error => next(error));
+		if (!isAdmin && creator.id !== userId) {
+			throw errorHandler(401, "You are not authorized");
+		}
+		req.locals.creator = creator;
+		return next();
+	} catch (error) {
+		next(error);
+	}
 };
 
+// If the folder creator is an admin only him can proceed, else if the current user is an admin he may too
 exports.ownerPrivileges = (req, res, next) => {
 	const { user, creator } = req.locals;
 
-	//If the user isn't an admin then it means he's the owner
-	if (!user.isAdmin || !creator.isAdmin || creator.id === user.id)
-		return next();
+	if (!creator.isAdmin || creator.id === user.id) return next();
 	return next(errorHandler(401, "You are not authorized to proceed"));
 };
