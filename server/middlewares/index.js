@@ -15,7 +15,8 @@ exports.checkIfToken = (req, res, next) => {
 			error.status = 403;
 			return next(error);
 		}
-		req.locals.user = decoded;
+
+		req.locals = { user: decoded };
 		return next();
 	});
 };
