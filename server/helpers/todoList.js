@@ -3,160 +3,169 @@ const fs = require("fs"),
 	{ TodoList, Todo, Folder } = require("../models"),
 	{ errorHandler } = require("./error");
 
-exports.find = (req, res, next) => {
-	const { isAdmin, id: userId } = req.locals.user,
-		{ getAll, page, limit, sortProp, sortOrder, folderLess } = req.query,
-		searchArg = isAdmin && getAll ? {} : { creator: userId },
-		options = {
-			sort: { [sortProp]: sortOrder },
-			page,
-			limit: Number(limit)
-		};
+// Finds either all the todoLists or the ones in a specific folder
+exports.find = async (req, res, next) => {
+	try {
+		const { isAdmin, id: userId } = req.locals.user,
+			{ getAll, page, limit, sortProp, sortOrder, folderLess } = req.query,
+			searchArg = isAdmin && getAll ? {} : { creator: userId },
+			options = {
+				sort: { [sortProp]: sortOrder },
+				page,
+				limit: Number(limit)
+			};
 
-	if (folderLess) searchArg.folderName = undefined;
+		// This is used to find all the todoList that are not inisde of a folder
+		if (folderLess) searchArg.folderName = undefined;
 
-	//Temporary fix for retrieving all the docs
-	if (limit) {
-		TodoList.paginate(searchArg, options)
-			.then(foundLists => {
-				if (!foundLists) throw errorHandler(404, "Not Found");
-				res.status(200).json(foundLists);
-			})
-			.catch(error => {
-				error.status = 404;
-				return next(error);
-			});
-	} else {
-		TodoList.find(searchArg)
-			.then(foundLists => {
-				if (!foundLists) throw errorHandler(404, "Not Found");
-				res.status(200).json(foundLists);
-			})
-			.catch(error => next(error));
+		const foundLists = limit
+			? await TodoList.paginate(searchArg, options)
+			: await TodoList.find(searchArg);
+
+		if (!foundLists) throw errorHandler(404, "Not Found");
+		return res.status(200).json(foundLists);
+	} catch (error) {
+		next(error);
 	}
 };
 
-exports.create = (req, res, next) => {
-	const { body, locals } = req,
-		{ newFolder, user } = locals;
+exports.create = async (req, res, next) => {
+	try {
+		const { body, locals } = req,
+			{ currentListFolder, user } = locals;
 
-	body.creator = user.id;
+		body.creator = user.id;
 
-	TodoList.create(body)
-		.then(newList => {
-			const addons = [newList];
-			if (newFolder) {
-				newFolder.files.push(newList.id);
-				addons.push(newFolder.save());
-			}
-			return Promise.all(addons);
-		})
-		.then(([newList, response]) => res.status(201).json(newList))
-		.catch(error => {
-			if (!error.message || error.code === 11000)
-				error = errorHandler(
-					409,
-					"That name is not avaibale, please try another one"
-				);
-			next(error);
-		});
+		const newList = await TodoList.create(body);
+
+		// If the newList is inside of a folder, add it to that folder
+		if (currentListFolder) {
+			currentListFolder.files.push(newList.id);
+			await currentListFolder.save();
+		}
+
+		return res.status(201).json(newList);
+	} catch (error) {
+		if (error.code === 11000) {
+			error = errorHandler(
+				409,
+				"That name is not avaibale, please try another one"
+			);
+		}
+		next(error);
+	}
 };
 
-exports.findOne = (req, res, next) => {
-	TodoList.findOne({ _id: req.params.id })
-		.populate("todos")
-		.exec()
-		.then(list => res.status(200).json(list))
-		.catch(error => next(error));
+exports.findOne = async (req, res, next) => {
+	try {
+		const { currentList } = req.locals,
+			populatedList = await currentList.populate("todos").execPopulate();
+
+		return res.status(200).json(populatedList);
+	} catch (error) {
+		return next(error);
+	}
 };
 
-exports.update = (req, res, next) => {
-	let { folderName, ...updateData } = req.body;
-	const options = {
-		new: true,
-		runValidators: true
-	};
+exports.update = async (req, res, next) => {
+	try {
+		const { folderName, ...updateData } = req.body,
+			{ currentList, currentListFolder: listNewFolder } = req.locals,
+			options = {
+				runValidators: true
+			},
+			updatedList = { ...currentList._doc, ...updateData };
 
-	return TodoList.findByIdAndUpdate(req.params.id, updateData, options)
-		.then(updatedList => {
-			const { newFolder } = req.locals;
+		let oldFolder;
 
-			//Checks if there is no folderName change or if there wasn't a previous folderName
-			if (
-				!folderName ||
-				!updatedList.folderName ||
-				(newFolder && newFolder.name === updatedList.folderName)
-			)
-				return Promise.all([null, updatedList]);
-			else
-				return Promise.all([
-					Folder.findOne({ name: updatedList.folderName }),
-					updatedList
-				]);
-		})
-		.then(([oldFolder, updatedList]) => {
-			const addons = [],
-				{ newFolder } = req.locals;
+		await currentList.updateOne(updateData, options);
 
-			if (oldFolder) {
-				oldFolder.files.pull(updatedList.id);
-				addons.push(oldFolder.save());
+		// Check if there is a folderName in the req.body and said folder is different than the one the list is inside of (if any)
+		if (folderName && currentList.folderName !== folderName) {
+			// Check if the updated list was inside of a folder
+			if (currentList.folderName) {
+				oldFolder = await Folder.findOne({ name: currentList.folderName });
+				if (!oldFolder) throw errorHandler(404, "Not Found");
+
+				// Remove the current list from the old folder
+				oldFolder.files.pull(currentList.id);
+				await oldFolder.save();
 			}
-			if (newFolder && newFolder.name !== updatedList.folderName) {
-				newFolder.files.push(updatedList.id);
-				updatedList.folderName = newFolder.name;
-				addons.push(newFolder.save());
-			} else if (oldFolder && folderName === "-- No Folder --")
+			// Check if the list was moved to a folder
+			if (folderName !== "-- No Folder --") {
+				// Add the current list to the new folder
+				listNewFolder.files.push(currentList.id);
+				currentList.folderName = listNewFolder.name;
+				updatedList.folderName = listNewFolder.name;
+				await listNewFolder.save();
+				await currentList.save();
+			} else {
+				currentList.folderName = null;
 				updatedList.folderName = null;
+				await currentList.save();
+			}
+		}
 
-			addons.push(updatedList.save());
-			return Promise.all(addons);
-		})
-		.then(response => res.status(200).json(response[response.length - 1]))
-		.catch(error => next(error));
+		return res.status(200).json(updatedList);
+	} catch (error) {
+		return next(error);
+	}
 };
 
-exports.delete = (req, res, next) => {
-	TodoList.findByIdAndRemove(req.params.id)
-		.then(list => {
-			if (!list) throw errorHandler(404, "Not Found");
-			if (!list.folderName) return;
-			return Folder.findOne({ name: list.folderName });
-		})
-		.then(folder => {
-			if (!folder) return;
-			folder.files.pull(req.params.id);
-			return folder.save();
-		})
-		.then(resolve => Todo.deleteMany({ container: req.params.id }))
-		.then(todos =>
-			res.status(200).json({ message: "Todo List Removed Successfully" })
-		)
-		.catch(error => next(error));
-};
+exports.delete = async (req, res, next) => {
+	try {
+		const { currentList: listToDelete } = req.locals;
 
-exports.downloadFile = (req, res, next) => {
-	TodoList.findById(req.params.id)
-		.populate("todos")
-		.exec()
-		.then(list => {
-			if (!list) throw errorHandler(404, "Not Found");
-			const { name, todos, folderName } = list,
-				// THE FILE WILL CONTAIN THE DESCRIPTION OF ALL OF THE TODOS IN THE TODOLIST SEPARATED BY A NEW LINE
-				fileText = `${
-					folderName ? folderName + "\n" : ""
-				}${name}: \n\n${todos
-					.map(todo => `• ${todo.description}`)
-					.join("\n")}`;
+		await listToDelete.delete();
 
-			fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
-				if (error) throw errorHandler(500, "Failed to create file");
-				res.download(
-					path.join(__dirname, "../assets/files/todo-download.txt")
-				);
+		// If the list is inside a folder, remove its reference from it
+		if (listToDelete.folderName) {
+			const currentListFolder = await Folder.findOne({
+				name: listToDelete.folderName
 			});
-		})
-		.catch(error => next(error));
+			if (!currentListFolder) throw errorHandler(404, "Not Found");
+			currentListFolder.files.pull(listToDelete.id);
+			await currentListFolder.save();
+		}
+
+		// Delete all of the todos from the list
+		await Todo.deleteMany({ container: listToDelete.id });
+
+		return res
+			.status(200)
+			.json({ message: "Todo List Removed Successfully" });
+	} catch (error) {
+		next(error);
+	}
+};
+
+// The file will contain the description of all of the todos in the list separated by a new line
+exports.downloadFile = async (req, res, next) => {
+	try {
+		const { currentList } = req.locals,
+			populatedList = await currentList.populate("todos").execPopulate(),
+			{
+				name: listName,
+				todos: listTodos,
+				folderName: listFolderName
+			} = populatedList,
+			fileText = `${
+				listFolderName ? listFolderName + "\n" : ""
+			}${listName}: \n\n${listTodos
+				.map(todo => `• ${todo.description}`)
+				.join("\n")}`;
+
+		fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
+			if (error) throw errorHandler(500, "Failed to create file");
+			const todoFilePath = path.join(
+				__dirname,
+				"../assets/files/todo-download.txt"
+			);
+			return res.download(todoFilePath);
+		});
+	} catch (error) {
+		return next(error);
+	}
 };
 
 module.exports = exports;
