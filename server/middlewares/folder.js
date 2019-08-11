@@ -35,7 +35,7 @@ exports.checkPermission = async (req, res, next) => {
 	}
 };
 
-// If the folder creator is an admin only him can proceed, else if the current user is an admin he may too
+// If the current folder creator is an admin only him can proceed
 exports.ownerPrivileges = (req, res, next) => {
 	const { user, creator } = req.locals;
 
