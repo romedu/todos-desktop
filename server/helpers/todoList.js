@@ -58,10 +58,12 @@ exports.create = async (req, res, next) => {
 
 exports.findOne = async (req, res, next) => {
 	try {
-		const { currentList } = req.locals,
+		const { currentList, creator } = req.locals,
 			populatedList = await currentList.populate("todos").execPopulate();
 
-		return res.status(200).json(populatedList);
+		return res
+			.status(200)
+			.json({ ...populatedList._doc, creator: creator.id });
 	} catch (error) {
 		return next(error);
 	}
@@ -70,7 +72,11 @@ exports.findOne = async (req, res, next) => {
 exports.update = async (req, res, next) => {
 	try {
 		const { folderName, ...updateData } = req.body,
-			{ currentList, currentListFolder: listNewFolder } = req.locals,
+			{
+				currentList,
+				creator,
+				currentListFolder: listNewFolder
+			} = req.locals,
 			options = {
 				runValidators: true
 			},
@@ -106,7 +112,7 @@ exports.update = async (req, res, next) => {
 			}
 		}
 
-		return res.status(200).json(updatedList);
+		return res.status(200).json({ ...updatedList, creator: creator.id });
 	} catch (error) {
 		return next(error);
 	}
