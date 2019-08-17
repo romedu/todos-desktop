@@ -82,15 +82,15 @@ exports.update = async (req, res, next) => {
 			},
 			updatedList = { ...currentList._doc, ...updateData };
 
-		let oldFolder;
-
 		await currentList.updateOne(updateData, options);
 
 		// Check if there is a folderName in the req.body and said folder is different than the one the list is inside of (if any)
 		if (folderName && currentList.folderName !== folderName) {
 			// Check if the updated list was inside of a folder
 			if (currentList.folderName) {
-				oldFolder = await Folder.findOne({ name: currentList.folderName });
+				const oldFolder = await Folder.findOne({
+					name: currentList.folderName
+				});
 				if (!oldFolder) throw errorHandler(404, "Not Found");
 
 				// Remove the current list from the old folder
