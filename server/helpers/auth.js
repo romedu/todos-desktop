@@ -2,38 +2,35 @@ const jwt = require("jsonwebtoken"),
 	{ User } = require("../models"),
 	{ errorHandler } = require("./error");
 
-exports.register = (req, res, next) => {
-	User.create(req.body)
-		.then(user => res.status(200).json(signUser(user)))
-		.catch(error => {
-			if (!error.message || error.code === 11000)
-				error = errorHandler(409, "Username is not available");
-			return next(error);
-		});
+exports.register = async (req, res, next) => {
+	try {
+		const user = await User.create(req.body),
+			signedUserData = signUser(user);
+		return res.status(200).json(signedUserData);
+	} catch (error) {
+		if (error.code === 11000)
+			error = errorHandler(409, "Username is not available");
+		return next(error);
+	}
 };
 
-exports.login = (req, res, next) => {
-	const { username, password } = req.body;
+exports.login = async (req, res, next) => {
+	try {
+		const { username, password } = req.body,
+			user = await User.findOne({ username });
 
-	User.findOne({ username })
-		.then(user => {
-			if (!user || !password)
-				throw errorHandler(404, "Incorrect Username/Password");
-			return user
-				.comparePassword(password)
-				.then(response => {
-					if (response === true)
-						return res.status(200).json(signUser(user));
-					throw response;
-				})
-				.catch(error => {
-					return next(error);
-				});
-		})
-		.catch(error => {
-			error.status = 404;
-			return next(error);
-		});
+		if (!user || !password)
+			throw errorHandler(404, "Incorrect Username/Password");
+
+		const passwordComparison = await user.comparePassword(password);
+
+		if (passwordComparison === true) {
+			const signedUserData = signUser(user);
+			return res.status(200).json(signedUserData);
+		} else throw errorHandler(404, "Incorrect Username/Password");
+	} catch (error) {
+		return next(error);
+	}
 };
 
 // MiddleWare should check if token
@@ -48,7 +45,14 @@ const signUser = user => {
 		token = jwt.sign({ username, isAdmin, id }, SECRET, {
 			expiresIn: "1h",
 			algorithm: ALGORITHM
-		});
+		}),
+		userData = {
+			username,
+			isAdmin,
+			token,
+			id,
+			tokenExp: Date.now() + 3600 * 1000
+		};
 
-	return { username, isAdmin, token, id, tokenExp: Date.now() + 3600 * 1000 };
+	return userData;
 };
