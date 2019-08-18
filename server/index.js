@@ -2,9 +2,8 @@ const app = require("express")(),
 	cors = require("cors"),
 	morgan = require("morgan"),
 	bodyParser = require("body-parser"),
-	serializeError = require("serialize-error"),
 	expressSanitizer = require("express-sanitizer"),
-	PORT = process.env.PORT || 3000,
+	{ PORT } = process.env,
 	{
 		authRoutes,
 		folderRoutes,
@@ -35,12 +34,18 @@ app.use("/api/services", servicesRoutes);
 app.get("*", (req, res, next) => next(errorHandler(404, "Route not found")));
 
 app.use((error, req, res, next) => {
-	error = serializeError(error);
-	if (!error.status) error.status = 500;
-	delete error.stack;
-	return res.json(error);
+	const { status, message } = error,
+		errorResponse = { status, message };
+
+	if (!status) {
+		errorResponse.status = 500;
+		errorResponse.message = "Internal Server Error";
+	}
+
+	console.error(error);
+	return res.json(errorResponse);
 });
 
 app.listen(PORT, () => {
-	console.log("Todos r' Up");
+	console.log(`Todos r' Up in port: ${PORT}`);
 });
