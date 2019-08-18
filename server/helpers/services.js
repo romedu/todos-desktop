@@ -15,27 +15,29 @@ const nodemailer = require("nodemailer"),
 		}
 	});
 
-exports.sendMail = (req, res, next) => {
-	const { message: mailMessage } = req.body,
-		mailOptions = {
-			from: `"TodoDesktop👻" ${EMAIL_HOST}`,
-			to: EMAIL_RECEIVER,
-			subject: `Todo Desktop Bug Report, User: ${req.locals.user.username}`,
-			text: mailMessage
-		};
+exports.sendMail = async (req, res, next) => {
+	try {
+		const { message: mailMessage } = req.body,
+			{ user } = req.locals,
+			mailOptions = {
+				from: `"TodoDesktop👻" ${EMAIL_HOST}`,
+				to: EMAIL_RECEIVER,
+				subject: `Todo Desktop Bug Report, User: ${user.username}`,
+				text: mailMessage
+			};
 
-	if (!mailMessage)
-		return next(errorHandler(409, "A message body is required to proceed"));
+		if (!mailMessage)
+			throw errorHandler(409, "A message body is required to proceed");
 
-	transporter
-		.sendMail(mailOptions)
-		.then(mail =>
-			res.status(200).json({ message: "Message sent successfully" })
-		)
-		.catch(error => {
-			console.log(error);
-			return next(errorHandler(500, "Failed to send the message"));
-		});
+		await transporter.sendMail(mailOptions);
+		return res.status(200).json({ message: "Message sent successfully" });
+	} catch (error) {
+		if (!error.status) {
+			error.status = 500;
+			error.message = "Failed to send the message";
+		}
+		return next(error);
+	}
 };
 
 module.exports = exports;
