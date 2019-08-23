@@ -1,4 +1,5 @@
 const fs = require("fs"),
+	os = require("os"),
 	path = require("path"),
 	{ TodoList, Todo, Folder } = require("../models"),
 	{ errorHandler } = require("./error");
@@ -148,7 +149,8 @@ exports.delete = async (req, res, next) => {
 // The file will contain the description of all of the todos in the list separated by a new line
 exports.downloadFile = async (req, res, next) => {
 	try {
-		const { currentList } = req.locals,
+		const tempDirPath = os.tmpdir(),
+			{ currentList } = req.locals,
 			populatedList = await currentList.populate("todos").execPopulate(),
 			{
 				name: listName,
@@ -161,13 +163,14 @@ exports.downloadFile = async (req, res, next) => {
 				.map(todo => `• ${todo.description}`)
 				.join("\n")}`;
 
-		fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
-			if (error) throw errorHandler(500, "Failed to create file");
-			const todoFilePath = path.join(
-				__dirname,
-				"../assets/files/todo-download.txt"
-			);
-			return res.download(todoFilePath);
+		fs.mkdtemp(`${tempDirPath}${path.sep}`, (error, folderPath) => {
+			if (error) throw errorHandler(500, error.message);
+			const tempFilePath = `${folderPath}${path.sep}todo-download.txt`;
+
+			fs.writeFile(tempFilePath, fileText, error => {
+				if (error) throw errorHandler(500, error.message);
+				return res.download(tempFilePath);
+			});
 		});
 	} catch (error) {
 		return next(error);
