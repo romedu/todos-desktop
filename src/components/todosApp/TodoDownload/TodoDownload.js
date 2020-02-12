@@ -24,7 +24,7 @@ class TodoDownload extends Component {
       const {todoId, updateLoader, onMessageCreate} = this.props,
             headers  = {Authorization: localStorage.getItem("token")};
             
-      qwest.get(`/api/todos/${todoId}/download`, null, {headers})
+      qwest.get(`/api/todoList/${todoId}/download`, null, {headers})
          .then(data => data.response)
          .then(fileBlob => {
             const fileUrl = window.URL.createObjectURL(new Blob([fileBlob]));

@@ -32,7 +32,7 @@ export const getFolderNames = () => {
          .then(response => {
             const {status, message} = response;
             if(status && status !== 200) throw new Error(message);
-            return dispatch(setFolderNames(extractProperty("name", response)));
+            return dispatch(setFolderNames(extractProperty("name", response.docs)));
          })
          .catch(error => dispatch(createMessage("Error", error.message)));
    }

@@ -6,7 +6,7 @@ qwest.limit(2);
 export const createTodo = (listId, newTodoData) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.post(`/api/todos/${listId}/todo`, newTodoData, {headers})
+      qwest.post(`/api/todoList/${listId}/todo`, newTodoData, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {status, message, ...newTodo} = response;
@@ -25,7 +25,7 @@ const addTodo = newTodo => ({
 export const updateTodo = (listId, todoId, todoData) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.map("PATCH", `/api/todos/${listId}/todo/${todoId}`, todoData, {headers})
+      qwest.map("PATCH", `/api/todoList/${listId}/todo/${todoId}`, todoData, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {status, message, ...editedTodo} = response;
@@ -44,7 +44,7 @@ const editTodo = editedTodo => ({
 export const removeTodo = (listId, todoId) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest["delete"](`/api/todos/${listId}/todo/${todoId}`, null, {headers})
+      qwest["delete"](`/api/todoList/${listId}/todo/${todoId}`, null, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             let {status, message} = response;

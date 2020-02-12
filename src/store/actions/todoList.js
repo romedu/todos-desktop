@@ -7,7 +7,7 @@ qwest.limit(2);
 export const getLists = (sortProp, sortOrder, pageNum) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.get(`/api/todos?sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true&page=${pageNum}&limit=14`, null, {headers})
+      qwest.get(`/api/todoList?sortProp=${sortProp}&sortOrder=${sortOrder}&folderLess=true&page=${pageNum}&limit=14`, null, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, docs, total, limit} = response;
@@ -27,7 +27,7 @@ const setLists = (lists, paginationData) => ({
 export const openList = listId => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.get(`/api/todos/${listId}`, null, {headers})
+      qwest.get(`/api/todoList/${listId}`, null, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...list} = response;
@@ -50,7 +50,7 @@ export const closeList = () => ({
 export const createList = (newListData, insideFolder) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.post("/api/todos", newListData, {headers})
+      qwest.post("/api/todoList", newListData, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...newList} = response;
@@ -73,7 +73,7 @@ const addList = newList => ({
 export const updateList = (listId, listFolder, payload) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest.map("PATCH", `/api/todos/${listId}`, payload, {headers})
+      qwest.map("PATCH", `/api/todoList/${listId}`, payload, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message, ...editedList} = response;
@@ -99,7 +99,7 @@ const editList = editedList => ({
 export const deleteList = (listId, insideFolder) => {
    const headers = {Authorization: localStorage.getItem("token")};
    return dispatch => {
-      qwest["delete"](`/api/todos/${listId}`, null, {headers})
+      qwest["delete"](`/api/todoList/${listId}`, null, {headers})
          .then(data => JSON.parse(data.response))
          .then(response => {
             const {status, message} = response;
