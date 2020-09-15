@@ -5,11 +5,11 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Loader from "../../components/UI/Loader/Loader";
 import { openFolder, closeFolder } from "../../store/actions/folder";
 import "./Folder.css";
-import FolderContent from "../../components/todoDesktop/FolderContent/FolderContent";
+import FolderContent from "../../components/Folder/FolderContent/FolderContent";
 
 class Folder extends Component {
 	state = {
-		isLoading: true,
+		isLoading: true
 	};
 
 	componentDidMount() {
@@ -53,7 +53,7 @@ class Folder extends Component {
 const mapStateToProps = state => ({ currentFolder: state.folder.current });
 const mapDispatchToProps = dispatch => ({
 	onFolderOpen: folderId => dispatch(openFolder(folderId)),
-	onFolderClose: () => dispatch(closeFolder()),
+	onFolderClose: () => dispatch(closeFolder())
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Folder));

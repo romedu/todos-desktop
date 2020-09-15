@@ -1,0 +1,15 @@
+import React from "react";
+import IconList from "../../todoDesktop/IconList/IconList";
+
+const FolderContent = ({ files, folderName }) => {
+	const content = files.length ? <IconList items={files} /> : <h4> The folder is empty </h4>;
+
+	return (
+		<div>
+			<h2>{folderName}</h2>
+			<div>{content}</div>
+		</div>
+	);
+};
+
+export default FolderContent;
