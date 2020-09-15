@@ -2,7 +2,7 @@ import actionTypes from "../actions/actionTypes";
 import {updateItem, removeById} from "../../helpers";
 
 const initialState = {
-   lists: null,
+   lists: [],
    current: null,
    paginationData: {
       limit: 0,
@@ -14,7 +14,7 @@ const reducer = (prevState = initialState, action) => {
    switch(action.type){
       case actionTypes.GET_LISTS: return {...prevState, lists: action.lists, paginationData: action.paginationData};
       
-      case actionTypes.CLEAR_LIST: return {...prevState, lists: null, paginationData: initialState.paginationData};
+      case actionTypes.CLEAR_LIST: return {...prevState, lists: [], paginationData: initialState.paginationData};
       
       case actionTypes.OPEN_LIST: return {...prevState, current: action.list};
       

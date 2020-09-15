@@ -2,7 +2,7 @@ import actionTypes from "../actions/actionTypes";
 import * as helpers from "../../helpers";
 
 const initialState = {
-   list: null,
+   list: [],
    current: null,
    namesList: null,
    paginationData: {
@@ -17,9 +17,9 @@ const reducer = (prevState = initialState, action) => {
       
       case actionTypes.GET_FOLDER_NAMES: return {...prevState, namesList: action.folderNames};
       
-      case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: null, paginationData: initialState.paginationData};
+      case actionTypes.CLEAR_FOLDER_LIST: return {...prevState, list: [], paginationData: initialState.paginationData};
       
-      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: null, current: null, paginationData: initialState.paginationData};
+      case actionTypes.CLEAR_FOLDERS: return {...prevState, list: [], current: null, paginationData: initialState.paginationData};
       
       case actionTypes.OPEN_FOLDER: return {...prevState, current: action.folder};
       
@@ -70,7 +70,7 @@ const reducer = (prevState = initialState, action) => {
       
       //MOVES ONE FILE FROM ONE FOLDER TO ANOTHER
       case actionTypes.MOVE_FILE: 
-         const fileNewDestination = helpers.findByProp("name", action.editedFile.folderName, prevState.list),
+         const fileNewDestination = helpers.findByProp("name", action.editedFile.container, prevState.list),
                updatedNewDest = Object.assign(fileNewDestination, {files: fileNewDestination.files.concat(action.editedFile)}),
                fileOldDestination = helpers.findByProp("name", prevState.current.name, prevState.list),
                updatedOldDest = Object.assign(fileOldDestination, {files: helpers.removeById(action.editedFile._id, prevState.current.files)});
