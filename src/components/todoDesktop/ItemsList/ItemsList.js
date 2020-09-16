@@ -1,11 +1,13 @@
 import React from "react";
-import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
+import FolderThumbnail from "../FolderThumbnail/FolderThumbnail";
+import TodoListThumbnail from "../TodoListThumbnail/TodoListThumbnail";
 import "./ItemsList.css";
 
 const ItemsList = ({ items }) => {
-	const thumbnailsList = items.map(item => (
-		<ItemThumbnail key={item._id} type={item.files ? "folder" : "todo"} name={item.name} itemId={item._id} />
-	));
+	const thumbnailsList = items.map(item => {
+		const Thumnail = item.files ? FolderThumbnail : TodoListThumbnail;
+		return <Thumnail key={item._id} name={item.name} itemId={item._id} />;
+	});
 
 	return (
 		<div className="itemsList">
