@@ -1,0 +1,51 @@
+.itemThumbnail {
+	display: inline-block;
+	width: 8.5vw;
+	height: 8.5vw;
+	margin: 0 2vw 4vw 0;
+	text-align: center;
+	font-size: 0.9em;
+}
+
+.itemThumbnail:hover {
+	cursor: pointer;
+}
+
+.itemThumbnail a {
+	color: black;
+	text-decoration: none;
+}
+
+.itemThumbnail div {
+	display: flex;
+	width: 80%;
+	height: 80%;
+	margin: 0 auto 1vh;
+	box-shadow: 2px 2px 5px rgb(133, 131, 131);
+}
+
+.itemThumbnail img {
+	width: 80%;
+	height: 80%;
+	margin: 10%;
+}
+
+.folderIcon {
+	border-radius: 2px;
+	background-color: #7fd1b9;
+}
+
+.todoIcon {
+	border-radius: 8px;
+	background-color: #cfbae1;
+}
+
+@media (max-width: 599px) {
+	.itemThumbnail {
+		width: 35vw;
+		height: 35vw;
+		margin: 0 0 13vh;
+		text-align: center;
+		font-size: 0.9em;
+	}
+}

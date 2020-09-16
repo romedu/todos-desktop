@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../UI/Button/Button";
 import ButtonGroup from "../../UI/ButtonGroup/ButtonGroup";
-import "./DisplayIcon.css";
+import "./ItemThumbnail.css";
 
-const DisplayIcon = ({ name, type, image, description, itemId }) => (
-	<li className="displayIcon">
+const ItemThumbnail = ({ name, type, image, description, itemId }) => (
+	<li className="itemThumbnail">
 		<ButtonGroup groupType="settingsGroup">
 			<Button design="settings">
 				<FontAwesomeIcon
@@ -33,4 +33,4 @@ const DisplayIcon = ({ name, type, image, description, itemId }) => (
 	</li>
 );
 
-export default DisplayIcon;
+export default ItemThumbnail;

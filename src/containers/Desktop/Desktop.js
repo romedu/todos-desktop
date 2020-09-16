@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IconList from "../../components/todoDesktop/IconList/IconList";
+import ItemsList from "../../components/todoDesktop/ItemsList/ItemsList";
 import { getFolders } from "../../store/actions/folder";
 import { getLists } from "../../store/actions/todoList";
 import "./Desktop.css";
@@ -19,7 +19,7 @@ class Desktop extends Component {
 		return (
 			<div className="Desktop">
 				<h1>Todos Desktop</h1>
-				<IconList items={folders.concat(todos)} />
+				<ItemsList items={folders.concat(todos)} />
 			</div>
 		);
 	}
@@ -27,12 +27,12 @@ class Desktop extends Component {
 
 const mapStateToProps = state => ({
 	todos: state.todoList.lists, // Needed to update the props when removing a todoList
-	folders: state.folder.list,
+	folders: state.folder.list
 });
 
 const mapDispatchToProps = dispatch => ({
 	onFoldersGet: (sortProp, sortOrder, pageNum) => dispatch(getFolders(sortProp, sortOrder, pageNum)),
-	onTodosGet: (sortProp, sortOrder, pageNum) => dispatch(getLists(sortProp, sortOrder, pageNum)),
+	onTodosGet: (sortProp, sortOrder, pageNum) => dispatch(getLists(sortProp, sortOrder, pageNum))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Desktop);

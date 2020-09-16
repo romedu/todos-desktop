@@ -1,8 +1,8 @@
 import React from "react";
-import IconList from "../../todoDesktop/IconList/IconList";
+import ItemsList from "../../todoDesktop/ItemsList/ItemsList";
 
 const FolderContent = ({ files, folderName }) => {
-	const content = files.length ? <IconList items={files} /> : <h4> The folder is empty </h4>;
+	const content = files.length ? <ItemsList items={files} /> : <h4> The folder is empty </h4>;
 
 	return (
 		<div>

@@ -1,0 +1,38 @@
+.itemsList {
+	list-style: none;
+	padding: 0;
+	margin-top: 8vh;
+	width: 95%;
+	display: flex;
+	flex-direction: column;
+}
+
+.itemsList h3 {
+	margin-top: 0;
+	margin-left: 0.85vw;
+	font-size: 2em;
+}
+
+.itemsList ul {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+}
+
+@media (max-width: 599px) {
+	.itemsList {
+		width: 100%;
+		margin-top: 6vh;
+	}
+
+	.itemsList h3 {
+		margin-left: 10%;
+		font-size: 2.2em;
+	}
+
+	.itemsList ul {
+		padding: 0 3vw;
+		justify-content: space-evenly;
+	}
+}
