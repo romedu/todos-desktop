@@ -1,10 +1,22 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { DropTarget } from "react-dnd";
 import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
+import { TODOLIST_DRAG_TYPE } from "../../../constants";
 
-const FolderThumbnail = props => (
-	<Fragment>
+const FolderThumbnail = ({ connectDropTarget, ...props }) => (
+	<div ref={connectDropTarget}>
 		<ItemThumbnail type="folder" {...props} />
-	</Fragment>
+	</div>
 );
 
-export default FolderThumbnail;
+const dropSpecMethod = {
+	drop: props => ({ folderId: props.itemId })
+};
+
+const collectingFunction = (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver(),
+	canDrop: monitor.canDrop()
+});
+
+export default DropTarget(TODOLIST_DRAG_TYPE, dropSpecMethod, collectingFunction)(FolderThumbnail);
