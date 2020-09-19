@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import Backdrop from "../../components/UI/Backdrop/Backdrop";
+import FolderContent from "../../components/Folder/FolderContent/FolderContent";
+import FolderBackdrop from "../../components/Folder/FolderBackdrop";
 import Loader from "../../components/UI/Loader/Loader";
 import { openFolder, closeFolder } from "../../store/actions/folder";
 import "./Folder.css";
-import FolderContent from "../../components/Folder/FolderContent/FolderContent";
 
 class Folder extends Component {
 	state = {
@@ -42,7 +42,7 @@ class Folder extends Component {
 
 		return (
 			<Fragment>
-				<Backdrop closeHandler={this.clearFolderHandler} zIndex="3" coverNav />
+				<FolderBackdrop closeHandler={this.clearFolderHandler} />
 				<div className="Folder FolderBorder"></div>
 				<div className="Folder FolderInside"> {content} </div>
 			</Fragment>
