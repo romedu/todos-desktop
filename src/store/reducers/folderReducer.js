@@ -1,5 +1,5 @@
 import actionTypes from "../actions/actionTypes";
-import * as helpers from "../../helpers";
+import * as utilities from "../../utilities/data";
 
 const initialState = {
 	list: [],
@@ -33,13 +33,13 @@ const reducer = (prevState = initialState, action) => {
 		case actionTypes.UPDATE_FOLDER:
 			return {
 				...prevState,
-				list: helpers.updateItem(action.editedFolder, currentFolderList)
+				list: utilities.updateItem(action.editedFolder, currentFolderList)
 			};
 
 		case actionTypes.DELETE_FOLDER:
 			return {
 				...prevState,
-				list: helpers.removeById(action.folderId, currentFolderList),
+				list: utilities.removeById(action.folderId, currentFolderList),
 				paginationData: {
 					...prevState.paginationData,
 					total: prevState.paginationData.total - 1
@@ -66,7 +66,7 @@ const reducer = (prevState = initialState, action) => {
 				...prevState,
 				current: {
 					...prevState.current,
-					files: helpers.removeById(action.fileId, prevState.current.files)
+					files: utilities.removeById(action.fileId, prevState.current.files)
 				}
 			};
 

@@ -1,5 +1,5 @@
 import actionTypes from "../actions/actionTypes";
-import { updateItem, removeById } from "../../helpers";
+import { updateItem, removeById } from "../../utilities/data";
 
 const initialState = {
 	lists: [],
