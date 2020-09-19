@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { DragSource } from "react-dnd";
 import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
-import { updateList } from "../../../store/actions/todoList";
+import { moveList } from "../../../store/actions/todoList";
 import { TODOLIST_DRAG_TYPE } from "../../../constants";
 
 const TodoListThumbnail = ({ connectDragSource, ...props }) => (
@@ -12,12 +12,12 @@ const TodoListThumbnail = ({ connectDragSource, ...props }) => (
 );
 
 const dragSpecMethods = {
-	beginDrag: props => ({ id: props.itemId }),
+	beginDrag: props => ({ id: props.itemId, container: props.containerId }),
 	endDrag(props, monitor) {
 		const todoList = monitor.getItem();
 		const dropResult = monitor.getDropResult();
 
-		if (dropResult) props.moveTodoListToFolder(todoList.id, dropResult.folderId);
+		if (dropResult) props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId);
 	}
 };
 
@@ -27,7 +27,7 @@ const collectingFunction = (connect, monitor) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	moveTodoListToFolder: (listId, folderId) => dispatch(updateList(listId, null, { container: folderId }))
+	moveTodoListToFolder: (listId, moveFrom, moveTo) => dispatch(moveList(listId, moveFrom, moveTo))
 });
 
 export default connect(

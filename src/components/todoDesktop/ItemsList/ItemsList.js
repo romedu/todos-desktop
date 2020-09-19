@@ -6,7 +6,7 @@ import "./ItemsList.css";
 const ItemsList = ({ items }) => {
 	const thumbnailsList = items.map(item => {
 		const Thumnail = item.files ? FolderThumbnail : TodoListThumbnail;
-		return <Thumnail key={item._id} name={item.name} itemId={item._id} />;
+		return <Thumnail key={item._id} name={item.name} itemId={item._id} containerId={item.container} />;
 	});
 
 	return (
