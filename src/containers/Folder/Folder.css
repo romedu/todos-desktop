@@ -1,51 +1,60 @@
 .Folder {
-   position: fixed;
-   left: 20vw;
-   top: 20vh;
-   background: #fcb38f;
-   background: linear-gradient(0deg, #EFE9AE, #fcb38f);
-   background: -webkit-linear-gradient(0deg, #EFE9AE, #fcb38f);
-   border-radius: 8px;
-   box-shadow: 6px 9.5px 20px;
+	position: fixed;
+	left: 20vw;
+	top: 20vh;
+	background: #fcb38f;
+	background: linear-gradient(0deg, #efe9ae, #fcb38f);
+	background: -webkit-linear-gradient(0deg, #efe9ae, #fcb38f);
+	border-radius: 8px;
+	box-shadow: 6px 9.5px 20px;
 }
 
 .Folder h2 {
-   font-size: 1.8em;
+	font-size: 1.8em;
 }
 
 .Folder h4 {
-   font-size: 1.3em;
-   margin-top: 15vh;
-   text-align: center;
+	font-size: 1.3em;
+	margin-top: 15vh;
+	text-align: center;
 }
 
 .FolderInside {
-   width: 58vw;
-   height: 60vh;
-   padding: 0 1vw 0 3vw;
-   overflow-y: auto;
-   z-index: 4;
+	width: 58vw;
+	height: 60vh;
+	padding: 0 1vw 0 3vw;
+	overflow-y: auto;
+	z-index: 4;
 }
 
 .FolderBorder {
-   top: 16vh;
-   width: 15vw;
-   height: 64vh;
-   z-index: 4;
+	top: 16vh;
+	width: 15vw;
+	height: 64vh;
+	z-index: 4;
 }
 
-@media(max-width: 599px){
-   .Folder {
-      left: 7vw;
-   }
+.FolderActionBlocker {
+	position: fixed;
+	top: 0;
+	left: 19vw;
+	width: 62vw;
+	height: 100vh;
+	z-index: 3;
+}
 
-   .FolderInside {
-      width: 80vw;
-      height: 60vh;
-      padding: 0 3vw;
-   }
+@media (max-width: 599px) {
+	.Folder {
+		left: 7vw;
+	}
 
-   .FolderBorder {
-      display: none;
-   }
+	.FolderInside {
+		width: 80vw;
+		height: 60vh;
+		padding: 0 3vw;
+	}
+
+	.FolderBorder {
+		display: none;
+	}
 }

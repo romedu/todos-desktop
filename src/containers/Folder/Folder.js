@@ -42,6 +42,7 @@ class Folder extends Component {
 
 		return (
 			<Fragment>
+				<div className="FolderActionBlocker"></div>
 				<FolderBackdrop closeHandler={this.clearFolderHandler} />
 				<div className="Folder FolderBorder"></div>
 				<div className="Folder FolderInside"> {content} </div>
