@@ -8,7 +8,7 @@ const FolderBackdrop = ({ connectDropTarget, isOver, closeHandler }) => {
 
 	return (
 		<div ref={connectDropTarget}>
-			<Backdrop closeHandler={closeHandler} zIndex="3" coverNav />
+			<Backdrop zIndex="2" closeHandler={closeHandler} />
 		</div>
 	);
 };
