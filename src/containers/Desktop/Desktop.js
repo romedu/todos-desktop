@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { DropTarget } from "react-dnd";
 import ItemsList from "../../components/todoDesktop/ItemsList/ItemsList";
 import { getFolders } from "../../store/actions/folder";
 import { getLists } from "../../store/actions/todoList";
+import { TODOLIST_DRAG_TYPE } from "../../constants";
 import "./Desktop.css";
 
 class Desktop extends Component {
@@ -14,10 +16,10 @@ class Desktop extends Component {
 	}
 
 	render() {
-		const { todos, folders } = this.props;
+		const { todos, folders, connectDropTarget } = this.props;
 
 		return (
-			<div className="Desktop">
+			<div className="Desktop" ref={connectDropTarget}>
 				<h1>Todos Desktop</h1>
 				<ItemsList items={folders.concat(todos)} />
 			</div>
@@ -26,7 +28,7 @@ class Desktop extends Component {
 }
 
 const mapStateToProps = state => ({
-	todos: state.todoList.lists, // Needed to update the props when removing a todoList
+	todos: state.todoList.lists,
 	folders: state.folder.list
 });
 
@@ -35,4 +37,17 @@ const mapDispatchToProps = dispatch => ({
 	onTodosGet: (sortProp, sortOrder, pageNum) => dispatch(getLists(sortProp, sortOrder, pageNum))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Desktop);
+const dropSpecMethod = {
+	drop: () => ({ folderId: null })
+};
+
+const collectingFunction = (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver()
+});
+
+export default DropTarget(
+	TODOLIST_DRAG_TYPE,
+	dropSpecMethod,
+	collectingFunction
+)(connect(mapStateToProps, mapDispatchToProps)(Desktop));
