@@ -1,5 +1,5 @@
 import qwest from "qwest";
-qwest.limit(2);
+qwest.limit(1);
 
 const handleResponse = async ({ response }) => {
 	const parsedResponse = await JSON.parse(response);
