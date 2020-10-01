@@ -1,13 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import { DragSource } from "react-dnd";
-import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
 import { moveList } from "../../../store/actions/todoList";
 import { TODOLIST_DRAG_TYPE } from "../../../constants";
+import "./TodoListThumbnail.css";
 
-const TodoListThumbnail = ({ connectDragSource, ...props }) => (
+const TodoListThumbnail = ({ connectDragSource, name, description }) => (
 	<div ref={connectDragSource}>
-		<ItemThumbnail type="todo" {...props} />
+		<li className="itemThumbnail">
+			<div className="todoListThumbnail" title={description}></div>
+			{name}
+		</li>
 	</div>
 );
 
