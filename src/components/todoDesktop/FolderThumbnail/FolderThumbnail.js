@@ -1,22 +1,45 @@
-import React from "react";
+import React, { Component } from "react";
 import { DropTarget } from "react-dnd";
-import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
 import { TODOLIST_DRAG_TYPE } from "../../../constants";
 import { Link, withRouter } from "react-router-dom";
+import "./FolderThumnail.css";
 
-const FolderThumbnail = ({ connectDropTarget, isOver, history, ...props }) => {
-	const folderPath = `/desktop/${props.itemId}`;
+class FolderThumbnail extends Component {
+	state = {
+		openFolderTimeoutID: null
+   };
+   
+   componentDidUpdate(){
+      const {openFolderTimeoutID} = this.state;
+      const { isOver, canDrop, history, itemId } = this.props;
+      const folderPath = `/desktop/${itemId}`;
 
-	if (isOver) history.push(folderPath);
+      if (isOver && !openFolderTimeoutID) this.setState({ openFolderTimeoutID: setTimeout(() => history.push(folderPath), 500) });
+		if (openFolderTimeoutID && (!isOver || !canDrop)) {
+			clearTimeout(openFolderTimeoutID);
+			this.setState({ openFolderTimeoutID: null });
+		}
+   }
 
-	return (
-		<div ref={connectDropTarget}>
-			<Link to={folderPath}>
-				<ItemThumbnail type="folder" {...props} />
-			</Link>
-		</div>
-	);
-};
+	render() {
+		const { connectDropTarget, isOver, name, description, itemId } = this.props;
+		const folderPath = `/desktop/${itemId}`;
+		let thumbnailClassName = "folderThumbnail";
+
+      if(isOver) thumbnailClassName = thumbnailClassName.concat(" ", "overFolderThumbnail");
+
+		return (
+			<div ref={connectDropTarget}>
+				<Link to={folderPath}>
+					<li className="itemThumbnail">
+						<div className={thumbnailClassName} title={description}></div>
+						{name}
+					</li>
+				</Link>
+			</div>
+		);
+	}
+}
 
 const dropSpecMethod = {
 	drop: props => ({ folderId: props.itemId })
