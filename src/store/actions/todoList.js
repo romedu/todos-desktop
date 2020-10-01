@@ -81,11 +81,10 @@ export const moveList = (listId, moveFrom, moveTo) => {
 			const movedList = await makePatchRequest(reqUrl, payload);
 			const isListInDesktop = !moveFrom;
 
-			if (isListInDesktop) dispatch(removeList(movedList._id));
-			else {
-				dispatch(removeFile(movedList._id));
-				dispatch(addList(movedList));
-			}
+			if (isListInDesktop) {
+				dispatch(removeList(movedList._id));
+				dispatch(addFile(movedList));
+			} else dispatch(addList(movedList));
 		} catch (error) {
 			dispatch(createMessage("Error", error.message));
 		}
