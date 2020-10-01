@@ -34,15 +34,6 @@
 	z-index: 4;
 }
 
-.FolderActionBlocker {
-	position: fixed;
-	top: 0;
-	left: 19vw;
-	width: 62vw;
-	height: 100vh;
-	z-index: 3;
-}
-
 @media (max-width: 599px) {
 	.Folder {
 		left: 7vw;

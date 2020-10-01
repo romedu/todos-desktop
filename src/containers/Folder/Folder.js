@@ -37,12 +37,11 @@ class Folder extends Component {
 		const content = shouldShowLoader ? (
 			<Loader />
 		) : (
-			<FolderContent folderName={currentFolder.name} files={currentFolder.files} />
+			<FolderContent folderId={currentFolder._id} folderName={currentFolder.name} files={currentFolder.files} />
 		);
 
 		return (
 			<Fragment>
-				<div className="FolderActionBlocker"></div>
 				<FolderBackdrop closeHandler={this.clearFolderHandler} />
 				<div className="Folder FolderBorder"></div>
 				<div className="Folder FolderInside"> {content} </div>
