@@ -38,7 +38,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const dropSpecMethod = {
-	drop: () => ({ folderId: null })
+	drop: (props, monitor) => {
+      const hasDroppedOnFolder = monitor.didDrop();
+      if(!hasDroppedOnFolder) return { folderId: null }
+   }
 };
 
 const collectingFunction = (connect, monitor) => ({
