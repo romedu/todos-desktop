@@ -21,7 +21,11 @@ const dragSpecMethods = {
 		const dropResult = monitor.getDropResult();
 
 		if (dropResult) {
-			props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId, dropResult.shouldAddToFolder);
+			const wasDroppedInNewLocation = todoList.container !== dropResult.folderId;
+
+			if (wasDroppedInNewLocation) {
+				props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId, dropResult.shouldAddToFolder);
+			}
 		}
 	}
 };
