@@ -20,7 +20,9 @@ const dragSpecMethods = {
 		const todoList = monitor.getItem();
 		const dropResult = monitor.getDropResult();
 
-		if (dropResult) props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId);
+		if (dropResult) {
+			props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId, dropResult.shouldAddToFolder);
+		}
 	}
 };
 
@@ -30,7 +32,9 @@ const collectingFunction = (connect, monitor) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	moveTodoListToFolder: (listId, moveFrom, moveTo) => dispatch(moveList(listId, moveFrom, moveTo))
+	moveTodoListToFolder: (listId, moveFrom, moveTo, shouldAddToFolder) => {
+		return dispatch(moveList(listId, moveFrom, moveTo, shouldAddToFolder));
+	}
 });
 
 export default connect(

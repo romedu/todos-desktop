@@ -73,7 +73,7 @@ export const createList = newListData => {
 	};
 };
 
-export const moveList = (listId, moveFrom, moveTo) => {
+export const moveList = (listId, moveFrom, moveTo, shouldAddToFolder) => {
 	return async dispatch => {
 		try {
 			const reqUrl = `/api/todoList/${listId}`;
@@ -83,7 +83,7 @@ export const moveList = (listId, moveFrom, moveTo) => {
 
 			if (isListInDesktop) {
 				dispatch(removeList(movedList._id));
-				dispatch(addFile(movedList));
+				if(shouldAddToFolder) dispatch(addFile(movedList));
 			} else dispatch(addList(movedList));
 		} catch (error) {
 			dispatch(createMessage("Error", error.message));

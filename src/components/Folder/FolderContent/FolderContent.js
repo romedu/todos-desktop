@@ -15,7 +15,7 @@ const FolderContent = ({ files, folderName, connectDropTarget }) => {
 };
 
 const dropSpecMethod = {
-	drop: ({ folderId }) => ({ folderId })
+	drop: ({ folderId }) => ({ folderId, shouldAddToFolder: true })
 };
 
 const collectingFunction = (connect, monitor) => ({
