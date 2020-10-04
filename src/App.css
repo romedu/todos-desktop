@@ -14,9 +14,9 @@ html {
 
 .itemThumbnail {
 	display: inline-block;
-	width: 8.5vw;
-	height: 8.5vw;
-	margin: 0 2vw 4vw 0;
+	width: 8vw;
+	height: 8vw;
+	margin: 0 1vw 6vh;
 	text-align: center;
 	font-size: 0.9em;
 }

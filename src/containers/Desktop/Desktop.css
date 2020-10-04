@@ -1,11 +1,13 @@
 .Desktop {
-	width: 80wv;
-	margin-left: 10vw;
+   width: 62vw;
+   min-height: 84vh;
+	padding-left: 19vw;
 }
 
 .Desktop h1 {
 	font-size: 3.5em;
-	font-family: Alegreya;
+   font-family: Alegreya;
+   margin-left: 2vw;
 }
 
 .Desktop h4 {
