@@ -54,7 +54,7 @@ const reducer = (prevState = initialState, action) => {
 
 		case actionTypes.ADD_FILE:
 			const folderWithFileAdded = prevState.current
-				? utilities.updateProp(files, prevState.current.files.concat(action.newFile), prevState.current)
+				? utilities.updateProp("files", prevState.current.files.concat(action.newFile), prevState.current)
 				: null;
 
 			return {
@@ -64,7 +64,7 @@ const reducer = (prevState = initialState, action) => {
 
 		case actionTypes.REMOVE_FILE:
 			const folderWithFileRemoved = prevState.current
-				? utilities.updateProp(files, utilities.removeById(action.fileId, prevState.current.files), prevState.current)
+				? utilities.updateProp("files", utilities.removeById(action.fileId, prevState.current.files), prevState.current)
 				: null;
 
 			return {
