@@ -53,21 +53,23 @@ const reducer = (prevState = initialState, action) => {
 			return { ...prevState, current: null };
 
 		case actionTypes.ADD_FILE:
+			const folderWithFileAdded = prevState.current
+				? utilities.updateProp(files, prevState.current.files.concat(action.newFile), prevState.current)
+				: null;
+
 			return {
 				...prevState,
-				current: {
-					...prevState.current,
-					files: prevState.current.files.concat(action.newFile)
-				}
+				current: folderWithFileAdded
 			};
 
 		case actionTypes.REMOVE_FILE:
+			const folderWithFileRemoved = prevState.current
+				? utilities.updateProp(files, utilities.removeById(action.fileId, prevState.current.files), prevState.current)
+				: null;
+
 			return {
 				...prevState,
-				current: {
-					...prevState.current,
-					files: utilities.removeById(action.fileId, prevState.current.files)
-				}
+				current: folderWithFileRemoved
 			};
 
 		default:
