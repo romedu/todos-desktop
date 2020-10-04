@@ -14,7 +14,7 @@ class FolderThumbnail extends Component {
       const { isOver, canDrop, history, itemId } = this.props;
       const folderPath = `/desktop/${itemId}`;
 
-      if (isOver && !openFolderTimeoutID) this.setState({ openFolderTimeoutID: setTimeout(() => history.push(folderPath), 500) });
+      if (isOver && !openFolderTimeoutID) this.setState({ openFolderTimeoutID: setTimeout(() => history.push(folderPath), 600) });
 		if (openFolderTimeoutID && (!isOver || !canDrop)) {
 			clearTimeout(openFolderTimeoutID);
 			this.setState({ openFolderTimeoutID: null });
