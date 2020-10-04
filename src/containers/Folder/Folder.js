@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import FolderContent from "../../components/Folder/FolderContent/FolderContent";
+import FolderContent from "../../components/Folder/FolderContent";
 import FolderBackdrop from "../../components/Folder/FolderBackdrop";
 import Loader from "../../components/UI/Loader/Loader";
 import { openFolder, closeFolder } from "../../store/actions/folder";

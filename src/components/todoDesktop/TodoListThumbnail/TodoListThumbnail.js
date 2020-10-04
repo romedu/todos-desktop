@@ -22,9 +22,10 @@ const dragSpecMethods = {
 
 		if (dropResult) {
 			const wasDroppedInNewLocation = todoList.container !== dropResult.folderId;
+			const currentFolderId = dropResult.currentFolderId || props.currentFolderId;
 
 			if (wasDroppedInNewLocation) {
-				props.moveTodoListToFolder(todoList.id, todoList.container, dropResult.folderId, dropResult.shouldAddToFolder);
+				props.moveTodoListToFolder(todoList.id, currentFolderId, todoList.container, dropResult.folderId);
 			}
 		}
 	}
@@ -35,13 +36,14 @@ const collectingFunction = (connect, monitor) => ({
 	isDragging: monitor.isDragging()
 });
 
+const mapStateToProps = state => ({ currentFolderId: state.folder.current && state.folder.current._id });
 const mapDispatchToProps = dispatch => ({
-	moveTodoListToFolder: (listId, moveFrom, moveTo, shouldAddToFolder) => {
-		return dispatch(moveList(listId, moveFrom, moveTo, shouldAddToFolder));
+	moveTodoListToFolder: (listId, currentFolderId, moveFrom, moveTo) => {
+		return dispatch(moveList(listId, currentFolderId, moveFrom, moveTo));
 	}
 });
 
 export default connect(
-	null,
+	mapStateToProps,
 	mapDispatchToProps
 )(DragSource(TODOLIST_DRAG_TYPE, dragSpecMethods, collectingFunction)(TodoListThumbnail));

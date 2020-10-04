@@ -1,7 +1,7 @@
 import React from "react";
 import { DropTarget } from "react-dnd";
-import ItemsList from "../../todoDesktop/ItemsList/ItemsList";
-import { TODOLIST_DRAG_TYPE } from "../../../constants";
+import ItemsList from "../todoDesktop/ItemsList/ItemsList";
+import { TODOLIST_DRAG_TYPE } from "../../constants";
 
 const FolderContent = ({ files, folderName, connectDropTarget }) => {
 	const content = files.length ? <ItemsList items={files} /> : <h4> The folder is empty </h4>;
@@ -15,7 +15,7 @@ const FolderContent = ({ files, folderName, connectDropTarget }) => {
 };
 
 const dropSpecMethod = {
-	drop: ({ folderId }) => ({ folderId, shouldAddToFolder: true })
+	drop: ({ folderId }) => ({ folderId, currentFolderId: folderId })
 };
 
 const collectingFunction = (connect, monitor) => ({

@@ -73,18 +73,21 @@ export const createList = newListData => {
 	};
 };
 
-export const moveList = (listId, moveFrom, moveTo, shouldAddToFolder) => {
+export const moveList = (listId, currentFolderId, moveFrom, moveTo) => {
 	return async dispatch => {
 		try {
 			const reqUrl = `/api/todoList/${listId}`;
 			const payload = { container: moveTo };
 			const movedList = await makePatchRequest(reqUrl, payload);
-			const isListInDesktop = !moveFrom;
+			const isMovingToDesktop = moveTo === null;
+			const isMovingFromDesktop = moveFrom === null;
+			const isMovingToCurrentFolder = currentFolderId && moveTo === currentFolderId;
+			const isMovingFromCurrentFolder = currentFolderId && moveFrom === currentFolderId;
 
-			if (isListInDesktop) {
-				dispatch(removeList(movedList._id));
-				if(shouldAddToFolder) dispatch(addFile(movedList));
-			} else dispatch(addList(movedList));
+			if (isMovingFromDesktop) dispatch(removeList(movedList._id));
+			if (isMovingFromCurrentFolder) dispatch(removeFile(listId));
+			if (isMovingToDesktop) dispatch(addList(movedList));
+			if (isMovingToCurrentFolder) dispatch(addFile(movedList));
 		} catch (error) {
 			dispatch(createMessage("Error", error.message));
 		}
