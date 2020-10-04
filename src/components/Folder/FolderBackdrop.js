@@ -1,17 +1,35 @@
-import React from "react";
+import React, { Component } from "react";
 import { DropTarget } from "react-dnd";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import { TODOLIST_DRAG_TYPE } from "../../constants";
 
-const FolderBackdrop = ({ connectDropTarget, isOver, closeHandler }) => {
-	if (isOver) closeHandler();
+class FolderBackdrop extends Component {
+	state = {
+		closeFolderTimeoutID: null
+	};
 
-	return (
-		<div ref={connectDropTarget}>
-			<Backdrop zIndex="2" closeHandler={closeHandler} />
-		</div>
-	);
-};
+	componentDidUpdate() {
+		const { closeFolderTimeoutID } = this.state;
+		const { isOver, closeHandler } = this.props;
+
+		if (isOver && !closeFolderTimeoutID) this.setState({ closeFolderTimeoutID: setTimeout(closeHandler, 600) });
+		if (closeFolderTimeoutID && !isOver) {
+			clearTimeout(closeFolderTimeoutID);
+			this.setState({ closeFolderTimeoutID: null });
+		}
+	}
+
+	render() {
+		const { connectDropTarget, closeHandler, isOver } = this.props;
+		const droppableStyles = isOver ? { opacity: 0.6 } : {};
+
+		return (
+			<div ref={connectDropTarget}>
+				<Backdrop zIndex="1" closeHandler={closeHandler} styles={droppableStyles} />
+			</div>
+		);
+	}
+}
 
 const dropSpecMethod = {
 	drop: () => ({ folderId: null })
