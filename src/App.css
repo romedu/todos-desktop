@@ -59,3 +59,8 @@ html {
 		font-size: 0.9em;
 	}
 }
+
+.TransparentBtn {
+	border: none;
+	background-color: transparent;
+}
