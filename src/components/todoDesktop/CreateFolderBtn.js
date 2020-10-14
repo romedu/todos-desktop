@@ -5,7 +5,7 @@ import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 const CreateFolderBtn = props => {
 	return (
 		<button className="TransparentBtn">
-			<FontAwesomeIcon size="6x" icon={faFolderPlus} color="#7fd1b9" onClick={() => {}} />
+			<FontAwesomeIcon size="4x" icon={faFolderPlus} color="#7fd1b9" onClick={() => {}} />
 		</button>
 	);
 };

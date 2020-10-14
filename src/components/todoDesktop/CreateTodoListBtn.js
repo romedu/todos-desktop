@@ -5,7 +5,7 @@ import { faFileMedical } from "@fortawesome/free-solid-svg-icons";
 const CreateTodoListBtn = props => {
 	return (
 		<button className="TransparentBtn">
-			<FontAwesomeIcon size="6x" icon={faFileMedical} color="#cfbae1" onClick={() => {}} />
+			<FontAwesomeIcon size="4x" icon={faFileMedical} color="#cfbae1" onClick={() => {}} />
 		</button>
 	);
 };
