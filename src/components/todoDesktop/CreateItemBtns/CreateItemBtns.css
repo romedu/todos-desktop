@@ -1,0 +1,9 @@
+.createItemBtns {
+	position: fixed;
+	top: 15vh;
+	right: 20px;
+	height: 20vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
