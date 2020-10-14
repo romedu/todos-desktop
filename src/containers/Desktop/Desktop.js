@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { DropTarget } from "react-dnd";
 import ItemsList from "../../components/todoDesktop/ItemsList/ItemsList";
+import CreateItemBtns from "../../components/todoDesktop/CreateItemBtns/CreateItemBtns";
+import ItemTrashDropArea from "../../components/todoDesktop/ItemTrashDropArea/ItemTrashDropArea";
 import { getFolders } from "../../store/actions/folder";
 import { getLists } from "../../store/actions/todoList";
 import { TODOLIST_DRAG_TYPE } from "../../constants";
@@ -22,6 +24,8 @@ class Desktop extends Component {
 			<div className="Desktop" ref={connectDropTarget}>
 				<h1>Todos Desktop</h1>
 				<ItemsList items={folders.concat(todos)} />
+				<CreateItemBtns />
+				<ItemTrashDropArea />
 			</div>
 		);
 	}
