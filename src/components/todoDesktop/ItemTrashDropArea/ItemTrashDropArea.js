@@ -5,8 +5,8 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { TODOLIST_DRAG_TYPE } from "../../../constants";
 import "./ItemTrashDropArea.css";
 
-const ItemTrashDropArea = ({isOver, connectDropTarget}) => {
-   const iconColor = isOver ? "black" : "gray";
+const ItemTrashDropArea = ({ isOver, connectDropTarget }) => {
+	const iconColor = isOver ? "black" : "gray";
 
 	return (
 		<div className="itemTrashDropArea" ref={connectDropTarget}>
@@ -26,8 +26,4 @@ const collectingFunction = (connect, monitor) => ({
 	isOver: monitor.isOver()
 });
 
-export default DropTarget(
-	TODOLIST_DRAG_TYPE,
-	dropSpecMethod,
-	collectingFunction
-)(ItemTrashDropArea);
+export default DropTarget(TODOLIST_DRAG_TYPE, dropSpecMethod, collectingFunction)(ItemTrashDropArea);
