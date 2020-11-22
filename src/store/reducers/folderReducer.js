@@ -33,7 +33,7 @@ const reducer = (prevState = initialState, action) => {
 		case actionTypes.UPDATE_FOLDER:
 			return {
 				...prevState,
-				list: utilities.updateItem(action.editedFolder, currentFolderList)
+				list: utilities.updateItem(action.folderId, action.editedFolder, currentFolderList)
 			};
 
 		case actionTypes.DELETE_FOLDER:

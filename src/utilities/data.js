@@ -4,4 +4,4 @@ export const updateProp = (propName, propValue, obj) => ({ ...obj, [propName]: p
 
 export const removeById = (id, arr) => arr.filter(item => item._id !== id);
 
-export const updateItem = (editedItem, arr) => arr.map(item => (item._id === editedItem._id ? editedItem : item));
+export const updateItem = (itemId, editedItem, arr) => arr.map(item => (item._id === itemId ? editedItem : item));

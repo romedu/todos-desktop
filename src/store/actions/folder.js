@@ -18,8 +18,9 @@ const addFolder = newFolder => ({
 	newFolder
 });
 
-const editFolder = editedFolder => ({
+const editFolder = (folderId, editedFolder) => ({
 	type: actionTypes.UPDATE_FOLDER,
+	folderId,
 	editedFolder
 });
 
@@ -58,13 +59,23 @@ export const closeFolder = () => ({
 	type: actionTypes.CLOSE_FOLDER
 });
 
+export const createUntitledFolder = () => {
+	const untitledFolder = {
+		_id: "untitled",
+		name: "untitled",
+		files: []
+	};
+
+	return addFolder(untitledFolder);
+};
+
 export const createFolder = newFolderData => {
 	return async dispatch => {
 		try {
 			const reqUrl = `/api/folder`;
 			const newFolder = await makePostRequest(reqUrl, newFolderData);
 
-			return dispatch(addFolder(newFolder));
+			return dispatch(editFolder("untitled", newFolder));
 		} catch (error) {
 			dispatch(createMessage("Error", error.message));
 		}
@@ -77,7 +88,7 @@ export const updateFolder = (folderId, payload) => {
 			const reqUrl = `/api/folder/${folderId}`;
 			const editedFolder = await makePatchRequest(reqUrl, payload);
 
-			return dispatch(editFolder(editedFolder));
+			return dispatch(editFolder(folderId, editedFolder));
 		} catch (error) {
 			dispatch(createMessage("Error", error.message));
 		}
