@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { DropTarget } from "react-dnd";
 import { Link, withRouter } from "react-router-dom";
-import ItemForm from "../ItemForm/ItemForm";
+import NewFolderForm from "../NewFolderForm";
 import PageBlocker from "../../UI/PageBlocker/PageBlocker";
 import { TODOLIST_DRAG_TYPE } from "../../../constants";
 import "./FolderThumnail.css";
@@ -39,7 +39,7 @@ class FolderThumbnail extends Component {
 					<Link to={folderPath}>
 						<li className="itemThumbnail">
 							<div className={thumbnailClassName} title={description}></div>
-							{itemId === "untitled" ? <ItemForm createHandler={newFolderName => {}} /> : name}
+							{itemId === "untitled" ? <NewFolderForm /> : name}
 						</li>
 					</Link>
 				</div>
