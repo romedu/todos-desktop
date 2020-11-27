@@ -12,21 +12,31 @@ class ItemForm extends Component {
 
 	onChangeInputHandler = ({ target }) => this.setState(prevState => ({ ...prevState, nameInputValue: target.value }));
 
-	render() {
+	onSubmitHandler = e => {
+		e.preventDefault();
+
 		const { nameInputValue } = this.state;
 		const { createHandler } = this.props;
 
+		createHandler(nameInputValue || defaultItemName);
+	};
+
+	render() {
+		const { nameInputValue } = this.state;
+
 		return (
-			<input
-				name="itemName"
-				value={nameInputValue}
-				className="itemForm"
-				ref={input => (this.nameInput = input)}
-				onClick={e => e.preventDefault()}
-				onChange={this.onChangeInputHandler}
-				onFocus={e => e.target.select()}
-				onBlur={() => createHandler(nameInputValue || defaultItemName)}
-			/>
+			<form onSubmit={this.onSubmitHandler}>
+				<input
+					name="itemName"
+					value={nameInputValue}
+					className="itemForm"
+					ref={input => (this.nameInput = input)}
+					onClick={e => e.preventDefault()}
+					onChange={this.onChangeInputHandler}
+					onFocus={e => e.target.select()}
+					onBlur={this.onSubmitHandler}
+				/>
+			</form>
 		);
 	}
 }
